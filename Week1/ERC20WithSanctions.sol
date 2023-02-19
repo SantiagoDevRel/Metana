@@ -26,6 +26,12 @@ contract ERC20SanctionsMode is ERC20 {
         blackList[account] = true;
     }
 
+    //Remove wallet from blackList
+    function removeFromBlackList(address account) external onlyAuthority{
+        blackList[account] = false;
+    }
+
+
     function balanceOf(address account) public view override returns(uint){
         return _balances[account];
     }
