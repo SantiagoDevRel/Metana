@@ -1,0 +1,14 @@
+{
+  "name": "metana",
+  "version": "1.0.0",
+  "description": "Metana Bootcamp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Santiago Trujillo Zuluaga",
+  "license": "ISC",
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.8.1"
+  }
+}
