@@ -36,7 +36,7 @@ contract TokenSaleWithSellBack is ERC20 {
         //revert TX if the contract doesn't have enough ether
         require(address(this).balance >= amountToGiveBack, "Not enough ether in this contract");
 
-        //send to the user the ether
+        //send ether to the user
         (bool success, ) = payable(msg.sender).call{value: amountToGiveBack}("");
 
         return success;
