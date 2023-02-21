@@ -1,0 +1,9 @@
+{
+    "description": "This is an NFT created for the week #2 of Metana Bootcamp", 
+    "creator_GitHub": "https://github.com/strujilloz",
+    "image": "ipfs://bafybeidlpulf6n4hgjrqbetqgnwf3qhvnf2v3g5ts4qtua3zzawv3frpsa/9.jpg", 
+    "name": "BTC MeTaNa NFT",
+    "attributes": [{
+        "To the moon" : true
+     }]
+}
