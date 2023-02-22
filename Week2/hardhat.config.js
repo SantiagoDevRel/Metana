@@ -16,6 +16,6 @@ module.exports = {
     }
   },
   etherscan:{
-    apiKey: PolygonScanKey,
+    apiKey: EtherscanScanKey,
   }
 };
