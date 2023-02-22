@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 
-contract MrNFTv2 is ERC721 {
+contract MrNFTv2 is ERC721{
 
     uint public totalSupply;
     uint public constant MAX_SUPPLY = 10;
