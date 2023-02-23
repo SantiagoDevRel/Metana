@@ -1,6 +1,21 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config()
 
-/** @type import('hardhat/config').HardhatUserConfig */
+const { PRIVATE_KEY, API_URL, EtherscanScanKey, PolygonScanKey } = process.env
+
 module.exports = {
-  solidity: "0.8.17",
+  solidity: "0.8.9",
+  networks: {
+    goerli: {
+      url: `${API_URL}`,
+      accounts: [`0x${PRIVATE_KEY}`]
+    },
+    polygon_mumbai: {
+      url: "https://rpc-mumbai.maticvigil.com",
+      accounts: [PRIVATE_KEY]
+    }
+  },
+  etherscan: {
+    apiKey: EtherscanScanKey,
+  }
 };

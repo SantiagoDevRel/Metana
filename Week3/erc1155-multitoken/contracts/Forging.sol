@@ -12,7 +12,7 @@ pragma solidity ^0.8.9;
 
 import "./MultiToken.sol";
 
-contract Forgin {
+contract Forging {
 
     //Instance of the ERC1155
     MultiToken private token;
