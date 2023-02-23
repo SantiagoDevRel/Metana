@@ -1,4 +1,13 @@
-.button-c {
+.container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: baseline;
+    margin-top: 10vh;
+    padding-top: 30vh;
+}
+
+
+.buttonc {
     align-items: center;
     appearance: none;
     background-image: radial-gradient(100% 100% at 100% 0, #DC1FFF 0, #03E1FF 100%);

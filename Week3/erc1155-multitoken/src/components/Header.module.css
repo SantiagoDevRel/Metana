@@ -1,4 +1,26 @@
-.button-c {
+.header {
+    color: white;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+
+
+}
+
+.title {
+    background: -webkit-linear-gradient(0deg, #03E1FF, #DC1FFF);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+.buttonc {
     align-items: center;
     appearance: none;
     background-image: radial-gradient(100% 100% at 100% 0, #DC1FFF 0, #03E1FF 100%);
