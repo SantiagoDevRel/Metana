@@ -19,7 +19,7 @@ Important please use some styling on this website to make it look nice (bootstra
 You must use 2 separate contracts. One for the ERC1155 token, and one for the forging logic. The forging logic will need mint privileges.
 Warning: Start on this assignment early. The solidity code is easy to write, but the frontend integration and workflows will have a lot of unfamiliar problems we will not explicitly teach you about. It is inevitable that you will encounter them in this assignment, so start early!
 # Contract MultiTokem (ERC1155)
-0x8EDF94B03e15171bab5C6DBDa4Efb1C57263Ed96
+```0x8EDF94B03e15171bab5C6DBDa4Efb1C57263Ed96```
 
 # Contract Forging 
 ```0xFfb1F858c947e5120c3e2855d73d95B341809d58```
