@@ -1,22 +1,17 @@
 import './App.css';
+import Tabs from './components/Tabs';
+import { SiGithub } from "react-icons/si";
+
 
 function App() {
   return (
-    <>
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </>
+    <div className='app'>
+      <div className='header'>
+        <h1>Metana Dapp ERC1155 Minter</h1>
+      </div>
+      <Tabs />
+      <footer><a href='https://github.com/strujilloz/Metana/tree/main/Week3/erc1155-multitoken'><SiGithub /> Santiago Trujillo Zuluaga <SiGithub /> </a></footer>
+    </div>
   );
 }
 

@@ -5,6 +5,9 @@ const { PRIVATE_KEY, API_URL, EtherscanScanKey, PolygonScanKey } = process.env
 
 module.exports = {
   solidity: "0.8.9",
+  paths: {
+    artifacts: "./src/artifacts"
+  },
   networks: {
     goerli: {
       url: `${API_URL}`,
@@ -16,6 +19,6 @@ module.exports = {
     }
   },
   etherscan: {
-    apiKey: EtherscanScanKey,
+    apiKey: PolygonScanKey,
   }
 };
