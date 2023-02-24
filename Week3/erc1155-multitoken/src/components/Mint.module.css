@@ -10,7 +10,9 @@
     caret-color: black;
 }
 
-
+label {
+    font-weight: bold;
+}
 
 .input {
     display: block;

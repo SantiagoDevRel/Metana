@@ -31,14 +31,24 @@ export async function mintBatch([t1, t2, t3]) {
   }
 }
 
-export async function forgeTokens(a, b) {
+export async function forgeTokens(tokenIds, amounts) {
 
   try {
-    console.log("FORGING:", "ids", a, "amounts", b)
-    //await contractForging.forgeTokens([], [])
+    await contractForging.forgeTokens(tokenIds, amounts)
   }
-  catch {
+  catch (err) {
+    console.log("Error forging", err)
+  }
 
+}
+
+export async function tradeTokens(tokenGive, amount, tokenReceive) {
+
+  try {
+    await contractForging.tradeTokens(tokenGive, amount, tokenReceive)
+  }
+  catch (err) {
+    console.log(err)
   }
 
 }
@@ -95,12 +105,6 @@ export default function App() {
   }, [showWallet])
 
 
-  /*
-    * CONTRACT FUNCTIONS:
-    * getBalanceBatch() --> call the balances of the current user address
-    * MintBatch --> mint tokens 0, 1 & 2
-
-  */
   const getBalanceBatch = async () => {
     const balances = await contractMultiToken.balanceOfBatch([fullWallet, fullWallet, fullWallet, fullWallet, fullWallet, fullWallet, fullWallet], [0, 1, 2, 3, 4, 5, 6])
     const mapBalances = balances.map(balance => parseInt(balance._hex)) //Maybe formatEther?

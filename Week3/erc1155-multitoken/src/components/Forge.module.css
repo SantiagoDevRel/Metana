@@ -28,6 +28,10 @@
     box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
 }
 
+.guide {
+    text-align: left;
+
+}
 
 .buttonFurge {
     text-shadow: 1px 1px #8147e5;

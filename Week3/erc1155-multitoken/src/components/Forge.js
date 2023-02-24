@@ -6,10 +6,18 @@ function Tab2() {
 
     const forgeNow = async (event) => {
         event.preventDefault()
-        const tokenIds = await event.target.mintingValue.value
-        const quantityTokens = await event.target.mintingValue.value
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const arrTokenIds = []
+        checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+                arrTokenIds.push(Number(checkbox.value))
+            }
+        })
 
-        forgeTokens([1, 2, 3], [0, 0, 0])
+        const quantityToMint = parseInt(event.target.quantity.value)
+        const arrQuantityToMint = Array(arrTokenIds.length).fill(quantityToMint)
+
+        forgeTokens(arrTokenIds, arrQuantityToMint)
 
     }
 
@@ -17,7 +25,7 @@ function Tab2() {
         <>
             <div className={styles.main}>
                 <form className={styles.form} onSubmit={forgeNow}>
-                    <p>How many tokens do you want to forge? (same quantity for all of them)</p>
+                    <label>Check the box of the tokens you want to forge (same quantity for all of them)</label>
                     <div>
                         <input type="checkbox" name="token0" value="0" /> Token 0
                     </div>
@@ -47,10 +55,16 @@ function Tab2() {
                         <label>Quantity:</label>
                         <input className={styles.input} type="number" name="quantity" min={1} defaultValue={1} />
                     </div>
-                    <button className={styles.buttonFurge}>Furge tokens</button>
+                    <button type='submit' className={styles.buttonFurge}>Furge tokens</button>
                 </form>
-                <div>
-                    <h2>right</h2>
+                <div className={styles.guide}>
+                    <h4>Forging Guide</h4>
+                    <p>• burn token 0 + burn token 1 = <b>Token 3</b></p>
+                    <p>• burn token 1 + burn token 2 = <b>Token 4</b></p>
+                    <p>• burn token 0 + burn token 2 = <b>Token 5</b></p>
+                    <p>• burn token 0 + burn token 1 + burn token 2 = <b>Token 6</b></p>
+                    <p>• burn token 3, 4, 5 or 6 = <b>Nothing</b></p>
+
                 </div>
             </div>
         </>
