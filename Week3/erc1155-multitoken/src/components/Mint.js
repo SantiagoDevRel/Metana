@@ -14,11 +14,11 @@ function Tab1() {
 
     return (
         <>
-            <form onSubmit={mintNow}>
+            <form className={styles.form} onSubmit={mintNow}>
                 <label>How many tokens do you want to mint?</label>
-                <input type="number" name="mintingValue" min={1} defaultValue={1} />
+                <input className={styles.input} type="number" name="mintingValue" min={1} defaultValue={1} />
                 <button className={styles.buttonMint}>Mint Tokens 0,1 & 2</button>
-                {wait == true ? <span>Please wait 1 minute to mint again.</span> : ("")}
+                {wait === true ? <span>Please wait 1 minute to mint again.</span> : ("")}
 
             </form>
         </>

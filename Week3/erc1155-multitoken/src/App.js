@@ -31,6 +31,18 @@ export async function mintBatch([t1, t2, t3]) {
   }
 }
 
+export async function forgeTokens(a, b) {
+
+  try {
+    console.log("FORGING:", "ids", a, "amounts", b)
+    //await contractForging.forgeTokens([], [])
+  }
+  catch {
+
+  }
+
+}
+
 
 export default function App() {
 

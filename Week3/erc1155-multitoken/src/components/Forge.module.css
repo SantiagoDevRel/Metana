@@ -1,36 +1,35 @@
 .main {
     display: flex;
-    flex-direction: column;
-    row-gap: 5px;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    column-gap: 5vw;
 }
 
-.main>div {
+.form {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    width: 20vw;
-    height: 4vh;
-    background-image: linear-gradient(90deg, #8147e572 0%, #8147e543 80%, #8147e513 100%);
-    border-radius: 30px;
-    border: 1px solid #8F9092;
-    transition: all 0.2s ease;
-    font-family: "Source Sans Pro", sans-serif;
+
+}
+
+
+.input {
+    display: block;
+    color: black;
+    width: 30%;
+    margin-bottom: 2vh;
+    background: #ecf0f3;
+    padding: 10px;
+    padding-left: 20px;
+    height: 2vh;
     font-size: 14px;
-    font-weight: 600;
-    color: black;
-    /* text-shadow: 0 1px #fff; */
+    border-radius: 50px;
+    box-sizing: border-box;
+    border: none;
+    box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
 }
 
 
-.balances {
-    color: black;
-    font-weight: 900;
-}
-
-
-.buttonRefresh {
+.buttonFurge {
     text-shadow: 1px 1px #8147e5;
     align-items: center;
     appearance: none;
@@ -63,6 +62,6 @@
     font-size: 18px;
 }
 
-.buttonRefreshbutton:hover {
+.buttonFurge:hover {
     transform: translateY(-2px);
 }

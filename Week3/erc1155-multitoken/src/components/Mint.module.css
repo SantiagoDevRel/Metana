@@ -1,4 +1,4 @@
-form {
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,13 +6,13 @@ form {
     row-gap: 10px;
 }
 
-input {
+.input {
     caret-color: black;
 }
 
 
 
-input {
+.input {
     display: block;
     color: black;
     width: 50%;
@@ -28,7 +28,7 @@ input {
     box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
 }
 
-input:hover {
+.input:hover {
     border: none
 }
 
