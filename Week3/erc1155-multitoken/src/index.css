@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -15,7 +16,7 @@ body {
 
 .container {
   width: 80vw;
-  height: 50vh;
+  height: 60vh;
   margin: 0 auto;
 }
 
@@ -26,8 +27,9 @@ body {
 
 .tabs button {
   background-color: lightgray;
+  text-shadow: 1px 1px #8147e5;
   border: none;
-  color: #888888;
+  color: white;
   cursor: pointer;
   padding: 25px;
   width: 100%;
@@ -41,7 +43,7 @@ body {
 }
 
 .tabs button:disabled {
-  background: linear-gradient(245.39deg, #FC65ED -35.14%, #0500FF 143.06%);
+  background-image: radial-gradient(100% 100% at 100% 0, #DC1FFF 0, #03E1FF 100%);
   color: white;
 }
 
@@ -72,7 +74,7 @@ footer {
   display: flex;
   justify-content: center;
   text-decoration: none;
-  margin: 50px 0;
+  margin-top: 7vh;
 }
 
 footer a {
