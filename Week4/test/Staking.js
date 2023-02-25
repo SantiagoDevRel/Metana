@@ -61,12 +61,14 @@ describe("Test Staking contract", () => {
         const tx = await contract.connect(deployer).deposit({ value: ethers.utils.parseEther("70") })
         await tx.wait()
 
-        await wait15Seconds();
+        //await wait15Seconds();
         /*
             -Instead of waiting 15 seconds I can change the time of the virtual evm
             --> await provider.send("evm_increaseTime",[incrementSecondsHere])
-            -ex: provider.send("evm_increaseTime",[24*60*60+1]) --> 86401 seconds --> 1 day + 1 second
+            -ex: await provider.send("evm_increaseTime",[24*60*60+1]) --> 86401 seconds --> 1 day + 1 second
         */
+
+        await provider.send("evm_increaseTime", [11])
 
         const tx2 = await contract.connect(deployer).withdraw()
         await tx2.wait()
