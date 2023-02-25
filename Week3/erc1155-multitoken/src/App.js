@@ -24,7 +24,8 @@ let contractMultiToken = {}, contractForging = {}, signer = {}, provider = {};
 export async function mintBatch([t1, t2, t3]) {
 
   try {
-    await contractForging.mintBachToken([0, 1, 2], [t1, t2, t3])
+    const mintTx = await contractForging.mintBachToken([0, 1, 2], [t1, t2, t3])
+    await mintTx.wait()
   }
   catch {
     console.log("Please try again in 1 minute")
@@ -34,7 +35,8 @@ export async function mintBatch([t1, t2, t3]) {
 export async function forgeTokens(tokenIds, amounts) {
 
   try {
-    await contractForging.forgeTokens(tokenIds, amounts)
+    const forgeTx = await contractForging.forgeTokens(tokenIds, amounts)
+    await forgeTx.wait()
   }
   catch (err) {
     console.log("Error forging", err)
@@ -45,7 +47,8 @@ export async function forgeTokens(tokenIds, amounts) {
 export async function tradeTokens(tokenGive, amount, tokenReceive) {
 
   try {
-    await contractForging.tradeTokens(tokenGive, amount, tokenReceive)
+    const tradeTx = await contractForging.tradeTokens(tokenGive, amount, tokenReceive)
+    await tradeTx.wait()
   }
   catch (err) {
     console.log(err)
