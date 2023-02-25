@@ -11,8 +11,6 @@ describe("BigNumbers Contract", function () {
 
   let contract = null;
   beforeEach(async () => {
-    const [owner, otherAccount] = await ethers.getSigners();
-
     const Contract = await ethers.getContractFactory("BigNumber");
     contract = await Contract.deploy(0);
     await contract.deployed()
