@@ -17,7 +17,7 @@ contract MintingContract {
 
     //user needs to approve first at least x10 tokens to this contract and then buyNFT()
     function buyNFT() public {
-        token.transferFrom(msg.sender,address(this),10);
+        token.transferFrom(msg.sender,address(this),10*10**18);
         nft.mint(msg.sender);
     }
 
