@@ -41,6 +41,7 @@ describe("External Return Contract", function () {
     })
 
     it("Test TX signature revert", async () => {
+        //for reverts() await always goes before expect
         await expect(contract.connect(user2).transfer(user2.address, deployer.address, 10)).to.be.revertedWith("You are not the owner")
     })
 
