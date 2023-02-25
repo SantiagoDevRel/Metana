@@ -11,6 +11,9 @@ contract MrStakingv2 is IERC721Receiver {
     IERC721 private nft;
     MrTokenv2 private token;
 
+    //reward token per second when the user stakes (for learning purposes is constant)
+    uint constant tokenPerSecond = 11574074;
+
     constructor(IERC721 _nft, MrTokenv2 _token){
         nft = _nft;
         token = _token;
@@ -89,7 +92,7 @@ contract MrStakingv2 is IERC721Receiver {
         * set the time staked by the 
     */
     function _generateRewards(uint timeInSeconds, uint _tokenId) internal {
-        uint reward = timeInSeconds * 11574074;
+        uint reward = timeInSeconds * tokenPerSecond;
         balanceOfRewardsPerNFT[msg.sender][_tokenId] += reward;
     }
 
