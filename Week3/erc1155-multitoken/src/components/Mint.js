@@ -8,8 +8,8 @@ function Tab1() {
     const mintNow = async (event) => {
         event.preventDefault()
         const quantityTokens = Number(event.target.mintingValue.value)
-        mintBatch([quantityTokens, quantityTokens, quantityTokens])
-        setWait(true)
+        const resultTx = mintBatch([quantityTokens, quantityTokens, quantityTokens])
+        setWait(resultTx)
     }
 
     return (

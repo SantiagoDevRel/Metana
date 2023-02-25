@@ -26,9 +26,11 @@ export async function mintBatch([t1, t2, t3]) {
   try {
     const mintTx = await contractForging.mintBachToken([0, 1, 2], [t1, t2, t3])
     await mintTx.wait()
+    return true;
   }
   catch {
     console.log("Please try again in 1 minute")
+    return false;
   }
 }
 
