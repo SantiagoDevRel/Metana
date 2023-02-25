@@ -27,6 +27,7 @@ contract MrNFT is ERC721 {
 
     //only the address of the MintingContract can call this function to mint NFTs
     function mint(address user) public {
+        require(msg.sender != address(0), "ERC721: Address 0 can't mint");
         require(msg.sender == minter, "ERC721: You are not allowed to mint");
         require(totalSupply<MAX_SUPPLY);
         _mint(user, totalSupply);
