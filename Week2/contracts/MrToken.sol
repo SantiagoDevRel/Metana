@@ -11,6 +11,6 @@ contract MrToken is ERC20 {
 
     //user can mint by 10 tokens at a time(enough to buy 1 MrNFT)
     function mint() public {
-        _mint(msg.sender, 10);
+        _mint(msg.sender, 10 * 10 ** 18);
     }
 }
