@@ -1,4 +1,4 @@
-# # Hardhat testing
+# Hardhat testing
 
 ## 1. Test every state change
 -ethereum balances (provider.getBalance())
