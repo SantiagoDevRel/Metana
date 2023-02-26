@@ -1,13 +1,15 @@
-# Sample Hardhat Project
+# Hardhat Impersonate Account
+1. use command 
+   const BinanceSigner = null
+   const BinanceWallet = "0xF977814e90dA44bFA03b6295A0616a897441aceC"
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+await hre.network.provider.request({
+            method: "hardhat_impersonateAccount",
+            params: [BinanceWallet],
+        });
 
-Try running some of the following tasks:
+2. Get the signer from that wallet
+   BinanceSigner = await ethers.getSigner(BinanceWallet)
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+3. Connect to any contract
+   contract.connect(BinanceSigner).doSomething()
