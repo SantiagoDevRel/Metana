@@ -28,3 +28,14 @@ expect(await provider.getBalance(deployer.address)).to.be.closeTo(
             new BigNumber.from(ethers.utils.parseEther("100")),
             new BigNumber.from(ethers.utils.parseEther("0.001")))
     
+
+## 6. Hardhat Forking
+-"clone" the mainnet into hardhat to run the tests
+
+networks: {
+    hardhat: {
+      forking: {
+        url: `${API_URL}`
+      }
+    }
+  }

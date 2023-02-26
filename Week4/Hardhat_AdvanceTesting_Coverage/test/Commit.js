@@ -26,7 +26,7 @@ describe("External Return Contract", function () {
     })
 
     it("Deployer try to claimWinning without betting (reverted)", async () => {
-        await expect(contract.connect(deployer).claimWinning()).to.be.revertedWith("Commit: Wait at least 10 blocks")
+        await expect(contract.connect(deployer).claimWinning()).to.be.revertedWith("Commit: Too late to claim your rewards")
     })
 
     it("Deployer bet 1 ether and wait 50 blocks to claim", async () => {
