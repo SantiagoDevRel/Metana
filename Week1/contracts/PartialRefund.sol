@@ -3,10 +3,10 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract TokenSaleWithSellBack is ERC20 {
+contract PartialRefund is ERC20 {
     address public owner;
   
-    constructor() ERC20("TokenSale","METANA"){
+    constructor() ERC20("ParitalRefund","METANA"){
         owner = msg.sender;
     }
 
@@ -33,13 +33,9 @@ contract TokenSaleWithSellBack is ERC20 {
     */
     function sellBack(uint amount) public returns(bool) {
         transferFrom(msg.sender, address(this), amount*10**decimals()); 
-        
         uint amountToGiveBack = (amount*10**decimals()) * 0.0005 ether;
-
         require(address(this).balance >= amountToGiveBack, "Not enough ether in this contract");
-
         (bool success, ) = payable(msg.sender).call{value: amountToGiveBack}("");
-
         return success;
     }
 
