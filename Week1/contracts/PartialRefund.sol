@@ -6,13 +6,14 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract PartialRefund is ERC20 {
     address public owner;
   
-    constructor() ERC20("ParitalRefund","METANA"){
+    constructor() ERC20("PartialRefund","METANA"){
         owner = msg.sender;
     }
 
     //Function to mint, paying exactly 1 ether
     function preSale() external payable {
-        require(msg.value == 1 ether && totalSupply() <= 1000000);
+        require(msg.value == 1 ether, "ERC20: Pay only 1 ether");
+        require(totalSupply() <= 1000000*10**decimals(), "ERC20: MaxSupply reached");
         _mint(msg.sender, 1000*10**decimals());
     }
 
