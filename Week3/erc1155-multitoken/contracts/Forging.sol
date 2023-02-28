@@ -53,9 +53,14 @@ contract Forging {
             }
         }
 
-        if(ids[0] == 0 && ids[1] == 1 && ids[2] == 2){
+        if(ids.length >= 3 && ids[0] == 0 && ids[1] == 1){
+            if(ids[2] == 2){
             //get token 6
             _burnAndMint(6, totalAmountToMint, ids, amounts);
+            }else{
+                //get token 3 
+                _burnAndMint(3, totalAmountToMint, ids, amounts);
+            }
         }else{
             if(ids[0] == 0 && ids[1] == 1){
                 //get token 3

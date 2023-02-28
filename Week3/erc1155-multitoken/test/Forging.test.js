@@ -99,6 +99,7 @@ describe("Deploy MultiToken & Forging contract", () => {
 
   describe("Test Forging", () => {
     beforeEach(async () => {
+      //setMinter() on multitoken for the forging address to be able to call multiToken
       const setMinter = await multitoken
         .connect(owner)
         .setMinter(forging.address);
@@ -110,10 +111,10 @@ describe("Deploy MultiToken & Forging contract", () => {
       const quantity = [5, 5, 5];
 
       //mintBatch()
-      const mintBatch = await forging
+      const mintBatchTx = await forging
         .connect(user2)
         .mintBatchToken(tokenIds, quantity);
-      await mintBatch.wait();
+      await mintBatchTx.wait();
 
       //retrieve balancesOfBatch from multitoken
       const [balanceToken0Hex, balanceToken1Hex, balanceToken2Hex] =
@@ -131,6 +132,125 @@ describe("Deploy MultiToken & Forging contract", () => {
       expect(balanceToken0Number).to.be.equal(quantity[0]);
       expect(balanceToken1Number).to.be.equal(quantity[1]);
       expect(balanceToken2Number).to.be.equal(quantity[2]);
+    });
+
+    it("Forge tokens to get token3,4,5 & 6", async () => {
+      const tokenIds = [0, 1, 2];
+      const quantity = [10, 10, 10];
+
+      //mintBatch() x10(tokens 0,1 & 2)
+      const mintBatchTx = await forging
+        .connect(user2)
+        .mintBatchToken(tokenIds, quantity);
+      await mintBatchTx.wait();
+
+      //forge x1(Tokens 0) + x1(Token 1) ==> x1(Token 3)
+      const forgeTx3 = await forging.connect(user2).forgeTokens([0, 1], [1, 1]);
+      await forgeTx3.wait();
+
+      //forge x1(Tokens 1) + x1(Token 2) ==> x1(Token 4)
+      const forgeTx4 = await forging.connect(user2).forgeTokens([1, 2], [1, 1]);
+      await forgeTx4.wait();
+
+      //forge x1(Tokens 0) + x1(Token 2) ==> x1(Token 5)
+      const forgeTx5 = await forging.connect(user2).forgeTokens([0, 2], [1, 1]);
+      await forgeTx5.wait();
+
+      //forge x1(Token 0) + x1(Token 1) + x1(Token 2) ==> x1(Token 6)
+      const forgeTx6 = await forging
+        .connect(user2)
+        .forgeTokens([0, 1, 2], [1, 1, 1]);
+      await forgeTx6.wait();
+
+      const userArray = [
+        user2.address,
+        user2.address,
+        user2.address,
+        user2.address,
+        user2.address,
+        user2.address,
+        user2.address,
+      ];
+      const idsArray = [0, 1, 2, 3, 4, 5, 6];
+      const [
+        balanceToken0Hex,
+        balanceToken1Hex,
+        balanceToken2Hex,
+        balanceToken3Hex,
+        balanceToken4Hex,
+        balanceToken5Hex,
+        balanceToken6Hex,
+      ] = await multitoken.balanceOfBatch(userArray, idsArray);
+
+      expect(balanceToken0Hex.toNumber()).to.be.equal(7);
+      expect(balanceToken1Hex.toNumber()).to.be.equal(7);
+      expect(balanceToken2Hex.toNumber()).to.be.equal(7);
+      expect(balanceToken3Hex.toNumber()).to.be.equal(1);
+      expect(balanceToken4Hex.toNumber()).to.be.equal(1);
+      expect(balanceToken5Hex.toNumber()).to.be.equal(1);
+      expect(balanceToken6Hex.toNumber()).to.be.equal(1);
+
+      //forge all tokens
+      const forgeAll = await forging
+        .connect(user2)
+        .forgeTokens([0, 1, 2, 3, 4, 5, 6], [1, 1, 1, 1, 1, 1, 1]);
+      await forgeAll.wait();
+
+      //check new balances again
+      const [
+        newBalanceToken0Hex,
+        newBalanceToken1Hex,
+        newBalanceToken2Hex,
+        newBalanceToken3Hex,
+        newBalanceToken4Hex,
+        newBalanceToken5Hex,
+        newBalanceToken6Hex,
+      ] = await multitoken.balanceOfBatch(userArray, idsArray);
+
+      expect(newBalanceToken0Hex.toNumber()).to.be.equal(6);
+      expect(newBalanceToken1Hex.toNumber()).to.be.equal(6);
+      expect(newBalanceToken2Hex.toNumber()).to.be.equal(6);
+      expect(newBalanceToken3Hex.toNumber()).to.be.equal(0);
+      expect(newBalanceToken4Hex.toNumber()).to.be.equal(0);
+      expect(newBalanceToken5Hex.toNumber()).to.be.equal(0);
+      expect(newBalanceToken6Hex.toNumber()).to.be.equal(1);
+    });
+
+    it("tradeTokens()", async () => {
+      const tokenIds = [0, 1, 2];
+      const quantity = [5, 5, 5];
+
+      //mintBatch()
+      const mintBatchTx = await forging
+        .connect(user2)
+        .mintBatchToken(tokenIds, quantity);
+      await mintBatchTx.wait();
+
+      //function tradeTokens(uint _tokenIdGive, uint _amountToExchange, uint _tokenIdReceive) public {
+
+      //trade token 0 for token1 & check balance
+      const trade0for1 = await forging.connect(user2).tradeTokens(0, 1, 1);
+      await trade0for1.wait();
+      const balanceToken0 = await multitoken.balanceOf(user2.address, 0);
+      expect(balanceToken0).to.be.equal(4);
+      const balanceToken1 = await multitoken.balanceOf(user2.address, 1);
+      expect(balanceToken1).to.be.equal(6);
+
+      //trade token 0 for token2 & check balance
+      const trade0for2 = await forging.connect(user2).tradeTokens(0, 1, 2);
+      await trade0for2.wait();
+      const newBalanceToken0 = await multitoken.balanceOf(user2.address, 0);
+      expect(newBalanceToken0).to.be.equal(3);
+      const newBalanceToken2 = await multitoken.balanceOf(user2.address, 2);
+      expect(newBalanceToken2).to.be.equal(6);
+
+      //trade token 1 for token2 & check balance
+      const trade1for2 = await forging.connect(user2).tradeTokens(1, 1, 2);
+      await trade1for2.wait();
+      const newNewBalanceToken0 = await multitoken.balanceOf(user2.address, 1);
+      expect(newNewBalanceToken0).to.be.equal(5);
+      const newNewBalanceToken2 = await multitoken.balanceOf(user2.address, 2);
+      expect(newNewBalanceToken2).to.be.equal(7);
     });
   });
 });
