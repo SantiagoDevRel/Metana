@@ -28,7 +28,7 @@ contract MultiToken is ERC1155, Ownable {
     address private minter;
 
     modifier onlyMinter{
-        require(msg.sender == minter);
+        require(msg.sender == minter, "MultiToken: You are not the minter");
         _;
     }
 
