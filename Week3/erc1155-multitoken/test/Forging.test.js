@@ -214,6 +214,65 @@ describe("Deploy MultiToken & Forging contract", () => {
       expect(newBalanceToken4Hex.toNumber()).to.be.equal(0);
       expect(newBalanceToken5Hex.toNumber()).to.be.equal(0);
       expect(newBalanceToken6Hex.toNumber()).to.be.equal(1);
+
+      //forge tokens[0,1,6]
+      const forgeAgain = await forging
+        .connect(user2)
+        .forgeTokens([0, 1, 6], [1, 1, 1]);
+      await forgeAgain.wait();
+
+      const balanceToken0 = await multitoken.balanceOf(user2.address, 0);
+      const balanceToken1 = await multitoken.balanceOf(user2.address, 1);
+      const balanceToken3 = await multitoken.balanceOf(user2.address, 3);
+      const balanceToken6 = await multitoken.balanceOf(user2.address, 6);
+
+      expect(balanceToken0).to.be.equal(5);
+      expect(balanceToken1).to.be.equal(5);
+      expect(balanceToken3).to.be.equal(1);
+      expect(balanceToken6).to.be.equal(0);
+    });
+
+    it("Mint tokens and burn token 3,4,5 & 6", async () => {
+      const tokenIds = [0, 1, 2];
+      const quantity = [10, 10, 10];
+
+      //mintBatch() x10(tokens 0,1 & 2)
+      const mintBatchTx = await forging
+        .connect(user2)
+        .mintBatchToken(tokenIds, quantity);
+      await mintBatchTx.wait();
+
+      //forge x1(Tokens 0) + x1(Token 1) ==> x1(Token 3)
+      const forgeTx3 = await forging.connect(user2).forgeTokens([0, 1], [1, 1]);
+      await forgeTx3.wait();
+
+      //forge x1(Tokens 1) + x1(Token 2) ==> x1(Token 4)
+      const forgeTx4 = await forging.connect(user2).forgeTokens([1, 2], [1, 1]);
+      await forgeTx4.wait();
+
+      //forge x1(Tokens 0) + x1(Token 2) ==> x1(Token 5)
+      const forgeTx5 = await forging.connect(user2).forgeTokens([0, 2], [1, 1]);
+      await forgeTx5.wait();
+
+      //forge x1(Token 0) + x1(Token 1) + x1(Token 2) ==> x1(Token 6)
+      const forgeTx6 = await forging
+        .connect(user2)
+        .forgeTokens([0, 1, 2], [1, 1, 1]);
+      await forgeTx6.wait();
+
+      const forge3456 = await forging
+        .connect(user2)
+        .forgeTokens([3, 4, 5, 6], [1, 1, 1, 1]);
+      await forge3456.wait();
+      const balanceToken3 = await multitoken.balanceOf(user2.address, 3);
+      const balanceToken4 = await multitoken.balanceOf(user2.address, 4);
+      const balanceToken5 = await multitoken.balanceOf(user2.address, 5);
+      const balanceToken6 = await multitoken.balanceOf(user2.address, 6);
+
+      expect(balanceToken3).to.be.equal(0);
+      expect(balanceToken4).to.be.equal(0);
+      expect(balanceToken5).to.be.equal(0);
+      expect(balanceToken6).to.be.equal(0);
     });
 
     it("tradeTokens()", async () => {
@@ -251,6 +310,47 @@ describe("Deploy MultiToken & Forging contract", () => {
       expect(newNewBalanceToken0).to.be.equal(5);
       const newNewBalanceToken2 = await multitoken.balanceOf(user2.address, 2);
       expect(newNewBalanceToken2).to.be.equal(7);
+    });
+
+    it("MintBatch() again before 1 minute - reverted", async () => {
+      const tokenIds = [0, 1, 2];
+      const quantity = [5, 5, 5];
+
+      //mintBatch()
+      const mintBatchTx = await forging
+        .connect(user2)
+        .mintBatchToken(tokenIds, quantity);
+      await mintBatchTx.wait();
+
+      //mintBatch() again - reverted
+      await expect(
+        forging.connect(user2).mintBatchToken(tokenIds, quantity)
+      ).to.be.revertedWith("FORGING: Please wait 1 minute.");
+    });
+
+    it("Try to mint token 3 4 or 5", async () => {
+      const tokenIds = [3, 4, 5];
+      const quantity = [5, 5, 5];
+
+      //mintBatch() - reverted
+      await expect(
+        forging.connect(user2).mintBatchToken(tokenIds, quantity)
+      ).to.be.revertedWith("FORGING: You can mint only tokens 0,1 and 2.");
+    });
+
+    it("Try to trade tokens 3,4,5 or 6", async () => {
+      await expect(
+        forging.connect(user2).tradeTokens(3, 1, 0)
+      ).to.be.rejectedWith("FORGING: You can trade only tokens 0,1, and 2.");
+      await expect(
+        forging.connect(user2).tradeTokens(4, 1, 1)
+      ).to.be.rejectedWith("FORGING: You can trade only tokens 0,1, and 2.");
+      await expect(
+        forging.connect(user2).tradeTokens(5, 1, 2)
+      ).to.be.rejectedWith("FORGING: You can trade only tokens 0,1, and 2.");
+      await expect(
+        forging.connect(user2).tradeTokens(0, 1, 3)
+      ).to.be.rejectedWith("FORGING: You can trade only tokens 0,1, and 2.");
     });
   });
 });

@@ -43,7 +43,7 @@ contract MultiToken is ERC1155, Ownable {
         _uris[_tokenId] = _newUri;
     }
 
-    function uri(uint256 _tokenId) public view override onlyOwner returns (string memory) {
+    function uri(uint256 _tokenId) public view override returns (string memory) {
         return string(abi.encodePacked((_uris[_tokenId]),_tokenId.toString()));
     }
 
