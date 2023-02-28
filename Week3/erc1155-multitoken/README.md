@@ -34,4 +34,4 @@ Warning: Start on this assignment early. The solidity code is easy to write, but
 
 # Hardhat Coverage
 
-![Hardhat_Coveragge] (https://github.com/strujilloz/Metana/blob/main/Week3/erc1155-multitoken/src/components/images/hardhat_coverage.png)
+![Hardhat_Coveragge](https://github.com/strujilloz/Metana/blob/main/Week3/erc1155-multitoken/src/components/images/hardhat_coverage.png)
