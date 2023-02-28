@@ -8,8 +8,8 @@ import ConnectMumbai from "./components/General_Components/ConnectMumbai";
 import ForgingABI from "./artifacts/contracts/Forging.sol/Forging.json";
 import MultiTokenABI from "./artifacts/contracts/MultiToken.sol/MultiToken.json";
 import { formatEther } from "ethers/lib/utils";
-const ForgingAddress = "0xFfb1F858c947e5120c3e2855d73d95B341809d58";
-const MultiTokenAddress = "0x8EDF94B03e15171bab5C6DBDa4Efb1C57263Ed96";
+const ForgingAddress = "0xd1CaA16056eA13b19e123C7d20bdFaF1fc30eB66";
+const MultiTokenAddress = "0x7EFe898fd70Df162930B0A419AC9A6E10993f29a";
 let contractMultiToken = {},
   contractForging = {},
   signer = {},
