@@ -10,10 +10,10 @@ import MultiTokenABI from "./artifacts/contracts/MultiToken.sol/MultiToken.json"
 import { formatEther } from "ethers/lib/utils";
 const ForgingAddress = "0xd1CaA16056eA13b19e123C7d20bdFaF1fc30eB66";
 const MultiTokenAddress = "0x7EFe898fd70Df162930B0A419AC9A6E10993f29a";
-let contractMultiToken = {},
-  contractForging = {},
-  signer = {},
-  provider = {};
+let contractMultiToken = null,
+  contractForging = null,
+  signer = null,
+  provider = null;
 
 /* 
   Webapp features:
