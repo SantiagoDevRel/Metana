@@ -61,9 +61,7 @@ export async function tradeTokens(tokenGive, amount, tokenReceive) {
 
 export default function App() {
   const [networkName, setNetworkName] = useState(null);
-  const [fullWallet, setFullWallet] = useState(
-    "0x8EDF94B03e15171bab5C6DBDa4Efb1C57263Ed96"
-  ); //set Forging adddress by default to avoid console errors
+  const [fullWallet, setFullWallet] = useState(`${ForgingAddress}`); //set Forging adddress by default to avoid console errors
   const [showWallet, setShowWallet] = useState("");
   const [balance, setBalance] = useState(0);
   const [balanceToken0, setBalanceToken0] = useState(0);
