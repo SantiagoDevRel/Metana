@@ -1,7 +1,7 @@
 /* eslint-disable jest/valid-expect */
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const { BigNumber } = ethers;
+const { BigNumber, toHexString, toString } = ethers;
 
 describe("Deploy MultiToken & Forging contract", () => {
   let forging = null,
@@ -94,6 +94,43 @@ describe("Deploy MultiToken & Forging contract", () => {
       await expect(
         multitoken.connect(owner).burn(user2.address, [0, 1, 2], [1, 1, 1])
       ).to.be.revertedWith("MultiToken: You are not the minter");
+    });
+  });
+
+  describe("Test Forging", () => {
+    beforeEach(async () => {
+      const setMinter = await multitoken
+        .connect(owner)
+        .setMinter(forging.address);
+      await setMinter.wait();
+    });
+
+    it("mintBatchToken() by forging", async () => {
+      const tokenIds = [0, 1, 2];
+      const quantity = [5, 5, 5];
+
+      //mintBatch()
+      const mintBatch = await forging
+        .connect(user2)
+        .mintBatchToken(tokenIds, quantity);
+      await mintBatch.wait();
+
+      //retrieve balancesOfBatch from multitoken
+      const [balanceToken0Hex, balanceToken1Hex, balanceToken2Hex] =
+        await multitoken.balanceOfBatch(
+          [user2.address, user2.address, user2.address],
+          tokenIds
+        );
+
+      //parse hex to decimal number
+      const balanceToken0Number = balanceToken0Hex.toNumber();
+      const balanceToken1Number = balanceToken1Hex.toNumber();
+      const balanceToken2Number = balanceToken2Hex.toNumber();
+
+      //compare balances
+      expect(balanceToken0Number).to.be.equal(quantity[0]);
+      expect(balanceToken1Number).to.be.equal(quantity[1]);
+      expect(balanceToken2Number).to.be.equal(quantity[2]);
     });
   });
 });
