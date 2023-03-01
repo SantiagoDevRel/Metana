@@ -1,13 +1,35 @@
-.header {
-  margin-top: 5vh;
-}
-
-.tab_menu {
+.containerTxs {
   display: flex;
   flex-direction: row;
-  column-gap: 20px;
+  column-gap: 5vw;
   justify-content: center;
-  margin-bottom: 5vh;
+}
+
+.containerButtons {
+  display: flex;
+  justify-content: center;
+  column-gap: 5vw;
+}
+
+.img {
+  width: 2vw;
+  height: 2vh;
+}
+
+.logs {
+  color: white;
+  font-size: 15px;
+}
+
+.logs a {
+  color: #a5a5a5;
+}
+
+.everyLog {
+  border-radius: 5px;
+  box-shadow: 0 0 2px 3px #8147e5a2;
+  margin-bottom: 2vh;
+  padding: 1%;
 }
 
 .button {
@@ -17,8 +39,8 @@
   appearance: none;
   background-image: radial-gradient(
     100% 100% at 100% 0,
-    #dc1fff 0,
-    #8247e5 100%
+    #dc1fff 10%,
+    #008091fd 100%
   );
   border: 0px;
   border-radius: 6px;
@@ -50,9 +72,4 @@
 
 .button:hover {
   transform: translateY(-2px);
-}
-
-svg {
-  width: 40px;
-  height: 40px;
 }
