@@ -14,11 +14,11 @@ function Homepage() {
       </div>
       <div className={styles.container}>
         <div className={styles.chart}>
-          <h2>ERC20 Token Transfers</h2>
+          <h2>DAI Token Logs</h2>
           <p>
-            For each block that passes, this chart plots the total volume of
-            transfers (if any) for an arbitrary ERC20 token address that you
-            provide.
+            This section plots 5 Transfer events and 5 Approval events (if any)
+            in the past 10 blocks of the Ethereum Mainnet for an the ERC20 token
+            DAI when you click in "update"
           </p>
           {/* Insert chart component for ERC20 token transfers */}
         </div>
