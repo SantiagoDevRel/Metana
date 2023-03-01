@@ -5,9 +5,9 @@
 }
 
 .footer {
+  font-size: 12px;
   justify-content: center;
   text-decoration: none;
-  margin-top: 7vh;
   color: white;
   position: absolute;
   width: 30vw;
@@ -21,6 +21,11 @@
   text-decoration: none;
 }
 
+.svg {
+  width: 3vw;
+  height: 3vh;
+}
+
 .footer:hover {
-  text-decoration: underline;
+  color: rgb(150, 150, 150);
 }

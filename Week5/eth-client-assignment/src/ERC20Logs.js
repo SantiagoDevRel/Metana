@@ -14,6 +14,8 @@ function ERC20Logs() {
     currentRequests = 0;
   const [transactionsArray, setTransactionsArray] = useState([]);
   const [approvalsArray, setApprovalsArray] = useState([]);
+  const [startingBlock, setStartingBlock] = useState(null);
+  const [currentBlock, setCurrentBlock] = useState(null);
 
   const settings = {
     apiKey: "uk3L_f3i_POcVTRhWxKrYlUm__ftnzfm",
@@ -24,6 +26,8 @@ function ERC20Logs() {
 
   async function getLast10Block() {
     const latestBlock = await alchemy.core.getBlockNumber();
+    setCurrentBlock(latestBlock.toLocaleString());
+    setStartingBlock((latestBlock - 10).toLocaleString());
     return latestBlock - 10;
   }
 
@@ -102,13 +106,16 @@ function ERC20Logs() {
           className={styles.button}
           onClick={() => formatLogs(`${TransferSignature}`)}
         >
-          Get Transfer Logs
+          Update Transfer Logs
         </button>
+        <div className={styles.title}>
+          From Block: {startingBlock} to Block: {currentBlock}
+        </div>
         <button
           className={styles.button}
           onClick={() => formatLogs(`${ApproveSignature}`)}
         >
-          Get Approval Logs
+          Update Approval Logs
         </button>
       </div>
       <div className={styles.containerTxs}>
@@ -119,7 +126,12 @@ function ERC20Logs() {
                 <div>From: {tx.from}</div>
                 <div>To: {tx.to}</div>
                 <div>
-                  <a href={tx.txHash} target="_blank" rel="noreferrer">
+                  <a
+                    className={styles.a}
+                    href={tx.txHash}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     View in Etherscan{" "}
                     <img
                       className={styles.img}
@@ -132,7 +144,7 @@ function ERC20Logs() {
             ))}
           </ol>
         ) : (
-          <div>0 Transfers in the past 10 blocks.</div>
+          <div className={styles.zero}>0 Transfers in the past 10 blocks.</div>
         )}
         {approvalsArray.length >= 1 ? (
           <ol className={styles.logs}>
@@ -141,7 +153,12 @@ function ERC20Logs() {
                 <div>Approval From: {tx.from}</div>
                 <div>Spender: {tx.to}</div>
                 <div>
-                  <a href={tx.txHash} target="_blank" rel="noreferrer">
+                  <a
+                    className={styles.a}
+                    href={tx.txHash}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     View in Etherscan{" "}
                     <img
                       className={styles.img}
@@ -154,7 +171,7 @@ function ERC20Logs() {
             ))}
           </ol>
         ) : (
-          <div>0 Approval in the past 10 blocks.</div>
+          <div className={styles.zero}>0 Approvals in the past 10 blocks.</div>
         )}
       </div>
     </>

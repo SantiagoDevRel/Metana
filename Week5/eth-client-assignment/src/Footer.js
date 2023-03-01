@@ -10,7 +10,8 @@ function Footer() {
           className={styles.footer}
           href="https://github.com/santiagotrujilloz"
         >
-          <SiGithub /> Santiago Trujillo Zuluaga <SiGithub />{" "}
+          <SiGithub className={styles.svg} /> Santiago Trujillo Zuluaga{" "}
+          <SiGithub className={styles.svg} />{" "}
         </a>
       </footer>
     </div>

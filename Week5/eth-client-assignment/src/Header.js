@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ERC20Logs from "./ERC20Logs";
 import Homepage from "./Homepage";
 import styles from "./Header.module.css";
-import { ReactComponent as Logo } from "./Images/ethereum-eth.svg";
+import { ReactComponent as Logo } from "./Images/ethereum-1.svg";
 
 function Header() {
   const [activeTab, setActiveTab] = useState("tab1");
@@ -14,16 +14,16 @@ function Header() {
           <Logo />
         </div>
         <button className={styles.button} onClick={() => setActiveTab("tab1")}>
-          Homepage
+          <span className={styles.span}>Homepage</span>
         </button>
         <button className={styles.button} onClick={() => setActiveTab("tab2")}>
-          DAI Logs
+          <span className={styles.span}>DAI Logs</span>
         </button>
         <button className={styles.button} onClick={() => setActiveTab("tab3")}>
-          EIP1559
+          <span className={styles.span}>EIP1559</span>
         </button>
         <button className={styles.button} onClick={() => setActiveTab("tab4")}>
-          Ratio gasUsed/gasLimit
+          <span className={styles.span}>Ratio Gas</span>
         </button>
         <div>
           <Logo />
