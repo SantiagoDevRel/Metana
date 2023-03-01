@@ -1,0 +1,25 @@
+.container {
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  justify-content: center;
+  text-decoration: none;
+  margin-top: 7vh;
+  color: white;
+  position: absolute;
+  width: 30vw;
+  bottom: 0px;
+  left: 35vw;
+  height: 7vh;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer:hover {
+  text-decoration: underline;
+}
