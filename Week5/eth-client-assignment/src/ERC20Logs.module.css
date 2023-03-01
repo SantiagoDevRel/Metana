@@ -12,7 +12,8 @@
 .title {
   width: 30vw;
   color: white;
-  text-shadow: 1px 1px 2px #2241f1, 0 0 1em #8147e5, 0 0 0.2em #8147e5;
+  position: relative;
+  display: inline-block;
 }
 
 .logs {
@@ -49,7 +50,8 @@
 
 .zero {
   color: rgb(189, 189, 189);
-  text-shadow: 1px 1px 2px #8147e5, 0 0 1em #8147e5, 0 0 0.2em #8147e5;
+  text-shadow: 1px 1px 2px #f6f3f3, 0 0 1em #0000001e,
+    0 0 0.2ergba (129, 71, 229, 0) e5;
   justify-content: center;
   text-align: center;
   margin-top: 5vh;
@@ -58,8 +60,6 @@
 }
 
 .button {
-  text-shadow: 1px 1px #8147e5;
-
   align-items: center;
   appearance: none;
   background-image: radial-gradient(
