@@ -11,4 +11,4 @@
 
 ### 3rd chart
 
-`--> The ratio of gasUsed over gasLimit (plot this as a percentage).
+`--> The ratio of gasUsed over gasLimit (plot this as a percentage).`
