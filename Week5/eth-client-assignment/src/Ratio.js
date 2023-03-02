@@ -41,17 +41,14 @@ function Ratio() {
     setStartingBlock((currentBlock - 19).toLocaleString());
     settoTheBlock(currentBlock.toLocaleString());
     const { gasUsedRatio } = arrayFeeHistory;
-    console.log("Block", currentBlock - 19);
     let _blockNumber = currentBlock - 19;
     for (let i = 0; i < gasUsedRatio.length; i++) {
       baseFeeArrayChart.push(gasUsedRatio[i] * 100);
-      blocksArrayChart.push(`Block ${_blockNumber.toLocaleString()}`);
+      blocksArrayChart.push(`${_blockNumber.toLocaleString()}`);
       _blockNumber++;
     }
     setBaseFeesArray(baseFeeArrayChart);
     setBlocksArray(blocksArrayChart);
-    console.log(baseFeeArrayChart);
-    console.log(blocksArrayChart);
   }
 
   //Chart data
