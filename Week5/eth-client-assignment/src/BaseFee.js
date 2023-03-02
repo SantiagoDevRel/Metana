@@ -59,8 +59,8 @@ function BaseFee() {
   //Fetch feeHistory from alchemy
   async function getBaseFee() {
     const { currentBlock, arrayFeeHistory } = await fetchFeeHistory();
-    setStartingBlock(currentBlock - 19);
-    settoTheBlock(currentBlock);
+    setStartingBlock((currentBlock - 19).toLocaleString());
+    settoTheBlock(currentBlock.toLocaleString());
     const baseFeeArray = arrayFeeHistory["baseFeePerGas"];
     let _blockNumber = currentBlock;
     //[11] --> current block, [10] --> current block - 1, etc...
@@ -92,12 +92,11 @@ function BaseFee() {
   }
 
   //Chart data
-
   const data = {
     labels: blocksArray,
     datasets: [
       {
-        label: "BaseFee per Block in Gwei",
+        label: "BaseFeePerGas per Block in Gwei",
         data: baseFeesArray,
         backgroundColor: "white",
         borderColor: "black",
@@ -113,8 +112,8 @@ function BaseFee() {
     },
     scales: {
       y: {
-        min: 0,
-        max: 150,
+        min: null,
+        max: null,
       },
     },
   };
@@ -123,15 +122,17 @@ function BaseFee() {
     <>
       <div className={styles.container_title}>
         <button
+          className={styles.button}
           onClick={() => {
             getBaseFee();
           }}
         >
           Update last 20 blocks BaseFee
         </button>
-        <p>
-          From the block #{startingBlock} to the block #{toTheBlock}
-        </p>
+        <span className={styles.title}>
+          From the block #{startingBlock}
+          <br></br> to the block #{toTheBlock}
+        </span>
       </div>
 
       <div className={styles.container}>
