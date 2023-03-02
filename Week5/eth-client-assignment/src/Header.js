@@ -4,6 +4,7 @@ import Homepage from "./Homepage";
 import styles from "./Header.module.css";
 import { ReactComponent as Logo } from "./Images/ethereum-1.svg";
 import BaseFee from "./BaseFee";
+import Ratio from "./Ratio";
 
 function Header() {
   const [activeTab, setActiveTab] = useState("tab1");
@@ -45,7 +46,11 @@ function Header() {
           <BaseFee />
         </div>
       )}
-      {activeTab === "tab4" && <div>Content for Tab 4</div>}
+      {activeTab === "tab4" && (
+        <div>
+          <Ratio />
+        </div>
+      )}
     </div>
   );
 }

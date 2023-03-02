@@ -22,11 +22,10 @@ function Homepage() {
           </p>
         </div>
         <div className={styles.chart}>
-          <h2>BASEFEE of Each Block</h2>
+          <h2>EIP1559</h2>
           <p>
-            This chart plots the BASEFEE of each block, with the X-axis as the
-            block number and the Y-axis as the BASEFEE. Not sure what BASEFEE
-            is? Watch the Gas Savings EIP 1559 video.
+            This chart plots the Base_Fee_Per_Gas of each block, with the X-axis
+            as the block number and the Y-axis as the Base Fee.
           </p>
         </div>
         <div className={styles.chart}>
