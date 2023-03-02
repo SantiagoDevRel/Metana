@@ -121,6 +121,10 @@ function BaseFee() {
   return (
     <>
       <div className={styles.container_title}>
+        <span className={styles.title}>
+          From the block #{startingBlock}
+          <br></br> to the block #{toTheBlock}
+        </span>
         <button
           className={styles.button}
           onClick={() => {
@@ -129,10 +133,6 @@ function BaseFee() {
         >
           Update last 20 blocks BaseFee
         </button>
-        <span className={styles.title}>
-          From the block #{startingBlock}
-          <br></br> to the block #{toTheBlock}
-        </span>
       </div>
 
       <div className={styles.container}>
