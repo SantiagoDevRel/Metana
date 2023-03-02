@@ -84,7 +84,7 @@ function BaseFee() {
     }
 
     for (let i = auxArray.length - 1; i >= 0; i--) {
-      blocksArrayChart.push(auxArray[i]["blockNumber"].toString());
+      blocksArrayChart.push(auxArray[i]["blockNumber"].toLocaleString());
       baseFeeArrayChart.push(Number(auxArray[i]["baseFee"]));
     }
     setBlocksArray(blocksArrayChart);
