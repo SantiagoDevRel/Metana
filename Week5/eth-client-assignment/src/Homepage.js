@@ -32,8 +32,8 @@ function Homepage() {
           <h2>Ratio of gasUsed over gasLimit</h2>
           <p>
             This chart plots the ratio of gasUsed over gasLimit as a percentage.
-            What do you notice about the relationship between this ratio and the
-            BASEFEE?
+            (How much percentage of the 30,000,000 available gas per block has
+            been used)
           </p>
         </div>
       </div>
