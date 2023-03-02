@@ -11,4 +11,4 @@
 
 ### 3rd chart
 
-`--> The ratio of gasUsed over gasLimit (plot this as a percentage). What do you notice about the relationship between this ratio and the BASEFEE?`
+`--> The ratio of gasUsed over gasLimit (plot this as a percentage).
