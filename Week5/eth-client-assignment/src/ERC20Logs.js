@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Network, Alchemy } from "alchemy-sdk";
 import { ethers } from "ethers";
 import styles from "./ERC20Logs.module.css";
@@ -12,6 +12,10 @@ const ApproveSignature =
   "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925";
 
 function ERC20Logs() {
+  useEffect(() => {
+    formatLogs(`${ApproveSignature}`);
+    formatLogs(`${TransferSignature}`);
+  }, []);
   const [transactionsArray, setTransactionsArray] = useState([]);
   const [approvalsArray, setApprovalsArray] = useState([]);
   const [startingBlock, setStartingBlock] = useState(null);
