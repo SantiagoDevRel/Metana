@@ -110,7 +110,7 @@ function ERC20Logs() {
           Update Transfer Logs
         </button>
         <div className={styles.title}>
-          From Block: {startingBlock} to Block: {currentBlock}
+          From the block #{startingBlock} <br></br> to the block #{currentBlock}
         </div>
         <button
           className={styles.button}
