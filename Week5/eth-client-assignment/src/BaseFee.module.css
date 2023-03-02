@@ -1,0 +1,17 @@
+.container_title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  column-gap: 2vw;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.chart {
+  width: 1000px;
+  max-width: 1000px;
+}

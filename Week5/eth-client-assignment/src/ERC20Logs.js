@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Network, Alchemy } from "alchemy-sdk";
 import { ethers } from "ethers";
 import styles from "./ERC20Logs.module.css";
+const ALCHEMY_URL = `https://eth-mainnet.g.alchemy.com/v2/`;
+const ALCHEMY_KEY = `uk3L_f3i_POcVTRhWxKrYlUm__ftnzfm`;
 
 const DAIAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 const TransferSignature =
@@ -16,7 +18,7 @@ function ERC20Logs() {
   const [currentBlock, setCurrentBlock] = useState(null);
 
   const settings = {
-    apiKey: "uk3L_f3i_POcVTRhWxKrYlUm__ftnzfm",
+    apiKey: `${ALCHEMY_KEY}`,
     network: Network.ETH_MAINNET,
   };
 
@@ -33,27 +35,24 @@ function ERC20Logs() {
     //get last 10 blocks
     const last10Block = await getLast10Block();
     //fetch the logs the last 10 blocks
-    const Logs = await fetch(
-      "https://eth-mainnet.g.alchemy.com/v2/uk3L_f3i_POcVTRhWxKrYlUm__ftnzfm",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          id: 0,
-          method: "eth_getLogs",
-          params: [
-            {
-              fromBlock: `${ethers.utils.hexlify(last10Block)}`,
-              address: DAIAddress,
-              topics: [`${logSignature}`],
-            },
-          ],
-        }),
-      }
-    );
+    const Logs = await fetch(`${ALCHEMY_URL + ALCHEMY_KEY}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: 0,
+        method: "eth_getLogs",
+        params: [
+          {
+            fromBlock: `${ethers.utils.hexlify(last10Block)}`,
+            address: DAIAddress,
+            topics: [`${logSignature}`],
+          },
+        ],
+      }),
+    });
     return await Logs.json();
   };
 
