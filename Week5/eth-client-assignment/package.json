@@ -1,6 +1,7 @@
 {
   "name": "eth-client-assignment",
   "version": "0.1.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@alch/alchemy-sdk": "^1.2.0",
