@@ -20,7 +20,6 @@ function Homepage() {
             in the past 10 blocks of the Ethereum Mainnet for an the ERC20 token
             DAI when you click in "update"
           </p>
-          {/* Insert chart component for ERC20 token transfers */}
         </div>
         <div className={styles.chart}>
           <h2>BASEFEE of Each Block</h2>
@@ -29,7 +28,6 @@ function Homepage() {
             block number and the Y-axis as the BASEFEE. Not sure what BASEFEE
             is? Watch the Gas Savings EIP 1559 video.
           </p>
-          {/* Insert chart component for BASEFEE of each block */}
         </div>
         <div className={styles.chart}>
           <h2>Ratio of gasUsed over gasLimit</h2>
@@ -38,7 +36,6 @@ function Homepage() {
             What do you notice about the relationship between this ratio and the
             BASEFEE?
           </p>
-          {/* Insert chart component for ratio of gasUsed over gasLimit */}
         </div>
       </div>
     </>
