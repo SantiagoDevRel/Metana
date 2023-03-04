@@ -24,8 +24,16 @@
 
 ## Denial of service
 
-[Reference](https://solidity-by-example.org/hacks/delegatecall/)
+[Reference](https://solidity-by-example.org/hacks/denial-of-service/)
 
 `There are many ways to attack a smart contract to make it unusable.`
 `One exploit we introduce here is denial of service by making the function to send Ether fail.`
 `Use PUSH vs PULL (deposit() and withdraw()) --> always update state variables before sending ether.`
+
+## Hiding code
+
+[Reference](https://solidity-by-example.org/hacks/hiding-malicious-code-with-external-contract/)
+
+`In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted.`
+`-->Initialize a new contract inside the constructor`
+`-->Make the address of external contract public so that the code of the external contract can be reviewed`
