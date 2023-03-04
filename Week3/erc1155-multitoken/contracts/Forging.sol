@@ -21,15 +21,14 @@ contract Forging {
         token = _token;
     }
 
-    //mapping to track the timestamp when the user mint
-    //user can mint only every 1 minute (recommended to mint once in batchs instead of token by token)
-    mapping(address => uint) private timeMinted;
+    //users can mint only every 1 minute (recommended to mint once in batchs instead of token by token)
+    uint public timeMinted;
 
     function mintBatchToken(uint [] memory _tokenIds, uint [] memory _amount) public {
-        require(timeMinted[msg.sender] + 1 minutes < block.timestamp, "FORGING: Please wait 1 minute.");
+        require(timeMinted + 1 minutes < block.timestamp, "FORGING: Please wait 1 minute.");
         require(_tokenIds[0] == 0 && _tokenIds[1] == 1 && _tokenIds[2] == 2 && _tokenIds.length <= 3, "FORGING: You can mint only tokens 0,1 and 2.");
         token.mintBatch(msg.sender, _tokenIds, _amount);
-        timeMinted[msg.sender] = block.timestamp;
+        timeMinted = block.timestamp;
     }
 
 
