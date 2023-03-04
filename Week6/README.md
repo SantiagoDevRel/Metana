@@ -14,3 +14,10 @@
 
 [Reference](https://solidity-by-example.org/hacks/accessing-private-data/)
 `All data on a smart contract can be read.`
+
+## Delegate call
+
+[Reference](https://solidity-by-example.org/hacks/delegatecall/)
+
+`delegatecall preserves context (storage, caller, etc...)`
+`storage layout must be the same for the contract calling delegatecall and the contract getting called`
