@@ -88,13 +88,12 @@ contract Forging {
 
     /*
         * Trade function
-        * user can trade tokens 0, 1 and 3 with each other 
-        * user will receive the same quantity of tokens burned
-        * ex: user sends x5 tokens0, user will receive x5 tokens1
+        * user can trade tokens 0, 1, 2 and 3 
+        * but can only get token 0,1 and 2.
     */
 
     function tradeTokens(uint _tokenIdGive, uint _amountToExchange, uint _tokenIdReceive) public {
-        if(_tokenIdGive > 2 || _tokenIdReceive > 2){
+        if(_tokenIdGive > 3 || _tokenIdReceive > 2){
             revert("FORGING: You can trade only tokens 0,1, and 2.");
         }
         token.burn(msg.sender, _tokenIdGive, _amountToExchange);
