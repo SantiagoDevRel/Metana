@@ -21,3 +21,11 @@
 
 `delegatecall preserves context (storage, caller, etc...)`
 `storage layout must be the same for the contract calling delegatecall and the contract getting called`
+
+## Denial of service
+
+[Reference](https://solidity-by-example.org/hacks/delegatecall/)
+
+`There are many ways to attack a smart contract to make it unusable.`
+`One exploit we introduce here is denial of service by making the function to send Ether fail.`
+`Use PUSH vs PULL (deposit() and withdraw()) --> always update state variables before sending ether.`
