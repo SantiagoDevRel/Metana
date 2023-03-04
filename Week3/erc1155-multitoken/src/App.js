@@ -8,8 +8,8 @@ import ConnectMumbai from "./components/General_Components/ConnectMumbai";
 import ForgingABI from "./artifacts/contracts/Forging.sol/Forging.json";
 import MultiTokenABI from "./artifacts/contracts/MultiToken.sol/MultiToken.json";
 import { formatEther } from "ethers/lib/utils";
-const ForgingAddress = "0xd1CaA16056eA13b19e123C7d20bdFaF1fc30eB66";
-const MultiTokenAddress = "0x7EFe898fd70Df162930B0A419AC9A6E10993f29a";
+const ForgingAddress = "0x484756547Abf68053d9f7cD89d9f00d940Aa162A";
+const MultiTokenAddress = "0x5c9A48D03849Ae5492981dFC24250cd762417622";
 let contractMultiToken = null,
   contractForging = null,
   signer = null,
@@ -23,12 +23,9 @@ let contractMultiToken = null,
     * Detect if wallet is not connected to Polygon Network
 */
 
-export async function mintBatch([t1, t2, t3]) {
+export async function mintBatch() {
   try {
-    const mintTx = await contractForging.mintBatchToken(
-      [0, 1, 2],
-      [t1, t2, t3]
-    );
+    const mintTx = await contractForging.mintBatchToken([0, 1, 2], [1, 1, 1]);
     await mintTx.wait();
     return true;
   } catch {
@@ -41,8 +38,10 @@ export async function forgeTokens(tokenIds, amounts) {
   try {
     const forgeTx = await contractForging.forgeTokens(tokenIds, amounts);
     await forgeTx.wait();
+    return true;
   } catch (err) {
-    console.log("Error forging", err);
+    console.log("Error forging, insufficient balance");
+    return false;
   }
 }
 

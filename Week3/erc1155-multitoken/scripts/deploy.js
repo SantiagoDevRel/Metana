@@ -1,25 +1,28 @@
-
 const hre = require("hardhat");
 
 async function main() {
-  console.log("1")
+  console.log("1");
   const MultiToken = await hre.ethers.getContractFactory("MultiToken");
-  console.log("2")
+  console.log("2");
   const multiToken = await MultiToken.deploy();
-  console.log("3")
+  console.log("3");
   await multiToken.deployed();
 
   console.log(`MultiToken deployed to ${multiToken.address}`);
 
-  console.log("1")
-  const Forging = await hre.ethers.getContractFactory("Forging")
-  console.log("2")
-  const forging = await Forging.deploy(multiToken.address)
-  console.log("3")
+  console.log("1");
+  const Forging = await hre.ethers.getContractFactory("Forging");
+  console.log("2");
+  const forging = await Forging.deploy(multiToken.address);
+  console.log("3");
   await forging.deployed();
 
-  console.log(`Forging deployed to ${forging.address}`)
+  console.log(`Forging deployed to ${forging.address}`);
 
+  const setMinterTx = await multiToken.setMinter(forging.address);
+  await setMinterTx.wait();
+  const minter = await multiToken.minter();
+  console.log(`Minter setted in Multitoken: ${minter}`);
 }
 
 main().catch((error) => {

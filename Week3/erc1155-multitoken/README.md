@@ -22,13 +22,13 @@ Warning: Start on this assignment early. The solidity code is easy to write, but
 
 # Contract MultiToken (ERC1155)
 
-`0x7EFe898fd70Df162930B0A419AC9A6E10993f29a`
-`https://mumbai.polygonscan.com/address/0x7EFe898fd70Df162930B0A419AC9A6E10993f29a#code`
+`0x5c9A48D03849Ae5492981dFC24250cd762417622`
+`https://mumbai.polygonscan.com/address/0x5c9A48D03849Ae5492981dFC24250cd762417622#code`
 
 # Contract Forging
 
-`0xd1CaA16056eA13b19e123C7d20bdFaF1fc30eB66`
-`https://mumbai.polygonscan.com/address/0xd1CaA16056eA13b19e123C7d20bdFaF1fc30eB66#code`
+`0x484756547Abf68053d9f7cD89d9f00d940Aa162A`
+`https://mumbai.polygonscan.com/address/0x484756547Abf68053d9f7cD89d9f00d940Aa162A#code`
 
 # Dapp deployed to
 

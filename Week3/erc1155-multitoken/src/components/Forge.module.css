@@ -1,71 +1,77 @@
 .main {
-    display: flex;
-    flex-direction: row;
-    column-gap: 5vw;
+  display: flex;
+  flex-direction: row;
+  column-gap: 5vw;
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-
 .input {
-    display: block;
-    color: black;
-    width: 30%;
-    margin-bottom: 2vh;
-    background: #ecf0f3;
-    padding: 10px;
-    padding-left: 20px;
-    height: 2vh;
-    font-size: 14px;
-    border-radius: 50px;
-    box-sizing: border-box;
-    border: none;
-    box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
+  display: block;
+  color: black;
+  width: 30%;
+  margin-bottom: 2vh;
+  background: #ecf0f3;
+  padding: 10px;
+  padding-left: 20px;
+  height: 2vh;
+  font-size: 14px;
+  border-radius: 50px;
+  box-sizing: border-box;
+  border: none;
+  box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
 }
 
 .guide {
-    text-align: left;
+  text-align: left;
+}
 
+.error {
+  color: red;
 }
 
 .buttonFurge {
-    text-shadow: 1px 1px #8147e5;
-    align-items: center;
-    appearance: none;
-    background-image: radial-gradient(100% 100% at 100% 0, #DC1FFF 0, #03E1FF 100%);
-    border: 0px;
-    border-radius: 6px;
-    box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .2) 0 -3px 0 inset;
-    box-sizing: border-box;
-    color: #fff;
-    cursor: pointer;
-    display: inline-flex;
-    font-family: "JetBrains Mono", monospace;
-    width: 20vw;
-    height: 4vh;
-    justify-content: center;
-    line-height: 1;
-    list-style: none;
-    overflow: hidden;
-    padding-left: 16px;
-    padding-right: 16px;
-    position: relative;
-    text-align: left;
-    text-decoration: none;
-    transition: box-shadow .15s, transform .15s;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    white-space: nowrap;
-    will-change: box-shadow, transform;
-    font-size: 18px;
+  text-shadow: 1px 1px #8147e5;
+  align-items: center;
+  appearance: none;
+  background-image: radial-gradient(
+    100% 100% at 100% 0,
+    #dc1fff 0,
+    #03e1ff 100%
+  );
+  border: 0px;
+  border-radius: 6px;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgba(58, 65, 111, 0.2) 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono", monospace;
+  width: 20vw;
+  height: 4vh;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 18px;
 }
 
 .buttonFurge:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }

@@ -25,7 +25,7 @@ contract MultiToken is ERC1155, Ownable {
     mapping (uint => string) private _uris;
 
     //the minter is the only contract that can mint in this ERC1155
-    address private minter;
+    address public minter;
 
     modifier onlyMinter{
         require(msg.sender == minter, "MultiToken: You are not the minter");
