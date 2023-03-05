@@ -37,3 +37,10 @@
 `In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted.`
 `-->Initialize a new contract inside the constructor`
 `-->Make the address of external contract public so that the code of the external contract can be reviewed`
+
+## Honeypot
+
+[Reference](https://solidity-by-example.org/hacks/honeypot/)
+
+`Combining two exploits, reentrancy and hiding malicious code, we can build a contract, that will catch malicious users.`
+`Allowing the hacker to do a reentrancy attack, but at the end of the reentrancy, call a function that will revert the whole transaction`
