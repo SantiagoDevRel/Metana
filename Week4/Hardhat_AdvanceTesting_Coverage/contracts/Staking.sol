@@ -23,8 +23,8 @@ contract Staking{
         require(staked[msg.sender].amountStaked > 0, "Staking: You don't have funds in this contract");
         require(block.timestamp - staked[msg.sender].timeWhenStaked > DURATION, "Staking: Please wait at least 10 seconds to withdraw");
         uint balanceUser = staked[msg.sender].amountStaked;
-        (bool success, ) = payable(msg.sender).call{value: balanceUser }("");
         staked[msg.sender].amountStaked -= balanceUser;
+        (bool success, ) = payable(msg.sender).call{value: balanceUser }("");
         return success;
     }
 
