@@ -28,8 +28,8 @@ contract Forging {
         require(timeMinted + 1 minutes < block.timestamp, "FORGING: Please wait 1 minute.");
         require(_tokenIds[0] == 0 && _tokenIds[1] == 1 && _tokenIds[2] == 2 && _tokenIds.length <= 3, "FORGING: You can mint only tokens 0,1 and 2.");
         require(_amount[0] == 1 && _amount[1] == 1 && _amount[2] == 1, "FORGING: Max quantity is 1 token every mint.");
-        token.mintBatch(msg.sender, _tokenIds, _amount);
         timeMinted = block.timestamp;
+        token.mintBatch(msg.sender, _tokenIds, _amount);
     }
 
 
