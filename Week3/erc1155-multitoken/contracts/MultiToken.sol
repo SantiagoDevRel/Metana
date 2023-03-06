@@ -18,6 +18,8 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract MultiToken is ERC1155, Ownable {
     using Strings for uint;
 
+    event newMinter(address minter);
+
     constructor()ERC1155(""){
     }
 
@@ -49,7 +51,9 @@ contract MultiToken is ERC1155, Ownable {
 
     //Set the minter address who has permissions to mint and burn tokens in this contract
     function setMinter(address _minter) external onlyOwner {
+        require(_minter != address(0), "MultiToken: Minter can't be the 0 address");
         minter = _minter;
+        emit newMinter(_minter);
     }
 
     //Mint by one tokenID from the minter
