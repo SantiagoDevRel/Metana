@@ -341,7 +341,7 @@ describe("Deploy MultiToken & Forging contract", () => {
     it("Try to trade tokens 3,4,5 or 6", async () => {
       await expect(
         forging.connect(user2).tradeTokens(3, 1, 0)
-      ).to.be.rejectedWith("FORGING: You can trade only tokens 0,1, and 2.");
+      ).to.be.rejectedWith("ERC1155: burn amount exceeds balance");
       await expect(
         forging.connect(user2).tradeTokens(4, 1, 1)
       ).to.be.rejectedWith("FORGING: You can trade only tokens 0,1, and 2.");

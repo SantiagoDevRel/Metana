@@ -1,5 +1,6 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
+require("hardhat-gas-reporter");
 
 const { PRIVATE_KEY, API_URL, EtherscanScanKey, PolygonScanKey } = process.env;
 
@@ -21,4 +22,5 @@ module.exports = {
   etherscan: {
     apiKey: PolygonScanKey,
   },
+  plugins: ["hardhat-gas-reporter"],
 };
