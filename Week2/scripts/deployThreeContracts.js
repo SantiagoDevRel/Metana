@@ -16,9 +16,7 @@ async function main() {
   console.log(`NFT Deployed to ${nft.address}`);
   console.log(`Token Deployed to ${token.address}`);
   console.log(`Minter Deployed to ${minter.address}`);
-
 }
-
 
 main().catch((error) => {
   console.error(error);

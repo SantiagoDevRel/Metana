@@ -9,7 +9,6 @@ async function main() {
   console.log(`NFT Deployed to ${nft.address}`);
 }
 
-
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
