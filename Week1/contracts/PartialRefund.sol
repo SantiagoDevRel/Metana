@@ -26,7 +26,8 @@ contract PartialRefund is ERC20 {
     }
 
     /*
-        * sellBack() --> Users can transfer their tokens to the contract and receive 0.5 ether for every 1000 tokens they transfer. 
+        * sellBack() --> Users can transfer their tokens to the contract and receive 0.5 
+        * ether for every 1000 tokens they transfer. 
         * 1. transfer tokens from user to this contract
         * 2. calculate amount to send to the user
         * 2.1 for every token the user is sending to this contract, will claim 0.0005 ether (or 500000000000000 wei)
