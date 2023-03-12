@@ -1,68 +1,76 @@
 .main {
-    display: flex;
-    flex-direction: column;
-    row-gap: 5px;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  justify-content: center;
+  align-items: center;
 }
 
-.main>div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20vw;
-    height: 4vh;
-    background-image: linear-gradient(90deg, #8147e572 0%, #8147e543 80%, #8147e513 100%);
-    border-radius: 30px;
-    border: 1px solid #8F9092;
-    transition: all 0.2s ease;
-    font-family: "Source Sans Pro", sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: black;
-    /* text-shadow: 0 1px #fff; */
+.main > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20vw;
+  height: 4vh;
+  background-image: linear-gradient(
+    90deg,
+    #8147e572 0%,
+    #8147e543 80%,
+    #8147e513 100%
+  );
+  border-radius: 30px;
+  border: 1px solid #8f9092;
+  transition: all 0.2s ease;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: black;
+  /* text-shadow: 0 1px #fff; */
 }
-
 
 .balances {
-    color: black;
-    font-weight: 900;
+  color: black;
+  font-weight: 900;
 }
 
-
 .buttonRefresh {
-    text-shadow: 1px 1px #8147e5;
-    align-items: center;
-    appearance: none;
-    background-image: radial-gradient(100% 100% at 100% 0, #DC1FFF 0, #03E1FF 100%);
-    border: 0px;
-    border-radius: 6px;
-    box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .2) 0 -3px 0 inset;
-    box-sizing: border-box;
-    color: #fff;
-    cursor: pointer;
-    display: inline-flex;
-    font-family: "JetBrains Mono", monospace;
-    width: 20vw;
-    height: 4vh;
-    justify-content: center;
-    line-height: 1;
-    list-style: none;
-    overflow: hidden;
-    padding-left: 16px;
-    padding-right: 16px;
-    position: relative;
-    text-align: left;
-    text-decoration: none;
-    transition: box-shadow .15s, transform .15s;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    white-space: nowrap;
-    will-change: box-shadow, transform;
-    font-size: 18px;
+  text-shadow: 1px 1px #8147e5;
+  align-items: center;
+  appearance: none;
+  background-image: radial-gradient(
+    100% 100% at 100% 0,
+    #dc1fff 0,
+    #03e1ff 100%
+  );
+  border: 0px;
+  border-radius: 6px;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgba(58, 65, 111, 0.2) 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono", monospace;
+  width: 20vw;
+  height: 4vh;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 18px;
 }
 
 .buttonRefreshbutton:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }

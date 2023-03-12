@@ -6,10 +6,11 @@ const { PRIVATE_KEY, API_URL, EtherscanScanKey, PolygonScanKey } = process.env;
 
 module.exports = {
   solidity: "0.8.9",
+  defaultNetwork: "hardhat",
   paths: {
     artifacts: "./src/artifacts",
   },
-  networks: {
+  /*  networks: {
     goerli: {
       url: `${API_URL}`,
       accounts: [`0x${PRIVATE_KEY}`],
@@ -18,7 +19,7 @@ module.exports = {
       url: "https://rpc-mumbai.maticvigil.com",
       accounts: [PRIVATE_KEY],
     },
-  },
+  }, */
   etherscan: {
     apiKey: PolygonScanKey,
   },

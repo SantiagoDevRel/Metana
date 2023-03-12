@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 body {
@@ -11,7 +11,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   height: 90vh;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .container {
@@ -43,7 +43,11 @@ body {
 }
 
 .tabs button:disabled {
-  background-image: radial-gradient(100% 100% at 100% 0, #DC1FFF 0, #03E1FF 100%);
+  background-image: radial-gradient(
+    100% 100% at 100% 0,
+    #dc1fff 0,
+    #03e1ff 100%
+  );
   color: white;
 }
 
@@ -54,7 +58,6 @@ body {
   font-size: 20px;
   font-weight: 600;
 }
-
 
 .content {
   padding: 50px 80px;
@@ -87,7 +90,6 @@ footer a:hover {
 }
 
 @media only screen and (max-width: 960px) {
-
   .container {
     width: 100%;
   }
