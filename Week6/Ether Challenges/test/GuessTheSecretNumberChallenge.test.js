@@ -30,13 +30,16 @@ describe("Deployment", function () {
 
   describe("Play the game", () => {
     it("guess()", async () => {
-      const { contract, owner } = await loadFixture(deployOneYearLockFixture);
+      const { contract, owner, provider } = await loadFixture(
+        deployOneYearLockFixture
+      );
+
       const guessTx = await contract
         .connect(owner)
-        .guess(42, { value: ethers.utils.parseEther("1") });
+        .guess(170, { value: ethers.utils.parseEther("1") });
       await guessTx.wait();
-
       const isCompleted = await contract.isComplete();
+
       expect(isCompleted).to.be.equal(true);
     });
   });

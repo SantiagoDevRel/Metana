@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.4.21;
+pragma solidity ^0.4.22;
+import "hardhat/console.sol";
 
 contract GuessTheSecretNumberChallenge {
     bytes32 answerHash = 0xdb81b4d58595fbbbb592d3661a34cdca14d7ab379441400cbfa1b78bc447c365;

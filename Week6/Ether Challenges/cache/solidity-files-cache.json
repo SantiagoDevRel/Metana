@@ -1,0 +1,112 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheNumber.sol": {
+      "lastModificationDate": 1678638412854,
+      "contentHash": "191224870552dc056c5a9b6df99e59e1",
+      "sourceName": "contracts/GuessTheNumber.sol",
+      "solcConfig": {
+        "version": "0.4.22",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.4.21"
+      ],
+      "artifacts": [
+        "GuessTheNumberChallenge"
+      ]
+    },
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheSecretNumber.sol": {
+      "lastModificationDate": 1678649113387,
+      "contentHash": "a619a35f8ae7c9fb2e12faeb2cbc4188",
+      "sourceName": "contracts/GuessTheSecretNumber.sol",
+      "solcConfig": {
+        "version": "0.4.22",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "^0.4.22"
+      ],
+      "artifacts": [
+        "GuessTheSecretNumberChallenge"
+      ]
+    },
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1678647170132,
+      "contentHash": "4ff3cd2f6272c9a6516e9ee4f2b967d3",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.4.22",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">= 0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    }
+  }
+}
