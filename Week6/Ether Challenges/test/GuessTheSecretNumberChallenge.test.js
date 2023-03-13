@@ -4,7 +4,7 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const { BigNumber } = ethers;
 
-describe("Deployment", function () {
+describe("GuessTheSecretNumberChallenge", function () {
   async function deployOneYearLockFixture() {
     const [owner, otherAccount] = await ethers.getSigners();
 

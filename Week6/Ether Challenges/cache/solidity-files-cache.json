@@ -140,6 +140,41 @@
       "artifacts": [
         "GuessTheRandomNumberChallenge"
       ]
+    },
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheNewNumber.sol": {
+      "lastModificationDate": 1678701884664,
+      "contentHash": "d63d6f59f8036659c25f9e89bd001090",
+      "sourceName": "contracts/GuessTheNewNumber.sol",
+      "solcConfig": {
+        "version": "0.4.21",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.4.21"
+      ],
+      "artifacts": [
+        "GuessTheNewNumberChallenge"
+      ]
     }
   }
 }
