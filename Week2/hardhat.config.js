@@ -6,14 +6,14 @@ const { PRIVATE_KEY, API_URL, EtherscanScanKey, PolygonScanKey } = process.env;
 module.exports = {
   solidity: "0.8.9",
   networks: {
-    goerli: {
+    /*   goerli: {
       url: `${API_URL}`,
       accounts: [`0x${PRIVATE_KEY}`],
     },
     polygon_mumbai: {
       url: "https://rpc-mumbai.maticvigil.com",
       accounts: [PRIVATE_KEY],
-    },
+    }, */
   },
   etherscan: {
     apiKey: PolygonScanKey,

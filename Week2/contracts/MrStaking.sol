@@ -67,9 +67,9 @@ contract MrStakingv2 is IERC721Receiver {
         require(userToNFTStaked[msg.sender][_tokenId], "MrStakingv2: You don't have any NFT staked");
         require(userCanWithdrawRewards(_tokenId), "MrStakingv2: The 24h have not passed yet, try later.");
         require(balanceOfRewardsPerNFT[msg.sender][_tokenId] > 0,"MrStakingv2: You have nothing to claim");
-        token.mint(msg.sender, balanceOfRewardsPerNFT[msg.sender][_tokenId]);
         balanceOfRewardsPerNFT[msg.sender][_tokenId] = 0;
         timeNFTStakedByUser[msg.sender][_tokenId] = block.timestamp;
+        token.mint(msg.sender, balanceOfRewardsPerNFT[msg.sender][_tokenId]);
     }
 
     /*
