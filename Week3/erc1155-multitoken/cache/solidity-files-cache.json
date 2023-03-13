@@ -77,6 +77,43 @@
         "MultiToken"
       ]
     },
+    "/home/santiagotrujilloz/Metana/Week3/erc1155-multitoken/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
+      "lastModificationDate": 1678638511220,
+      "contentHash": "396031251978f8febfd90cb62cb240ec",
+      "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./math/Math.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Strings"
+      ]
+    },
     "/home/santiagotrujilloz/Metana/Week3/erc1155-multitoken/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
       "lastModificationDate": 1678638511150,
       "contentHash": "e436cea06129be2c73cda4b1acc848b5",
@@ -156,10 +193,10 @@
         "ERC1155"
       ]
     },
-    "/home/santiagotrujilloz/Metana/Week3/erc1155-multitoken/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
-      "lastModificationDate": 1678638511220,
-      "contentHash": "396031251978f8febfd90cb62cb240ec",
-      "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
+    "/home/santiagotrujilloz/Metana/Week3/erc1155-multitoken/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
+      "lastModificationDate": 1678638511120,
+      "contentHash": "b9c58920ce74d6dc819161786112e7ee",
+      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -183,14 +220,12 @@
           }
         }
       },
-      "imports": [
-        "./math/Math.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
         "^0.8.0"
       ],
       "artifacts": [
-        "Strings"
+        "Math"
       ]
     },
     "/home/santiagotrujilloz/Metana/Week3/erc1155-multitoken/node_modules/@openzeppelin/contracts/utils/Context.sol": {
@@ -444,41 +479,6 @@
       ],
       "artifacts": [
         "IERC165"
-      ]
-    },
-    "/home/santiagotrujilloz/Metana/Week3/erc1155-multitoken/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
-      "lastModificationDate": 1678638511120,
-      "contentHash": "b9c58920ce74d6dc819161786112e7ee",
-      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Math"
       ]
     }
   }
