@@ -1,3 +1,15 @@
+## Ether challenges
+
+[Guess the Number](https://capturetheether.com/challenges/lotteries/guess-the-number/)
+[Guess the Secret Number](https://capturetheether.com/challenges/lotteries/guess-the-secret-number/)
+[Guess the Random Number](https://capturetheether.com/challenges/lotteries/guess-the-random-number/)
+[Guess the New Number](https://capturetheether.com/challenges/lotteries/guess-the-new-number/)
+[Predict the Future](https://capturetheether.com/challenges/lotteries/predict-the-future/)
+[Predict the block hash](https://capturetheether.com/challenges/lotteries/predict-the-block-hash/)
+[Token Bank](https://capturetheether.com/challenges/miscellaneous/token-bank/)
+[Token Sale](https://capturetheether.com/challenges/math/token-sale/)
+[Token Whale](https://capturetheether.com/challenges/math/token-whale/)
+
 # Smart contracts Security
 
 ## Re-entrancy
