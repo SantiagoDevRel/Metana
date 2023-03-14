@@ -62,7 +62,7 @@ describe("PredictTheFutureChallenge", function () {
           //console.log("attack tx reverted", i);
         }
         //simulate the blockchain, everytime I attack, mine 1 block and try again
-        mine(2);
+        mine();
       }
 
       //check balance after attack, contractSolution is 2
