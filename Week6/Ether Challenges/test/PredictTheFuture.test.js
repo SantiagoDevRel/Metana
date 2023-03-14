@@ -24,7 +24,7 @@ describe("PredictTheFutureChallenge", function () {
     return { contractNumber, provider, owner, contractSolution };
   }
 
-  it("Contract GuessTheNewNumber has 1 ether", async () => {
+  it("Contract PredictTheFuture has 1 ether", async () => {
     const { contractNumber, provider } = await loadFixture(
       deployOneYearLockFixture
     );
