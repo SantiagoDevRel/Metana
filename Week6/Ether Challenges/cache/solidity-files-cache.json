@@ -6,7 +6,7 @@
       "contentHash": "191224870552dc056c5a9b6df99e59e1",
       "sourceName": "contracts/GuessTheNumber.sol",
       "solcConfig": {
-        "version": "0.4.22",
+        "version": "0.4.21",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -41,7 +41,7 @@
       "contentHash": "1beaf4081b9c85cae951e1d551073028",
       "sourceName": "contracts/GuessTheSecretNumber.sol",
       "solcConfig": {
-        "version": "0.4.22",
+        "version": "0.4.21",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -111,7 +111,7 @@
       "contentHash": "a67244dc082d8e6c8bff9d39217c8025",
       "sourceName": "contracts/GuessTheRandomNumber.sol",
       "solcConfig": {
-        "version": "0.4.22",
+        "version": "0.4.21",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -146,7 +146,7 @@
       "contentHash": "02280c1ac13ffceb6091045578fc12a5",
       "sourceName": "contracts/PredictTheFuture.sol",
       "solcConfig": {
-        "version": "0.4.22",
+        "version": "0.4.21",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -175,6 +175,42 @@
       "artifacts": [
         "PredictTheFutureChallenge",
         "Solution"
+      ]
+    },
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheNewNumber.sol": {
+      "lastModificationDate": 1678787752862,
+      "contentHash": "09e2a0c3dd6efc5cd625dd696c84d17c",
+      "sourceName": "contracts/GuessTheNewNumber.sol",
+      "solcConfig": {
+        "version": "0.4.21",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.4.21"
+      ],
+      "artifacts": [
+        "GuessTheNewNumberChallenge",
+        "SolutionTwo"
       ]
     }
   }
