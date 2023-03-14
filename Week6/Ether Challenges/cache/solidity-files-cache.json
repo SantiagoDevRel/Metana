@@ -212,6 +212,42 @@
         "GuessTheNewNumberChallenge",
         "SolutionTwo"
       ]
+    },
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/PredictTheHash.sol": {
+      "lastModificationDate": 1678802122090,
+      "contentHash": "e3f9ed14c4f8817a52416a06533191f3",
+      "sourceName": "contracts/PredictTheHash.sol",
+      "solcConfig": {
+        "version": "0.4.21",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.4.21"
+      ],
+      "artifacts": [
+        "PredictTheBlockHashChallenge",
+        "SolutionThree"
+      ]
     }
   }
 }
