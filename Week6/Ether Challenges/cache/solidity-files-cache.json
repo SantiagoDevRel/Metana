@@ -6,7 +6,7 @@
       "contentHash": "191224870552dc056c5a9b6df99e59e1",
       "sourceName": "contracts/GuessTheNumber.sol",
       "solcConfig": {
-        "version": "0.4.21",
+        "version": "0.4.22",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -41,7 +41,7 @@
       "contentHash": "1beaf4081b9c85cae951e1d551073028",
       "sourceName": "contracts/GuessTheSecretNumber.sol",
       "solcConfig": {
-        "version": "0.4.21",
+        "version": "0.4.22",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -111,7 +111,7 @@
       "contentHash": "a67244dc082d8e6c8bff9d39217c8025",
       "sourceName": "contracts/GuessTheRandomNumber.sol",
       "solcConfig": {
-        "version": "0.4.21",
+        "version": "0.4.22",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -142,11 +142,11 @@
       ]
     },
     "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheNewNumber.sol": {
-      "lastModificationDate": 1678701884664,
-      "contentHash": "d63d6f59f8036659c25f9e89bd001090",
+      "lastModificationDate": 1678711031004,
+      "contentHash": "f20e6b7be96c213dc85c705ac4e369e2",
       "sourceName": "contracts/GuessTheNewNumber.sol",
       "solcConfig": {
-        "version": "0.4.21",
+        "version": "0.4.22",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -170,10 +170,11 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.4.21"
+        "^0.4.22"
       ],
       "artifacts": [
-        "GuessTheNewNumberChallenge"
+        "GuessTheNewNumberChallenge",
+        "Solution"
       ]
     }
   }
