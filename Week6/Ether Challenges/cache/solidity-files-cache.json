@@ -141,10 +141,10 @@
         "GuessTheRandomNumberChallenge"
       ]
     },
-    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheNewNumber.sol": {
-      "lastModificationDate": 1678711031004,
-      "contentHash": "f20e6b7be96c213dc85c705ac4e369e2",
-      "sourceName": "contracts/GuessTheNewNumber.sol",
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/PredictTheFuture.sol": {
+      "lastModificationDate": 1678783493203,
+      "contentHash": "02280c1ac13ffceb6091045578fc12a5",
+      "sourceName": "contracts/PredictTheFuture.sol",
       "solcConfig": {
         "version": "0.4.22",
         "settings": {
@@ -170,10 +170,10 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.4.22"
+        "^0.4.21"
       ],
       "artifacts": [
-        "GuessTheNewNumberChallenge",
+        "PredictTheFutureChallenge",
         "Solution"
       ]
     }
