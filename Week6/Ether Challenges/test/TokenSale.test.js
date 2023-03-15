@@ -84,5 +84,8 @@ describe("TokenSaleChallenge", function () {
     expect(ethBalanceOfAttacker).to.be.above(
       new BigNumber.from(ethers.utils.parseEther("1"))
     );
+
+    const win = await contractTokenSale.isComplete();
+    expect(win).to.be.equal(true);
   });
 });
