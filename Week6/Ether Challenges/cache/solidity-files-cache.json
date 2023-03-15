@@ -286,6 +286,42 @@
         "SimpleERC223Token",
         "TokenBankChallenge"
       ]
+    },
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/TokenSale.sol": {
+      "lastModificationDate": 1678843274261,
+      "contentHash": "f5017ad2b8f8b60827ba5f172559404c",
+      "sourceName": "contracts/TokenSale.sol",
+      "solcConfig": {
+        "version": "0.4.21",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.4.21"
+      ],
+      "artifacts": [
+        "AttackTokenSale",
+        "TokenSaleChallenge"
+      ]
     }
   }
 }
