@@ -248,6 +248,44 @@
         "PredictTheBlockHashChallenge",
         "SolutionThree"
       ]
+    },
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/TokenBank.sol": {
+      "lastModificationDate": 1678824891961,
+      "contentHash": "7bc9760bb8e113fcbcdad99d1131b431",
+      "sourceName": "contracts/TokenBank.sol",
+      "solcConfig": {
+        "version": "0.4.21",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.4.21"
+      ],
+      "artifacts": [
+        "Attack",
+        "ITokenReceiver",
+        "SimpleERC223Token",
+        "TokenBankChallenge"
+      ]
     }
   }
 }
