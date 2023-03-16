@@ -322,6 +322,41 @@
         "AttackTokenSale",
         "TokenSaleChallenge"
       ]
+    },
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/TokenWhale.sol": {
+      "lastModificationDate": 1678881778454,
+      "contentHash": "a7a80b46a148742a08e7fb9cf47dc5cc",
+      "sourceName": "contracts/TokenWhale.sol",
+      "solcConfig": {
+        "version": "0.4.21",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.4.21"
+      ],
+      "artifacts": [
+        "TokenWhaleChallenge"
+      ]
     }
   }
 }
