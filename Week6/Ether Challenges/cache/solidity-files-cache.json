@@ -214,8 +214,8 @@
       ]
     },
     "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/PredictTheHash.sol": {
-      "lastModificationDate": 1678802122090,
-      "contentHash": "e3f9ed14c4f8817a52416a06533191f3",
+      "lastModificationDate": 1678915385773,
+      "contentHash": "a10a62e5e59b8aef9f0292bf4c1a925b",
       "sourceName": "contracts/PredictTheHash.sol",
       "solcConfig": {
         "version": "0.4.21",
@@ -245,8 +245,7 @@
         "^0.4.21"
       ],
       "artifacts": [
-        "PredictTheBlockHashChallenge",
-        "SolutionThree"
+        "PredictTheBlockHashChallenge"
       ]
     },
     "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/TokenBank.sol": {

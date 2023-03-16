@@ -15,8 +15,9 @@ const { mine } = require("@nomicfoundation/hardhat-network-helpers");
 
 describe("PredictTheBlockHashChallenge", function () {
   async function deployOneYearLockFixture() {
-    const [owner, otherAccount] = await ethers.getSigners();
+    const [owner] = await ethers.getSigners();
 
+    //1. deploy contract
     const PredictHash = await ethers.getContractFactory(
       "PredictTheBlockHashChallenge"
     );
@@ -24,12 +25,9 @@ describe("PredictTheBlockHashChallenge", function () {
       value: ethers.utils.parseEther("1"),
     });
 
-    const Solution = await ethers.getContractFactory("SolutionThree");
-    const contractSolution = await Solution.deploy(contractFuture.address);
-
     provider = ethers.provider;
 
-    return { contractFuture, provider, owner, contractSolution };
+    return { contractFuture, provider, owner };
   }
 
   it("Contract PredictTheFuture has 1 ether", async () => {
