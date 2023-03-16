@@ -26,7 +26,7 @@ describe("TokenBankChallenge", function () {
 
     //deploy token Contract
     const tokenAddress = await contractBank.token();
-    const contractToken = await hre.ethers.getContractAt(
+    const contractToken = await ethers.getContractAt(
       "SimpleERC223Token",
       tokenAddress
     );
@@ -74,6 +74,7 @@ describe("TokenBankChallenge", function () {
         new BigNumber.from(ethers.utils.parseEther("500000"))
       );
 
+      // ~~~~~~~~~~~~~~~~~~~~ ERROR HERE ~~~~~~~~~~~~~~~~~~~~
       //send the 500_000 tokens from the user1 to the attackerContract
       const transferTx = await contractToken
         .connect(user1)
