@@ -1,6 +1,42 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheNewNumber.sol": {
+      "lastModificationDate": 1678787752862,
+      "contentHash": "09e2a0c3dd6efc5cd625dd696c84d17c",
+      "sourceName": "contracts/GuessTheNewNumber.sol",
+      "solcConfig": {
+        "version": "0.4.21",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.4.21"
+      ],
+      "artifacts": [
+        "GuessTheNewNumberChallenge",
+        "SolutionTwo"
+      ]
+    },
     "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheNumber.sol": {
       "lastModificationDate": 1678651248964,
       "contentHash": "191224870552dc056c5a9b6df99e59e1",
@@ -34,76 +70,6 @@
       ],
       "artifacts": [
         "GuessTheNumberChallenge"
-      ]
-    },
-    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheSecretNumber.sol": {
-      "lastModificationDate": 1678697035865,
-      "contentHash": "1beaf4081b9c85cae951e1d551073028",
-      "sourceName": "contracts/GuessTheSecretNumber.sol",
-      "solcConfig": {
-        "version": "0.4.21",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.4.21"
-      ],
-      "artifacts": [
-        "GuessTheSecretNumberChallenge"
-      ]
-    },
-    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/node_modules/hardhat/console.sol": {
-      "lastModificationDate": 1678647170132,
-      "contentHash": "4ff3cd2f6272c9a6516e9ee4f2b967d3",
-      "sourceName": "hardhat/console.sol",
-      "solcConfig": {
-        "version": "0.4.22",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">= 0.4.22 <0.9.0"
-      ],
-      "artifacts": [
-        "console"
       ]
     },
     "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheRandomNumber.sol": {
@@ -141,6 +107,41 @@
         "GuessTheRandomNumberChallenge"
       ]
     },
+    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheSecretNumber.sol": {
+      "lastModificationDate": 1678697035865,
+      "contentHash": "1beaf4081b9c85cae951e1d551073028",
+      "sourceName": "contracts/GuessTheSecretNumber.sol",
+      "solcConfig": {
+        "version": "0.4.21",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.4.21"
+      ],
+      "artifacts": [
+        "GuessTheSecretNumberChallenge"
+      ]
+    },
     "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/PredictTheFuture.sol": {
       "lastModificationDate": 1678783493203,
       "contentHash": "02280c1ac13ffceb6091045578fc12a5",
@@ -175,42 +176,6 @@
       "artifacts": [
         "PredictTheFutureChallenge",
         "Solution"
-      ]
-    },
-    "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/GuessTheNewNumber.sol": {
-      "lastModificationDate": 1678787752862,
-      "contentHash": "09e2a0c3dd6efc5cd625dd696c84d17c",
-      "sourceName": "contracts/GuessTheNewNumber.sol",
-      "solcConfig": {
-        "version": "0.4.21",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.4.21"
-      ],
-      "artifacts": [
-        "GuessTheNewNumberChallenge",
-        "SolutionTwo"
       ]
     },
     "/home/santiagotrujilloz/Metana/Week6/Ether Challenges/contracts/PredictTheHash.sol": {
