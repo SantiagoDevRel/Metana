@@ -9,7 +9,11 @@
 3. For this puzzle we need to send a dataSize == 4 bytes
      so I send the data: "0404004" and it passed
 
-4. 
+4. We need to jump to the byte 0A(hex)/10(dec)/1010(bin)
+    and to be able to jump there we need to do an XOR of the CODESIZE and CALLVALUE
+    CODESIZE == 12 == 1100
+    CALLVALUE == 6 == 0110
+    JUMPDEST == 10 == 1010
 
 ````
 
