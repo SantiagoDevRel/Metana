@@ -25,6 +25,8 @@
     -so when we pass that EQ we are able to go to byte 07 PUSH1 0C (12)
     -then we go to JUMPI in byte 09 and automatically we go to JUMPDEST and then STOP
 
+6. 
+
 ````
 
 # EVM puzzles
