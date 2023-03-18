@@ -25,7 +25,15 @@
     -so when we pass that EQ we are able to go to byte 07 PUSH1 0C (12)
     -then we go to JUMPI in byte 09 and automatically we go to JUMPDEST and then STOP
 
-6. Not able to solve this one
+6. ~~~~~ is the PUSH1 00 doing something here? ~~~~~
+    The CALLDATALOAD reads a 32byte hex number
+    and the JUMP will jump to the position that we passes to it
+    so before the JUMP we need to pass the position 0A
+    and because CALLDATALOAD receives a 32byte hex number
+    so we need to pass a "0x000000000000000000000000000000000000000000000000000000000000000A"
+    to point to 0A with the 31 bytes of "0" so CALLDATA is able to read the number
+
+7. 
 
 ````
 
