@@ -15,7 +15,15 @@
     CALLVALUE == 6 == 0110
     JUMPDEST == 10 == 1010
     
-5. 
+5. We need to get into the byte09 "JUMPI" so we can be able to jump to byte 0C "JUMPDEST"
+    so to get there we need to pass the "EQ" in byte 06
+    -first we send a CALLVALUE = (16)
+    -then this value is duplicated DUP1 = (16)
+    -then we multiply these 2 values MUL = 256
+    -then we PUSH2 0100 = Push(256)
+    -we compare if the 2 above numbers are equal EQ = (256 == 256) --> (TRUE)
+    -so when we pass that EQ we are able to go to byte 07 PUSH1 0C (12)
+    -then we go to JUMPI in byte 09 and automatically we go to JUMPDEST and then STOP
 
 ````
 
