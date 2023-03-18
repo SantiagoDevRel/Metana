@@ -6,8 +6,10 @@
     for this I send 4 ether, because we will perform the following:
     callValue(4) - codeSize(10 bytes) = jumpDest(06) to be able to pass the puzzle
 
+3. For this puzzle we need to send a dataSize == 4 bytes
+     so I send the data: "0404004" and it passed
 
-
+4. 
 
 ````
 
