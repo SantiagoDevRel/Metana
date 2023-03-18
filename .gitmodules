@@ -1,0 +1,3 @@
+[submodule "evm-puzzles"]
+	path = evm-puzzles
+	url = https://github.com/fvictorio/evm-puzzles.git
