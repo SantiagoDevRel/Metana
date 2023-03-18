@@ -14,6 +14,8 @@
     CODESIZE == 12 == 1100
     CALLVALUE == 6 == 0110
     JUMPDEST == 10 == 1010
+    
+5. 
 
 ````
 
