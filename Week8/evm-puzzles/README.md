@@ -7,12 +7,12 @@
     callValue(4) - codeSize(10 bytes) = jumpDest(06) to be able to pass the puzzle
 
 3. For this puzzle we need to send a dataSize == 4 bytes
-     so I send the data: "0404004" and it passed
+     so I send the data: "0x01020304" and it passed
 
 4. We need to jump to the byte 0A(hex)/10(dec)/1010(bin)
     and to be able to jump there we need to do an XOR of the CODESIZE and CALLVALUE
     CODESIZE == 12 == 1100
-    CALLVALUE == 6 == 0110
+    CALLVALUE == (6) == 0110
     JUMPDEST == 10 == 1010
     
 5. We need to get into the byte09 "JUMPI" so we can be able to jump to byte 0C "JUMPDEST"
@@ -25,7 +25,7 @@
     -so when we pass that EQ we are able to go to byte 07 PUSH1 0C (12)
     -then we go to JUMPI in byte 09 and automatically we go to JUMPDEST and then STOP
 
-6. ~~~~~ is the PUSH1 00 doing something here? ~~~~~
+6. First, it push the 0 to the stack and then the CALLDATALOAD will use(pop) this 0 to read from the CALLDATA 
     The CALLDATALOAD reads a 32byte hex number
     and the JUMP will jump to the position that we passes to it
     so before the JUMP we need to pass the position 0A
