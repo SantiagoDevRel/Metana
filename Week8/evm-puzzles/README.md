@@ -28,13 +28,34 @@
 6. First, it push the 0 to the stack and then the CALLDATALOAD will use(pop) this 0 to read from the CALLDATA 
     The CALLDATALOAD reads a 32byte hex number
     and the JUMP will jump to the position that we passes to it
-    so before the JUMP we need to pass the position 0A
+    so before the JUMP we need to pass the position 0A  
     and because CALLDATALOAD receives a 32byte hex number
     so we need to pass a "0x000000000000000000000000000000000000000000000000000000000000000A"
     to point to 0A with the 31 bytes of "0" so CALLDATA is able to read the number
 
-7. firstly the code is creating a copy from calldata into memory
-    then, 
+7. We need to pass a byetcode with only 1 opcode to execute, so the bytecode 600060005360016000F3
+    to be created as a contract, so its codesize will be 1 (equal 1) to pass the EQ in the byte 0E
+    PUSH1 00
+    PUSH1 00
+    MSTORE8
+    PUSH1 01
+    PUSH1 00
+    RETURN
+
+8. [I wasn't able to get everything 100%]
+    In the first 4 instructions, the CALLDATACOPY takes the data and copy into memory
+    then create a new contract sending 0 value, deploy the code that is in memory
+    in summary, we need to pass a contract bytecode that has a revert within the contract
+    in this case will be the "FD" in the first PUSH1
+    // store in memory the REVERT opcode as the only “code” of the contract
+    PUSH1 FD
+    PUSH1 00
+    MSTORE8
+    // make the constructor return the stored runtime code
+    PUSH1 01
+    PUSH1 00
+    RETURN
+    
 
 ````
 
