@@ -33,7 +33,8 @@
     so we need to pass a "0x000000000000000000000000000000000000000000000000000000000000000A"
     to point to 0A with the 31 bytes of "0" so CALLDATA is able to read the number
 
-7. 
+7. firstly the code is creating a copy from calldata into memory
+    then, 
 
 ````
 
