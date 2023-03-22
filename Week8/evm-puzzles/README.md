@@ -46,6 +46,7 @@
     In the first 4 instructions, the CALLDATACOPY takes the data and copy into memory
     then create a new contract sending 0 value, deploy the code that is in memory
     in summary, we need to pass a contract bytecode that has a revert within the contract
+    0x60FD60005360016000F3
     in this case will be the "FD" in the first PUSH1
     // store in memory the REVERT opcode as the only “code” of the contract
     PUSH1 FD
