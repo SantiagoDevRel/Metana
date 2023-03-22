@@ -56,6 +56,16 @@
     PUSH1 01
     PUSH1 00
     RETURN
+
+9. -To pass the first block we need to send a DATA greater than 03 bytes of length --> 0x01020304
+    because the stack currently has this:
+    [00] == 03
+    [01] == DATASIZE
+    -and 03 should be lower than DATASIZE, this means --> LT value[00](03) < value[01](DATASIZE)
+    -then, in the code 0C we multiply the CALLDATASIZE * CALLVALUE send and it should be equal to 08
+    -so the VALUE = 2 and DATA = 0x01020304 (4 bytes of length) = 8 to pass the command EQ in the 0F line
+
+10. -
     
 
 ````
