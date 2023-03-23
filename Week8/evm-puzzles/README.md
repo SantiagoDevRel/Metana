@@ -65,7 +65,25 @@
     -then, in the code 0C we multiply the CALLDATASIZE * CALLVALUE send and it should be equal to 08
     -so the VALUE = 2 and DATA = 0x01020304 (4 bytes of length) = 8 to pass the command EQ in the 0F line.
 
-10. -
+10. pass first block of code 00-08:
+        CODESIZE = 1A + 1 = 27(dec) = 1B(hex)
+        CALLVALUE = 28(dec)
+        SWAP
+        GT = Greater(codesize > callvalue)
+    
+    pass second block of code 09-0F:
+        DATA = 0x00 - DATASIZE = 1
+        PUSH2 = 0003 
+        SWAP
+        MOD = Mod(3%(datasize=1)) = result should be 0
+    
+    pass the third block from 10-14:
+        push 0A = 10(dec)
+        ADD callvalue = result should be 19(hex) = 25(dec)
+        so 25-10 = 15 should be the VALUE
+    
+    --> VALUE = 15
+    --> DATA = 0x000000 (3 bytes long)
     
 
 ````
