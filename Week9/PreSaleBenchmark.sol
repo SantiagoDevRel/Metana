@@ -6,6 +6,7 @@ pragma solidity 0.8.10;
     ~ changing that mapping from amountMintedByuser[msg.sender] ++ will cost around 40k units of gas
     ~ changing the claimTicketOrBlockTransaction(ticketNumber) by an user, will cost around 26k of gas
     ~ this is a more efficient way of using the bits to store binary data like if an user minted a ticket or not yet.
+    ~ everytime an user mints a ticket, the bit will be set from 1 to 0 which is cheaper than setting zero to non-zero 
 */
 
 contract PresaleBenchmark {
