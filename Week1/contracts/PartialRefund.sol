@@ -35,6 +35,7 @@ contract PartialRefund is ERC20 {
         * 4. send ether to the user and return success
     */
     function sellBack(uint amount) public returns(bool) {
+        require(msg.sender == tx.origin);
         transfer(address(this), amount*10**decimals()); 
         uint amountToGiveBack = (amount) * 0.0005 ether;
         require(address(this).balance >= amountToGiveBack, "ERC20: Not enough ether in this contract");
