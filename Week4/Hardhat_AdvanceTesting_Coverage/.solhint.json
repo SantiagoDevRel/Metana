@@ -3,8 +3,8 @@
   "plugins": [],
   "rules": {
     "compiler-version": "off",
-    "func-visibility":["warn",{"ignoreConstructors":true}],
-    "reason-string":"off" ,
+    "func-visibility": ["warn", { "ignoreConstructors": true }],
+    "reason-string": "off",
     "not-rely-on-time": "off"
   }
 }

@@ -1,7 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox");
-require("dotenv").config()
+require("dotenv").config();
 
-const { API_URL } = process.env
+const { API_URL } = process.env;
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -9,8 +9,8 @@ module.exports = {
   networks: {
     hardhat: {
       forking: {
-        url: `${API_URL}`
-      }
-    }
-  }
+        url: `${API_URL}`,
+      },
+    },
+  },
 };
