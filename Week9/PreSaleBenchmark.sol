@@ -41,6 +41,6 @@ contract PresaleBenchmark {
         require(storedBit == 1, "already taken");
 
         //this will set the bit of the ticketNumber to 0
-        arr[storageOffset] = copy_array & ~(uint256(1) << offsetWithin256);
+        s_arr[storageOffset] = copy_array & ~(uint256(1) << offsetWithin256);
     }
 }
