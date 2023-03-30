@@ -1,88 +1,136 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.10;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "openzeppelin-contracts/token/ERC721/ERC721.sol";
+import "openzeppelin-contracts/utils/structs/BitMaps.sol";
+import "openzeppelin-contracts/access/Ownable.sol";
 
 contract AdvancedNFT is ERC721, Ownable {
 
-    //Import the BitMap struct from the library
-    //and point the library to the data type BitMaps.BitMap struct
+    //~~~~~~~ Libraries ~~~~~~~
+    //Import the BitMap library and point it to the data type BitMaps.BitMap struct
     using BitMaps for BitMaps.BitMap;
 
-    //Create Struct for the commit
+    //~~~~~~~ Events ~~~~~~~
+    event RevealedRandomTokenId(uint256 _randomNumber, address _owner);
+
+    //~~~~~~~ Structs ~~~~~~~
     struct Commit{
-        bytes32 hash;
+        bytes32 commitedHash;
         uint256 blockNumber;
-        bool revealed;
+        uint256 tokenIdForNFT;
     }
 
-    //Create the states of this contract.
+    //~~~~~~~ Enum ~~~~~~~
     enum States{
         CLOSED,
         PRESALE,
         PUBLICSALE,
         SOLDOUT,
-        CLAIM_NFB
+        CLAIM_NFT
     }
 
-    //State variables
+    //~~~~~~~ State variables ~~~~~~~
     uint256 constant MAX_SUPPLY = 99;
     uint256 constant PRIVATE_MINT_SUPPLY = 9;
     uint256 public s_totalSupply;
     States public s_state = States.CLOSED;
     BitMaps.BitMap private s_myBitMap;
     mapping (address => bool) s_userMinted;
-    mapping (address => Commit) public commits;
+    mapping (address => Commit) public s_commits;
 
 
 
-    constructor() ERC721("NFBIT", "NFB"){//3_520_659 gas with forloop 1000 - 2_723_520 with no for loop
+    //~~~~~~~ Constructor ~~~~~~~
+    constructor() ERC721("NFBIT", "NFB"){
         for(uint i=0;i<99;++i){
             s_myBitMap.set(i);
         }
     }
 
-    function _updateState(uint256 _totalSupply) internal {
-        if(_totalSupply == PRIVATE_MINT_SUPPLY){
-            s_state = States.PUBLICSALE;
-        }else if(_totalSupply == MAX_SUPPLY){
-            s_state = States.SOLDOUT;
-        }
-    }
-
+    //~~~~~~~ onlyAdmin Functions ~~~~~~~
+    
     //Activate the preSale state 
     function openPrivateSale() external onlyOwner{
+        require(s_state == States.CLOSED, "NFB: Current state must be CLOSED");
         s_state = States.PRESALE;
     }
 
     //Activate the ClaimNFB state so the users can claim their NFT
     function activateClaim() external onlyOwner{
-        s_state = States.CLAIM_NFB;
+        require(s_state == States.SOLDOUT, "NFB: Current state must be SOLDOUT");
+        s_state = States.CLAIM_NFT;
     }
 
-    //only for users registered in the 
-    function privateRound() external {
+
+    //~~~~~~~ External / Public Functions ~~~~~~~
+
+    //1st step of minting/buying --> setYourCommit() user will set the commit putting a number and a salt
+    function setYourCommit(bytes32 _yourHash) external {
+        Commit memory _commit;
+        _commit.commitedHash = _yourHash;
+        _commit.blockNumber = block.number;
+        s_commits[msg.sender] = _commit;
+    }
+
+    //2nd step of minting/buying --> getYourTokenId() by verifying your commit
+    function getYourTokenId(uint _tokenId, uint _salt) internal {
+        Commit memory _commit = s_commits[msg.sender];
+        require(_commit.tokenIdForNFT == 0,"NFB: Random token ID was already revealed");
+        require(block.number < _commit.blockNumber + 255, "NFB: Too late, please submit your commit again");
+        require(block.number > _commit.blockNumber + 10, "NFB: Please verify after 10 blocks.");
+        require(getYourHash(_tokenId,_salt) == _commit.commitedHash , "NFB: Wrong hash");
+        bytes32 commitedBlockHash = blockhash(_commit.blockNumber);
+        uint256 MAX_RANDOM_NUMBER_FOR_TOKEN_ID = 1000000000000;
+        bytes32 randomHash = bytes32(keccak256(abi.encodePacked(commitedBlockHash,_commit.commitedHash)));
+        uint256 randomNumber = uint256(randomHash)%MAX_RANDOM_NUMBER_FOR_TOKEN_ID;
+        s_commits[msg.sender].tokenIdForNFT = randomNumber;  
+        emit RevealedRandomTokenId(randomNumber, msg.sender);
+    }
+
+    //3rd step of minting/buying --> mint()
+
+    //only for users registered in the private round
+    function privateRoundMint() external {
         require(s_state == States.PRESALE, "NFB: Minting is not in pre sale.");
         //1. update the ticket of the address to 0
         //2. check if the address is registered
         _allocateToken();
     }
 
-    function publicRound() external payable{
+    //anyone can call this one and mint by paying 0.001
+    function publicRoundMint() external payable{
         require(s_state == States.PUBLICSALE, "NFB: Minting is not in public sale.");
         require(msg.value == 0.001 ether, "NFB: Please pay 0.001 ether to mint.");
         _allocateToken();
     }
 
+    //~~~~~~~ Internal Functions ~~~~~~~
+
     function _allocateToken() internal {
         uint256 _totalSupply = s_totalSupply;
-        _safeMint(msg.sender, _totalSupply);
+        uint256 _tokenId = s_commits[msg.sender].tokenIdForNFT;
+        _safeMint(msg.sender, _tokenId);
         _updateState(_totalSupply);
         s_totalSupply++;
     }
 
+    function _updateState(uint256 _totalSupply) internal {
+        //Change state to PUBLISALE, once PRIVATE_MINT_SUPPLY has been minted.
+        if(_totalSupply == PRIVATE_MINT_SUPPLY){
+            s_state = States.PUBLICSALE;
+        
+        }
+        //Change state to SOLDOUT, once MAX_SUPPLY has been minted
+        else if(_totalSupply == MAX_SUPPLY){
+            s_state = States.SOLDOUT;
+        }
+    }
+
+    //~~~~~~~ Pure / View Functions ~~~~~~~
+    function getYourHash(uint256 _tokenId, uint256 _salt) public pure returns(bytes32){
+        return keccak256(abi.encodePacked(_tokenId, _salt));
+    }
 
     //Manage the datastructure bits
     function getBit(uint256 _index) external view returns(bool){
@@ -109,5 +157,16 @@ contract AdvancedNFT is ERC721, Ownable {
         return s_userMinted[msg.sender];
     }
 
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~ remove ~~~~~~~~~~~~~~~~~~~~~~~~
+
+    function getblock() external view returns(uint256){
+        return block.number;
+    }
+
+    function getBlockHash() external view returns(bytes32){
+        return blockhash(s_commits[msg.sender].blockNumber);
+    }
 
 }
