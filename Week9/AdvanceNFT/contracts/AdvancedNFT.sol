@@ -49,7 +49,8 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         for(uint i=0;i<99;++i){
             s_myBitMap.set(i);
         }
-        addMember(msg.sender);
+        s_teamMembersMap[msg.sender] = true;
+        s_teamMembersArr.push(msg.sender);
     }
 
     //~~~~~~~ onlyAdmin/Team Functions ~~~~~~~
