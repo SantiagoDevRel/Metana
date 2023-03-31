@@ -14,8 +14,8 @@ CAN'T BE DONE -Add multicall to the NFT so people can transfer several NFTs in o
 
 DONE -Designated address should be able to withdraw funds using the pull pattern. You should be able to withdraw to an arbitrary number of contributors
 
-## Flow of the private mint
+## Flow
 
-- the user will need to set the commit calling setYourCommit(hash)
-- the user has a time frame of between 2 minutes and 42 minutes to verify the commit and get the allocation of the tokenId
-- after all the NFTs are minted, and the state == CLAIM_NFT, the users will be able to claim their NFTs
+1. the contract whiteList will be deploy and will be the one that will store the addresses for the minting 
+
+

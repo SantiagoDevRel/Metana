@@ -3,6 +3,7 @@ pragma solidity 0.8.10;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
+import "./AdvancedNFT.sol";
 
 contract whiteListForERC721 is Ownable, PaymentSplitter {
     //~~~~~~~ State variables ~~~~~~~
@@ -45,6 +46,7 @@ contract whiteListForERC721 is Ownable, PaymentSplitter {
             s_state = State.PUBLIC_SALE;
         } else if (_ticketsSold == MAX_SUPPLY_PUBLIC_LIST) {
             s_state = State.SOLD_OUT;
+
         }
     }
 
