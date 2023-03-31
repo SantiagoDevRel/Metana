@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
 
 contract whiteListForERC721 is Ownable, PaymentSplitter {
-    
     //~~~~~~~ State variables ~~~~~~~
     uint256 public immutable MAX_SUPPLY_PRIVATE_LIST;
     uint256 public immutable MAX_SUPPLY_PUBLIC_LIST;
