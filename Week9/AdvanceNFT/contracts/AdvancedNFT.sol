@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.10;
 
-import "openzeppelin-contracts/token/ERC721/ERC721.sol";
-import "openzeppelin-contracts/utils/structs/BitMaps.sol";
-import "openzeppelin-contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract AdvancedNFT is ERC721, Ownable {
+contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
 
     //~~~~~~~ Libraries ~~~~~~~
     //Import the BitMap library and point it to the data type BitMaps.BitMap struct
@@ -36,8 +37,10 @@ contract AdvancedNFT is ERC721, Ownable {
     uint256 public s_totalSupply;
     States public s_state = States.CLOSED;
     BitMaps.BitMap private s_myBitMap;
+    address[] public s_teamMembersArr;
     mapping (address => bool) s_userMinted;
     mapping (address => Commit) public s_commits;
+    mapping (address => bool) public s_teamMembersMap;
 
 
 
@@ -46,9 +49,10 @@ contract AdvancedNFT is ERC721, Ownable {
         for(uint i=0;i<99;++i){
             s_myBitMap.set(i);
         }
+        addMember(msg.sender);
     }
 
-    //~~~~~~~ onlyAdmin Functions ~~~~~~~
+    //~~~~~~~ onlyAdmin/Team Functions ~~~~~~~
     
     //Activate the preSale state 
     function openPrivateSale() external onlyOwner{
@@ -61,6 +65,28 @@ contract AdvancedNFT is ERC721, Ownable {
         require(s_state == States.SOLDOUT, "NFB: Current state must be SOLDOUT");
         s_state = States.CLAIM_NFT;
     }
+
+    //Add a team member
+    function addMember(address _member) external onlyOwner{
+        s_teamMembersMap[_member] = true;
+        s_teamMembersArr.push(_member);
+    }
+
+    //Function for the team to withdraw funds equally
+    function withdrawFunds() external nonReentrant {
+        require(s_teamMembersMap[msg.sender], "NFB: You are not a team member");
+        address[] memory _teamMembers = s_teamMembersArr;
+        uint256 _amount = address(this).balance / _teamMembers.length;
+        for(uint i=0;i<_teamMembers.length;){
+            (bool success, ) = payable(_teamMembers[i]).call{value: _amount}("");
+            require(success, "NFB: Failed transfering funds to the team");
+            unchecked{
+                ++i;
+            }
+        }
+    }
+
+
 
 
     //~~~~~~~ External / Public Functions ~~~~~~~
