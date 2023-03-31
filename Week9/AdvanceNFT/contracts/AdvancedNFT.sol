@@ -86,9 +86,6 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         }
     }
 
-
-
-
     //~~~~~~~ External / Public Functions ~~~~~~~
 
     //1st step of minting/buying --> setYourCommit() user will set the commit putting a number and a salt

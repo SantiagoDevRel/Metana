@@ -13,7 +13,7 @@ DONE -Use commit reveal to allocate NFT ids randomly. The reveal should be 10 bl
 CAN'T BE DONE -Add multicall to the NFT so people can transfer several NFTs in one transaction (make sure people can’t abuse minting!)
 --> ??? Multicall only works for view functions, can't transfer NFTs from what I understood
 
--Designated address should be able to withdraw funds using the pull pattern. You should be able to withdraw to an arbitrary number of contributors
+DONE -Designated address should be able to withdraw funds using the pull pattern. You should be able to withdraw to an arbitrary number of contributors
 
 ## Flow of the private mint
 - the user will need to set the commit calling setYourCommit(hash)
