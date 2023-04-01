@@ -55,7 +55,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         PRIVATE_MINT_SUPPLY = _privateSupply;
         PRIVATE_LIST_MERKLE_ROOT = _privateRoot;
         PUBLIC_LIST_MERKLE_ROOT = _publicRoot;
-        whitelist = _whiteList;
+        s_whitelist = _whiteList;
     }
 
     //~~~~~~~ onlyAdmin/Team Functions ~~~~~~~
@@ -208,9 +208,9 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     }
 
     function _getTicketNumberFromUser(address _user) internal view returns(uint256){
-        bytes32 _functionSignature = abi.encodeWithSignature(getTicketNumber(address),_user);
-        (bool success, bytes memory data) = s_whiteList.staticcall(_functionSignature);
-        return data;
+        (uint256 _ticketNumber) = s_whitelist.getTicketNumber(_user);
+        require(_ticketNumber != 0, "NFB: Ticket number is invalid.");
+        return _ticketNumber;
     }
 
     //~~~~ REMOVE ~~~~~ Manage the datastructure bits
