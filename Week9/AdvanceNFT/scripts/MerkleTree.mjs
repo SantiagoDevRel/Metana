@@ -2,7 +2,7 @@ import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 import { ethers } from "ethers";
 import jsonWhiteList from "../artifacts/contracts/WhiteList.sol/whiteListForERC721.json" assert { type: "json" };
 import fs from "fs";
-
+/* 
 
 //create a provider in Sepolia network
 const provider = new ethers.providers.InfuraProvider("goerli")
@@ -43,4 +43,25 @@ function createMerkleTree(privateValues, publicValues){
       fs.writeFileSync("public.json", JSON.stringify(publicTree.dump()));
 }
 
-getValues()
+getValues() */
+
+
+const values = [
+    ["0xbd555f4c1d283441246e3b8081e994217b8109898aa1ac2c652b4b5e1d745d4d"],
+    ["0xbd555f4c1d283441246e3b8081e994217b8109898aa1ac2c652b4b5e1d745d4c"],
+    ["0xbd555f4c1d283441246e3b8081e994217b8109898aa1ac2c652b4b5e1d745d4e"],
+    ["0xbd555f4c1d283441246e3b8081e994217b8109898aa1ac2c652b4b5e1d745d4f"]
+  ];
+  
+  // (2)
+  const tree = StandardMerkleTree.of(values, ["bytes32"]);
+  
+  // (3)
+  console.log('Merkle Root:', tree.root);
+  
+  const leaf = ["0xbd555f4c1d283441246e3b8081e994217b8109898aa1ac2c652b4b5e1d745d4f"]
+  const leaf2 = ["0xbd555f4c1d283441246e3b8081e994217b8109898aa1ac2c652b4b5e1d745d4a"]
+
+  const proof = (tree.getProof(leaf))
+
+console.log( tree.verify(leaf2,proof))

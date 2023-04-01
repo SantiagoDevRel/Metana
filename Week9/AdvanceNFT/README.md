@@ -14,8 +14,12 @@ CAN'T BE DONE -Add multicall to the NFT so people can transfer several NFTs in o
 
 DONE -Designated address should be able to withdraw funds using the pull pattern. You should be able to withdraw to an arbitrary number of contributors
 
-## Flow
+## Flow WhiteList.sol for the user
 
-1. the contract whiteList will be deploy and will be the one that will store the addresses for the minting 
+![User flow](./Resources/UserFlow_WhiteList.png)
+
+## Admin outcomes in WhiteList.sol
+
+![Admin outcomes](./Resources/AdminOutcomes_WhiteList.png)
 
 
