@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.10;
+pragma solidity 0.8.1;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
-import "./AdvancedNFT.sol";
 
-contract whiteListForERC721 is Ownable, PaymentSplitter {
+contract WhiteListForERC721 is Ownable, PaymentSplitter {
     //~~~~~~~ State variables ~~~~~~~
     uint256 public immutable MAX_SUPPLY_PRIVATE_LIST;
     uint256 public immutable MAX_SUPPLY_PUBLIC_LIST;
@@ -56,7 +55,7 @@ contract whiteListForERC721 is Ownable, PaymentSplitter {
             s_state == State.PRIVATE_SALE,
             "WhiteList: State must be in Private Sale."
         );
-        require(msg.value == PRICE_FOR_PRIVATE_LIST_IN_WEI, "WhiteList: Please send 0.001 ether");
+        require(msg.value == PRICE_FOR_PRIVATE_LIST_IN_WEI, "WhiteList: Please send the right ether amount");
         address _buyer = msg.sender;
         require(
             s_ticketNumber[_buyer] == 0,
@@ -79,7 +78,7 @@ contract whiteListForERC721 is Ownable, PaymentSplitter {
         );
         require(
             msg.value == PRICE_FOR_PUBLIC_LIST_IN_WEI,
-            "WhiteList: Please send 0.00001 ether"
+            "WhiteList: Please send the right ether amount"
         );
         address _buyer = msg.sender;
         require(
@@ -97,8 +96,8 @@ contract whiteListForERC721 is Ownable, PaymentSplitter {
     }
 
     //~~~~~~~ View/Pure Functions ~~~~~~~
-    function getTicketNumber() external view returns (uint256) {
-        return s_ticketNumber[msg.sender];
+    function getTicketNumber(address _user) external view returns (uint256) {
+        return s_ticketNumber[_user];
     }
 
     function getPrivateListIDs() external view returns (bytes32[] memory) {
