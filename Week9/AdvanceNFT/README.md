@@ -22,4 +22,7 @@ DONE -Designated address should be able to withdraw funds using the pull pattern
 
 ![Admin outcomes](./Resources/AdminOutcomes_WhiteList.png)
 
+## Flow AdvancedNFT.sol for the user
+
+![User flow](./Resources/UserFlow_AdvancedNFT.png)
 
