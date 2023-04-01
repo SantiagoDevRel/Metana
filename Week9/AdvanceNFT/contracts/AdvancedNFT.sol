@@ -107,45 +107,59 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
 
     //3rd step of minting/buying --> mint()
 
+    
+
     //Only users registered in the early private round can mint here
     function privateRoundMint(uint256 _ticketNumber, bytes32[] memory _proof)
         external
     {
         require(
             s_state == States.MINT_PRIVATE_LIST,
-            "NFB: Minting is not in pre sale."
+            "NFB: Minting is not in private minting."
         );
+        require(_validatePreMint(_ticketNumber, _proof));
+        _allocateToken();
+    }
+
+    //Only users registered for the public sale can mint here
+    function publicRoundMint(uint256 _ticketNumber, bytes32[] memory _proof)
+        external
+    {
         require(
-            _userHasAValidPrivateTicket(_ticketNumber, _proof),
+            s_state == States.MINT_PUBLIC_LIST,
+            "NFB: Minting is not in public minting."
+        );
+        require(_validatePreMint(_ticketNumber, _proof));
+        _allocateToken();
+    }
+
+    //~~~~~~~ Internal Functions ~~~~~~~
+
+    function _validatePreMint(uint256 _ticketNumber, bytes32[] memory _proof)
+        internal
+        returns (bool)
+    {
+        require(
+            _userHasAValidTicket(_ticketNumber, _proof),
             "NFB: Invalid ticket number"
         );
         require(
             _verifyAndUseTicket(_ticketNumber),
             "NFB: Ticket was already spent."
         );
-        _allocateToken();
+        return true;
     }
 
-    //Only users registered for the public sale can mint here
-    function publicRoundMint() external payable {
-        require(
-            s_state == States.MINT_PUBLIC_LIST,
-            "NFB: Minting is not in public sale."
-        );
-        require(
-            msg.value == 0.001 ether,
-            "NFB: Please pay 0.001 ether to mint."
-        );
-        _allocateToken();
-    }
-
-    //~~~~~~~ Internal Functions ~~~~~~~
-
-    function _userHasAValidPrivateTicket(
+    function _userHasAValidTicket(
         uint256 _ticketNumber,
         bytes32[] memory _proof
     ) internal view returns (bool) {
-        bytes32 _root = PRIVATE_LIST_MERKLE_ROOT;
+        bytes32 _root;
+        if (s_state == States.MINT_PRIVATE_LIST) {
+            _root = PRIVATE_LIST_MERKLE_ROOT;
+        } else {
+            _root = PUBLIC_LIST_MERKLE_ROOT;
+        }
         bytes32 _leaf = keccak256(abi.encodePacked(msg.sender, _ticketNumber));
         return MerkleProof.verify(_proof, _root, _leaf);
     }
@@ -214,5 +228,4 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     function getMapping() external view returns (bool) {
         return s_userMinted[msg.sender];
     }
-
 }
