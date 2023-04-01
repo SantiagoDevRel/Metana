@@ -30,8 +30,8 @@ contract WhiteListForERC721 is Ownable, PaymentSplitter {
         uint256 _priceForPrivate,
         uint256 _priceForPublic,
         address[] memory _teamMembers,
-        uint256[] memory _shares
-    ) PaymentSplitter(_teamMembers, _shares) {
+        uint256[] memory _sharesTeamMembers
+    ) PaymentSplitter(_teamMembers, _sharesTeamMembers) {
         MAX_SUPPLY_PRIVATE_LIST = _maxSupplyPrivateList;
         MAX_SUPPLY_PUBLIC_LIST = _maxSupplyPublicList;
         PRICE_FOR_PRIVATE_LIST_IN_WEI = _priceForPrivate;

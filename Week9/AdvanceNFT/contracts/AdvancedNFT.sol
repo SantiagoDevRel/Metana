@@ -44,18 +44,16 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
 
     //~~~~~~~ Constructor ~~~~~~~
     constructor(
-        uint256 _privateSupply,
-        uint256 _maxSupply,
         bytes32 _privateRoot,
         bytes32 _publicRoot,
         WhiteListForERC721 _whiteList
     ) ERC721("NFBIT", "NFB") {
         s_state = States.CLOSED;
-        MAX_SUPPLY = _maxSupply;
-        PRIVATE_MINT_SUPPLY = _privateSupply;
+        s_whitelist = _whiteList;
+        MAX_SUPPLY = s_whitelist.MAX_SUPPLY_PRIVATE_LIST();
+        PRIVATE_MINT_SUPPLY = s_whitelist.MAX_SUPPLY_PUBLIC_LIST();
         PRIVATE_LIST_MERKLE_ROOT = _privateRoot;
         PUBLIC_LIST_MERKLE_ROOT = _publicRoot;
-        s_whitelist = _whiteList;
     }
 
     //~~~~~~~ onlyAdmin/Team Functions ~~~~~~~
@@ -80,10 +78,10 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     }
 
     //2nd step of minting/buying --> getYourTokenId() by verifying your commit
-    function getYourTokenId(uint256 _randomUserNumber, uint256 _salt) internal {
+    function verifyYourCommit(uint256 _randomUserNumber, uint256 _salt) external {
         Commit memory _commit = s_commits[msg.sender];
         require(
-            _commit.tokenIdForNFT == 0,
+            (_commit.tokenIdForNFT == 0),
             "NFB: Random token ID was already revealed"
         );
         require(
@@ -95,7 +93,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
             "NFB: Please verify after 10 blocks."
         );
         require(
-            getYourHash(_randomUserNumber, _salt) == _commit.commitedHash,
+            (getYourHash(_randomUserNumber, _salt) == _commit.commitedHash),
             "NFB: Wrong hash"
         );
         bytes32 commitedBlockHash = blockhash(_commit.blockNumber);
@@ -111,15 +109,11 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
 
     //3rd step of minting/buying --> mint()
 
-    
-
     //Only users registered in the early private round can mint here
-    function privateRoundMint(bytes32[] memory _proof)
-        external
-    {
+    function privateRoundMint(bytes32[] memory _proof) external {
         require(
             s_state == States.MINT_PRIVATE_LIST,
-            "NFB: Minting is not in private minting."
+            "NFB: Minting is not in private minting state."
         );
         uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
         require(_validatePreMint(_ticketNumber, _proof));
@@ -127,12 +121,10 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     }
 
     //Only users registered for the public sale can mint here
-    function publicRoundMint(bytes32[] memory _proof)
-        external
-    {
+    function publicRoundMint(bytes32[] memory _proof) external {
         require(
             s_state == States.MINT_PUBLIC_LIST,
-            "NFB: Minting is not in public minting."
+            "NFB: Minting is not in public minting state."
         );
         uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
         require(_validatePreMint(_ticketNumber, _proof));
@@ -146,17 +138,21 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         returns (bool)
     {
         require(
-            _userHasAValidTicket(_ticketNumber, _proof),
+            s_commits[msg.sender].tokenIdForNFT != 0,
+            "NFB: Please set and verify your commit first."
+        );
+        require(
+            _userHasAValidTicketMerkleProof(_ticketNumber, _proof),
             "NFB: Invalid ticket number"
         );
         require(
-            _verifyAndUseTicket(_ticketNumber),
+            _verifyAndUseTicketBitMaps(_ticketNumber),
             "NFB: Ticket was already spent."
         );
         return true;
     }
 
-    function _userHasAValidTicket(
+    function _userHasAValidTicketMerkleProof(
         uint256 _ticketNumber,
         bytes32[] memory _proof
     ) internal view returns (bool) {
@@ -166,11 +162,13 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         } else {
             _root = PUBLIC_LIST_MERKLE_ROOT;
         }
-        bytes32 _leaf = keccak256(abi.encodePacked(msg.sender, _ticketNumber));
+        bytes32 _leaf = keccak256(
+            abi.encodePacked(keccak256(abi.encode(msg.sender, _ticketNumber)))
+        );
         return MerkleProof.verify(_proof, _root, _leaf);
     }
 
-    function _verifyAndUseTicket(uint256 _ticketNumber)
+    function _verifyAndUseTicketBitMaps(uint256 _ticketNumber)
         internal
         returns (bool)
     {
@@ -198,6 +196,16 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         }
     }
 
+    function _getTicketNumberFromUser(address _user)
+        internal
+        view
+        returns (uint256)
+    {
+        uint256 _ticketNumber = s_whitelist.getTicketNumber(_user);
+        require(_ticketNumber != 0, "NFB: Ticket number is invalid.");
+        return _ticketNumber;
+    }
+
     //~~~~~~~ Pure / View Functions ~~~~~~~
     function getYourHash(uint256 _randomUserNumber, uint256 _salt)
         public
@@ -207,34 +215,11 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         return keccak256(abi.encodePacked(_randomUserNumber, _salt));
     }
 
-    function _getTicketNumberFromUser(address _user) internal view returns(uint256){
-        (uint256 _ticketNumber) = s_whitelist.getTicketNumber(_user);
-        require(_ticketNumber != 0, "NFB: Ticket number is invalid.");
-        return _ticketNumber;
-    }
+    
 
-    //~~~~ REMOVE ~~~~~ Manage the datastructure bits
+    //~~~~ Manage the data structure bits ~~~~~
     function getBit(uint256 _index) external view returns (bool) {
         return s_myBitMap.get(_index);
     }
 
-    function setToBit(uint256 _index, bool _value) external {
-        s_myBitMap.setTo(_index, _value);
-    }
-
-    function setBit(uint256 _index) external {
-        s_myBitMap.set(_index);
-    }
-
-    function unsetBit(uint256 _index) external {
-        s_myBitMap.unset(_index);
-    }
-
-    function setMapping() external {
-        s_userMinted[msg.sender] = true;
-    }
-
-    function getMapping() external view returns (bool) {
-        return s_userMinted[msg.sender];
-    }
 }
