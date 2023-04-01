@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.10;
+pragma solidity 0.8.1;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "./WhiteList.sol";
 
 contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     //~~~~~~~ Libraries ~~~~~~~
@@ -37,6 +38,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     uint256 public s_totalSupply;
     States public s_state;
     BitMaps.BitMap private s_myBitMap;
+    WhiteListForERC721 public s_whitelist;
     mapping(address => bool) s_userMinted;
     mapping(address => Commit) public s_commits;
 
@@ -45,13 +47,15 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         uint256 _privateSupply,
         uint256 _maxSupply,
         bytes32 _privateRoot,
-        bytes32 _publicRoot
+        bytes32 _publicRoot,
+        WhiteListForERC721 _whiteList
     ) ERC721("NFBIT", "NFB") {
         s_state = States.CLOSED;
         MAX_SUPPLY = _maxSupply;
         PRIVATE_MINT_SUPPLY = _privateSupply;
         PRIVATE_LIST_MERKLE_ROOT = _privateRoot;
         PUBLIC_LIST_MERKLE_ROOT = _publicRoot;
+        whitelist = _whiteList;
     }
 
     //~~~~~~~ onlyAdmin/Team Functions ~~~~~~~
@@ -110,25 +114,27 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     
 
     //Only users registered in the early private round can mint here
-    function privateRoundMint(uint256 _ticketNumber, bytes32[] memory _proof)
+    function privateRoundMint(bytes32[] memory _proof)
         external
     {
         require(
             s_state == States.MINT_PRIVATE_LIST,
             "NFB: Minting is not in private minting."
         );
+        uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
         require(_validatePreMint(_ticketNumber, _proof));
         _allocateToken();
     }
 
     //Only users registered for the public sale can mint here
-    function publicRoundMint(uint256 _ticketNumber, bytes32[] memory _proof)
+    function publicRoundMint(bytes32[] memory _proof)
         external
     {
         require(
             s_state == States.MINT_PUBLIC_LIST,
             "NFB: Minting is not in public minting."
         );
+        uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
         require(_validatePreMint(_ticketNumber, _proof));
         _allocateToken();
     }
@@ -201,7 +207,13 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         return keccak256(abi.encodePacked(_randomUserNumber, _salt));
     }
 
-    //Manage the datastructure bits
+    function _getTicketNumberFromUser(address _user) internal view returns(uint256){
+        bytes32 _functionSignature = abi.encodeWithSignature(getTicketNumber(address),_user);
+        (bool success, bytes memory data) = s_whiteList.staticcall(_functionSignature);
+        return data;
+    }
+
+    //~~~~ REMOVE ~~~~~ Manage the datastructure bits
     function getBit(uint256 _index) external view returns (bool) {
         return s_myBitMap.get(_index);
     }
@@ -211,17 +223,14 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     }
 
     function setBit(uint256 _index) external {
-        //43971 tx cost - 22767 ex cost
         s_myBitMap.set(_index);
     }
 
     function unsetBit(uint256 _index) external {
-        //30942 tx cost (from 1 to 0)
         s_myBitMap.unset(_index);
     }
 
     function setMapping() external {
-        //43509 tx cost - 22445 ex cost
         s_userMinted[msg.sender] = true;
     }
 
