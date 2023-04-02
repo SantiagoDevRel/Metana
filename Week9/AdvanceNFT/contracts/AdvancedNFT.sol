@@ -48,23 +48,12 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         bytes32 _publicRoot,
         WhiteListForERC721 _whiteList
     ) ERC721("NFBIT", "NFB") {
-        s_state = States.CLOSED;
+        s_state = States.MINT_PRIVATE_LIST;
         s_whitelist = _whiteList;
         MAX_SUPPLY = s_whitelist.MAX_SUPPLY_PRIVATE_LIST();
         PRIVATE_MINT_SUPPLY = s_whitelist.MAX_SUPPLY_PUBLIC_LIST();
         PRIVATE_LIST_MERKLE_ROOT = _privateRoot;
         PUBLIC_LIST_MERKLE_ROOT = _publicRoot;
-    }
-
-    //~~~~~~~ onlyAdmin/Team Functions ~~~~~~~
-
-    //Activate the preSale state
-    function openPrivateMint() external onlyOwner {
-        s_state = States.MINT_PRIVATE_LIST;
-    }
-
-    function openPublicMint() external onlyOwner {
-        s_state = States.MINT_PUBLIC_LIST;
     }
 
     //~~~~~~~ External / Public Functions ~~~~~~~
@@ -78,10 +67,10 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     }
 
     //2nd step of minting/buying --> getYourTokenId() by verifying your commit
-    function verifyYourCommit(uint256 _randomUserNumber, uint256 _salt) external {
+    function getYourTokenId(uint256 _randomUserNumber, uint256 _salt) internal {
         Commit memory _commit = s_commits[msg.sender];
         require(
-            (_commit.tokenIdForNFT == 0),
+            _commit.tokenIdForNFT == 0,
             "NFB: Random token ID was already revealed"
         );
         require(
@@ -93,7 +82,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
             "NFB: Please verify after 10 blocks."
         );
         require(
-            (getYourHash(_randomUserNumber, _salt) == _commit.commitedHash),
+            getYourHash(_randomUserNumber, _salt) == _commit.commitedHash,
             "NFB: Wrong hash"
         );
         bytes32 commitedBlockHash = blockhash(_commit.blockNumber);
@@ -196,6 +185,15 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         }
     }
 
+    //~~~~~~~ Pure / View Functions ~~~~~~~
+    function getYourHash(uint256 _randomUserNumber, uint256 _salt)
+        public
+        pure
+        returns (bytes32)
+    {
+        return keccak256(abi.encodePacked(_randomUserNumber, _salt));
+    }
+
     function _getTicketNumberFromUser(address _user)
         internal
         view
@@ -206,16 +204,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         return _ticketNumber;
     }
 
-    //~~~~~~~ Pure / View Functions ~~~~~~~
-    function getYourHash(uint256 _randomUserNumber, uint256 _salt)
-        public
-        pure
-        returns (bytes32)
-    {
-        return keccak256(abi.encodePacked(_randomUserNumber, _salt));
-    }
 
-    
 
     //~~~~ Manage the data structure bits ~~~~~
     function getBit(uint256 _index) external view returns (bool) {
