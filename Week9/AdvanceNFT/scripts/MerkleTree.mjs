@@ -50,7 +50,6 @@ const valuesPrivate = [
   ["0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db", "2"],
 ];
 
-
 const valuesPublic = [
   ["0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", "3"],
   ["0x617F2E2fD72FD9D5503197092aC168c91465E7f2", "4"],
@@ -62,10 +61,7 @@ const treePrivate = StandardMerkleTree.of(valuesPrivate, [
   "uint256",
 ]);
 
-const treePublic = StandardMerkleTree.of(valuesPublic, [
-  "address",
-  "uint256",
-]);
+const treePublic = StandardMerkleTree.of(valuesPublic, ["address", "uint256"]);
 
 // (3)
 const privateRoot = treePrivate.root;
