@@ -38,7 +38,6 @@ contract AdvancedNFT is ERC721, ReentrancyGuard {
     States public s_state;
     BitMaps.BitMap private s_myBitMap;
     WhiteListForERC721 public s_whitelist;
-    mapping(address => bool) s_userMinted;
     mapping(address => Commit) public s_commits;
 
     //~~~~~~~ Constructor ~~~~~~~
