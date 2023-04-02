@@ -51,8 +51,6 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         PUBLIC_LIST_MERKLE_ROOT = _publicRoot;
     }
 
-    //~~~~~~~ onlyAdmin/Team Functions ~~~~~~~
-
     //Activate the preSale state
     function openPrivateMint() external onlyOwner {
         s_state = States.MINT_PRIVATE_LIST;
