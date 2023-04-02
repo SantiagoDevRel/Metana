@@ -3,12 +3,11 @@ pragma solidity 0.8.1;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "./WhiteList.sol";
 
-contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
+contract AdvancedNFT is ERC721, ReentrancyGuard {
     //~~~~~~~ Libraries ~~~~~~~
     //Import the BitMap library and point it to the data type BitMaps.BitMap struct
     using BitMaps for BitMaps.BitMap;
