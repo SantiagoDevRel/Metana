@@ -24,8 +24,8 @@ pragma solidity 0.8.1;
 */
  contract EternalStorage{
 
-    address public caller;
-    uint public number;
+    address private caller;
+    uint private number;
 
     function getCaller() public view returns (address){
         return caller;
