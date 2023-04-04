@@ -2,7 +2,7 @@ const hre = require("hardhat");
 
 async function main() {
   const Box = await hre.ethers.getContractFactory("Box");
-  const boxProxy = await hre.upgrades.deployProxy(Box,[7],{initializer:"store"})
+  const boxProxy = await hre.upgrades.deployProxy(Box,[7],{initializer:"initialize"})
 
   console.log("BoxProxy deployed to:",boxProxy.address)
   console.log("Box implementation deployed to:", Box.address)
