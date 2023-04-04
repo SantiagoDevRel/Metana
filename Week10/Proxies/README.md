@@ -16,4 +16,10 @@ MUST NOT HAVE:
     2.
     const Token = await hre.ethers.getContractFactory("MyTokenUpgradable");
     deploy Universal upgradeable proxy standar UUPS
-    const tokenProxy = await hre.upgrades.deployProxy(Token,{kind: "uups"}, ["PROXY","PRX"],{ initializer:"initialize"})
+    const tokenProxy = await hre.upgrades.deployProxy(Token, ["PROXY","PRX"],{kind: "uups", initializer:"initialize"})
+
+## UUPS
+    -We need to add the upgradedTo() to the UUPS contract, so we need to inherit from UUPSUpgradeable
+    -We need to add the function
+    `function _authorizeUpgrade(address newImplementation) internal override {}`
+    to the proxy, and write the implementation of the function, (recommended just use "onlyOwner")
