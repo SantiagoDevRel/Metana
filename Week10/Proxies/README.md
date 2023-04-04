@@ -1,13 +1,7 @@
-# Sample Hardhat Project
+# UNSAFE CODE FOR UPGRADEABLE CONTRACTS
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+MUST NOT HAVE:
+-constructor
+-initialize called more than once
+-reorder storage (should have same layout for the storage of the v1 contract)
+-selfdestruct/kill function
