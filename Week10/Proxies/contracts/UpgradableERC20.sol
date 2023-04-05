@@ -28,7 +28,14 @@ contract MyTokenUpgradable is Initializable, ERC20Upgradeable, OwnableUpgradeabl
 
 contract MyTokenUpgradableV2 is MyTokenUpgradable {
 
-    function version() external pure returns(string memory){
+    function version() external virtual pure returns(string memory){
         return "v2!";
+    }
+}
+
+contract MyTokenUpgradableV3 is MyTokenUpgradableV2 {
+
+    function version() external virtual override pure returns(string memory){
+        return "v3!";
     }
 }

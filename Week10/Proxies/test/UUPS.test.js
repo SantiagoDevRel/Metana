@@ -37,7 +37,7 @@ describe("Lock", function () {
     })
   });
 
-  describe("Upgrading v2", function () {
+  describe("Upgrading v2 & v3", function () {
     it("Deployment", async function () {
       const { tokenProxy, owner } = await loadFixture(ProxyFixture);
       
@@ -47,6 +47,11 @@ describe("Lock", function () {
       expect(await tokenProxyV2.name()).to.equal("PROXY");
       expect(await tokenProxyV2.symbol()).to.equal("PRX");
       expect(await tokenProxyV2.version()).to.equal("v2!");
+
+      const TokenV3 = await hre.ethers.getContractFactory("MyTokenUpgradableV3");
+      const tokenProxyV3 = await hre.upgrades.upgradeProxy(tokenProxyV2, TokenV3);
+
+      expect(await tokenProxyV2.version()).to.equal("v3!");
     });
   });
 });
