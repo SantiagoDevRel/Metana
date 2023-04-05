@@ -33,9 +33,11 @@ contract MyTokenUpgradableV2 is MyTokenUpgradable {
     }
 }
 
-contract MyTokenUpgradableV3 is MyTokenUpgradableV2 {
+contract MyTokenUpgradableV3 is MyTokenUpgradableV2{
 
     function version() external virtual override pure returns(string memory){
         return "v3!";
     }
+
+
 }
