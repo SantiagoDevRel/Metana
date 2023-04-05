@@ -50,7 +50,7 @@ describe("Lock", function () {
 
       const TokenV3 = await hre.ethers.getContractFactory("MyTokenUpgradableV3");
       const tokenProxyV3 = await hre.upgrades.upgradeProxy(tokenProxyV2, TokenV3);
-
+      expect(await tokenProxyV3.owner()).to.equal(owner.address)
       expect(await tokenProxyV3.version()).to.equal("v3!");
     });
   });
