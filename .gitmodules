@@ -1,0 +1,3 @@
+[submodule "Week10/diamond-1-hardhat"]
+	path = Week10/diamond-1-hardhat
+	url = https://github.com/mudgen/diamond-1-hardhat
