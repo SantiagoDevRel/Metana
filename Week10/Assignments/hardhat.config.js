@@ -6,7 +6,7 @@ const { MUMBAI_KEY, PRIVATE_KEY, POLY_KEY } = process.env;
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  defaultNetwork: "hardhat",
+  defaultNetwork: "mumbai",
   solidity: "0.8.18",
   networks: {
     mumbai: {
