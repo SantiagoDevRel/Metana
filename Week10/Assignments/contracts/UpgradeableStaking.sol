@@ -118,8 +118,9 @@ contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC72
     */
     function _userCanWithdrawRewards(uint _tokenId) internal returns(bool){
         uint timeStaked = (timeNFTStakedByUser[msg.sender][_tokenId]);
-        if( timeStaked + 1 minutes < block.timestamp){
-            _generateRewards(block.timestamp-timeStaked, _tokenId);
+        uint256 _currentTime = block.timestamp;
+        if( timeStaked + 1 minutes < _currentTime){
+            _generateRewards(_currentTime-timeStaked, _tokenId);
             return true;
         }
         return false;
