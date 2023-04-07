@@ -18,7 +18,7 @@ contract UpERC20 is Initializable, UUPSUpgradeable, ERC20Upgradeable, OwnableUpg
     //~~~~~~~~ State variables ~~~~~~~~ 
     //Implementations MUST preserve this layout of state variables
     //The best could be to inherit and override the functions
-    mapping(address => bool) isMinter;
+    mapping(address => bool) private isMinter;
 
     //~~~~~~~~ Constructor "Init" ~~~~~~~~
     function init(string memory _name, string memory _symbol) external initializer() {
@@ -36,7 +36,7 @@ contract UpERC20 is Initializable, UUPSUpgradeable, ERC20Upgradeable, OwnableUpg
     }
 
     function _authorizeUpgrade(address newImplementation) internal virtual override onlyOwner{
-        require(newImplementation.isContract(), "UpERC20: New implementation is not a contract");
+        require(newImplementation.isContract(), "UpERC20: New implementation isn't a contract");
     }
 
     //~~~~~~~~ onlyMinter functions ~~~~~~~~
