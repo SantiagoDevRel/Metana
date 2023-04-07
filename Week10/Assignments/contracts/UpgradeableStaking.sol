@@ -11,9 +11,10 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradea
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 
 
-contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC721ReceiverUpgradeable{
+contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC721ReceiverUpgradeable, ReentrancyGuardUpgradeable{
     
     //~~~~~~~~ Libraries ~~~~~~~~ 
     using AddressUpgradeable for address;
@@ -37,6 +38,7 @@ contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC72
         token = _token;
         rewardsTokenPerSecond = 11574074;
         __Ownable_init();
+        __ReentrancyGuard_init();
     }
 
     function _authorizeUpgrade(address newImplementation) internal virtual override onlyOwner{
@@ -52,25 +54,28 @@ contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC72
         * set mapping User --> NFT id --> block.timestamp (time where the NFT is staked)
     */
     function stakeNFT(uint _tokenId) external {
-        nft.safeTransferFrom(msg.sender, address(this), _tokenId);
-        userToNFTStaked[msg.sender][_tokenId] = true;
-        timeNFTStakedByUser[msg.sender][_tokenId] = block.timestamp;
+        address _sender = msg.sender;
+        nft.safeTransferFrom(_sender, address(this), _tokenId);
+        userToNFTStaked[_sender][_tokenId] = true;
+        timeNFTStakedByUser[_sender][_tokenId] = block.timestamp;
     }
 
     /*
         * Function to claim the rewards:
         * check if user can withdraw rewards and call that function to generate the rewards for the user
-        * if the user pass the require(), then call the contract MrToken and mint the rewards for the user
+        * if the user pass the require(), then call the contract MrToken and the rewards for the user
         * send the rewards (ERC20) to the user
         * set mapping User --> NFT id --> 0 rewards
     */
-    function claimRewards(uint _tokenId) public {
-        require(userToNFTStaked[msg.sender][_tokenId], "MrStakingv2: You don't have any NFT staked");
+    function claimRewards(uint _tokenId) public nonReentrant(){
+        address _sender = msg.sender;
+        require(userToNFTStaked[_sender][_tokenId], "MrStakingv2: You don't have any NFT staked");
         require(_userCanWithdrawRewards(_tokenId), "MrStakingv2: The 24h have not passed yet, try later.");
-        require(balanceOfRewardsPerNFT[msg.sender][_tokenId] > 0,"MrStakingv2: You have nothing to claim");
-        balanceOfRewardsPerNFT[msg.sender][_tokenId] = 0;
-        timeNFTStakedByUser[msg.sender][_tokenId] = block.timestamp;
-        token.mint(msg.sender, balanceOfRewardsPerNFT[msg.sender][_tokenId]);
+        uint256 _rewardsToClaim = balanceOfRewardsPerNFT[_sender][_tokenId];
+        require(_rewardsToClaim > 0,"MrStakingv2: You have nothing to claim");
+        balanceOfRewardsPerNFT[_sender][_tokenId] = 0;
+        timeNFTStakedByUser[_sender][_tokenId] = block.timestamp;
+        token.mint(_sender, _rewardsToClaim);
     }
 
     /*
@@ -79,11 +84,12 @@ contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC72
         * send the NFT back to the user using safeTransferFrom()
         * set mapping User --> NFT id --> false (not staked anymore)
     */
-    function witdrawNFT(uint _tokenId) external {
-        require(userToNFTStaked[msg.sender][_tokenId], "MrStakingv2: You are not allowed to withdraw this token");
+    function witdrawNFT(uint _tokenId) external nonReentrant() {
+        address _sender = msg.sender;
+        require(userToNFTStaked[_sender][_tokenId], "MrStakingv2: You are not allowed to withdraw this token");
         claimRewards(_tokenId);
-        nft.safeTransferFrom(address(this), msg.sender, _tokenId);
-        userToNFTStaked[msg.sender][_tokenId] = false;
+        nft.safeTransferFrom(address(this), _sender, _tokenId);
+        userToNFTStaked[_sender][_tokenId] = false;
     }
 
     function updateRewards(uint256 _newRewardsPerSecond) external onlyOwner{
