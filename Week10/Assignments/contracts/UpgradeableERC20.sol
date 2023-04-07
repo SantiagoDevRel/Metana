@@ -40,7 +40,7 @@ contract UpERC20 is Initializable, UUPSUpgradeable, ERC20Upgradeable, OwnableUpg
     }
 
     //~~~~~~~~ onlyMinter functions ~~~~~~~~
-    function mintByMinter(address _to, uint256 _amount) external virtual {
+    function mint(address _to, uint256 _amount) external virtual {
         require(isMinter[msg.sender], "UpERC20: You are not a minter");
         _mint(_to, _amount);
     }
