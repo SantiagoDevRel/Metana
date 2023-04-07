@@ -16,6 +16,9 @@ contract UpNFT is Initializable, UUPSUpgradeable, ERC721Upgradeable, OwnableUpgr
     //~~~~~~~~ Library ~~~~~~~~ 
     using AddressUpgradeable for address;
 
+    //~~~~~~~~ Events ~~~~~~~~ 
+    event NewURI(string newURI);
+
     //~~~~~~~~ State variables ~~~~~~~~ 
     uint256 private _totalSupply;
     string private _stateBaseURI;
@@ -34,6 +37,7 @@ contract UpNFT is Initializable, UUPSUpgradeable, ERC721Upgradeable, OwnableUpgr
 
     function updateURI(string memory _newBaseURI) external virtual onlyOwner{
         _stateBaseURI = _newBaseURI;
+        emit NewURI(_newBaseURI);
     }
 
     function mint() external virtual {
