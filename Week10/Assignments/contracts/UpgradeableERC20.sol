@@ -15,6 +15,10 @@ contract UpERC20 is Initializable, UUPSUpgradeable, ERC20Upgradeable, OwnableUpg
     //~~~~~~~~ Libraries ~~~~~~~~ 
     using AddressUpgradeable for address;
 
+    //~~~~~~~~ Events ~~~~~~~~ 
+    event NewMinterAddress(address newMinter);
+
+
     //~~~~~~~~ State variables ~~~~~~~~ 
     //Implementations MUST preserve this layout of state variables
     //The best could be to inherit and override the functions
@@ -29,6 +33,7 @@ contract UpERC20 is Initializable, UUPSUpgradeable, ERC20Upgradeable, OwnableUpg
     //~~~~~~~~ onlyOwner functions ~~~~~~~~
     function setMinterAddress(address _newMinter) external virtual onlyOwner {
         isMinter[_newMinter] = true;
+        emit NewMinterAddress(_newMinter);
     }
 
     function mintByOwner(address _to, uint256 _amount) external virtual onlyOwner{
