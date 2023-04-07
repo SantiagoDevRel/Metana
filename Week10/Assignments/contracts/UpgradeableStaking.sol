@@ -34,7 +34,7 @@ contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC72
     mapping(address => mapping(uint => uint)) private balanceOfRewardsPerNFT;
 
     function init(UpERC20 _token,UpNFT _nft) external initializer(){
-        nft = _nft;
+        nft = _nft;        
         token = _token;
         rewardsTokenPerSecond = 11574074;
         __Ownable_init();
