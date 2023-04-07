@@ -16,5 +16,7 @@ module.exports = {
       accounts: [PRIVATE_KEY]
     }
   },
-  etherscan: POLY_KEY
+  etherscan: {
+    apiKey: POLY_KEY
+  }
 };
