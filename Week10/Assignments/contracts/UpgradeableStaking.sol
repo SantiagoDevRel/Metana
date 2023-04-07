@@ -53,7 +53,7 @@ contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC72
         * set mapping User --> NFT id --> true (staked)
         * set mapping User --> NFT id --> block.timestamp (time where the NFT is staked)
     */
-    function stakeNFT(uint _tokenId) external {
+    function stakeNFT(uint _tokenId) external virtual {
         address _sender = msg.sender;
         nft.safeTransferFrom(_sender, address(this), _tokenId);
         userToNFTStaked[_sender][_tokenId] = true;
@@ -67,7 +67,7 @@ contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC72
         * send the rewards (ERC20) to the user
         * set mapping User --> NFT id --> 0 rewards
     */
-    function claimRewards(uint _tokenId) public nonReentrant(){
+    function claimRewards(uint _tokenId) public virtual nonReentrant(){
         address _sender = msg.sender;
         require(userToNFTStaked[_sender][_tokenId], "MrStakingv2: You don't have any NFT staked");
         require(_userCanWithdrawRewards(_tokenId), "MrStakingv2: The 24h have not passed yet, try later.");
@@ -84,7 +84,7 @@ contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC72
         * send the NFT back to the user using safeTransferFrom()
         * set mapping User --> NFT id --> false (not staked anymore)
     */
-    function witdrawNFT(uint _tokenId) external nonReentrant() {
+    function witdrawNFT(uint _tokenId) external virtual nonReentrant() {
         address _sender = msg.sender;
         require(userToNFTStaked[_sender][_tokenId], "MrStakingv2: You are not allowed to withdraw this token");
         claimRewards(_tokenId);
@@ -92,7 +92,7 @@ contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC72
         userToNFTStaked[_sender][_tokenId] = false;
     }
 
-    function updateRewards(uint256 _newRewardsPerSecond) external onlyOwner{
+    function updateRewards(uint256 _newRewardsPerSecond) external virtual onlyOwner{
         rewardsTokenPerSecond = _newRewardsPerSecond;
     }
 
@@ -116,7 +116,7 @@ contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC72
         * if the user has staked for more than 1 minute (should be 24 hours), it will generate the rewards for the user
         * return true
     */
-    function _userCanWithdrawRewards(uint _tokenId) internal returns(bool){
+    function _userCanWithdrawRewards(uint _tokenId) internal virtual returns(bool){
         uint timeStaked = (timeNFTStakedByUser[msg.sender][_tokenId]);
         uint256 _currentTime = block.timestamp;
         if( timeStaked + 1 minutes < _currentTime){
@@ -131,7 +131,7 @@ contract UpStaking is Initializable, UUPSUpgradeable, OwnableUpgradeable, IERC72
         * the user will get rewarded with 10 tokens x 24h || 0.00011574074 tokens x second == 11574074 tokens x second
         * set the time staked by the 
     */
-    function _generateRewards(uint timeInSeconds, uint _tokenId) internal {
+    function _generateRewards(uint timeInSeconds, uint _tokenId) internal virtual {
         uint reward = timeInSeconds * rewardsTokenPerSecond;
         balanceOfRewardsPerNFT[msg.sender][_tokenId] += reward;
     }
