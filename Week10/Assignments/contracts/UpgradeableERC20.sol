@@ -22,7 +22,7 @@ contract UpERC20 is Initializable, UUPSUpgradeable, ERC20Upgradeable, OwnableUpg
     //~~~~~~~~ State variables ~~~~~~~~ 
     //Implementations MUST preserve this layout of state variables
     //The best could be to inherit and override the functions
-    mapping(address => bool) private isMinter;
+    mapping(address => bool) private s_isMinter;
 
     //~~~~~~~~ Constructor "Init" ~~~~~~~~
     function init(string memory _name, string memory _symbol) external initializer() {
@@ -32,7 +32,7 @@ contract UpERC20 is Initializable, UUPSUpgradeable, ERC20Upgradeable, OwnableUpg
 
     //~~~~~~~~ onlyOwner functions ~~~~~~~~
     function setMinterAddress(address _newMinter) external virtual onlyOwner {
-        isMinter[_newMinter] = true;
+        s_isMinter[_newMinter] = true;
         emit NewMinterAddress(_newMinter);
     }
 
@@ -46,13 +46,13 @@ contract UpERC20 is Initializable, UUPSUpgradeable, ERC20Upgradeable, OwnableUpg
 
     //~~~~~~~~ onlyMinter functions ~~~~~~~~
     function mint(address _to, uint256 _amount) external virtual {
-        require(isMinter[msg.sender], "UpERC20: You are not a minter");
+        require(s_isMinter[msg.sender], "UpERC20: You are not a minter");
         _mint(_to, _amount);
     }
 
     //~~~~~~~~ View functions ~~~~~~~~
     function getMinter(address _minter) external virtual view returns(bool){
-        return isMinter[_minter];
+        return s_isMinter[_minter];
     }
 
    
