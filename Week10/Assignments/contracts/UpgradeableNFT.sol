@@ -32,7 +32,7 @@ contract UpNFT is Initializable, UUPSUpgradeable, ERC721Upgradeable, OwnableUpgr
         require(newImplementation.isContract(), "UpERC20: New implementation isn't a contract");
     }
 
-    function updateURI(string memory _newBaseURI) external onlyOwner{
+    function updateURI(string memory _newBaseURI) external virtual onlyOwner{
         _stateBaseURI = _newBaseURI;
     }
 
@@ -42,11 +42,11 @@ contract UpNFT is Initializable, UUPSUpgradeable, ERC721Upgradeable, OwnableUpgr
     }
 
     //~~~~~~~~ view/pure functions ~~~~~~~~
-    function totalSupply() external view returns(uint256){
+    function totalSupply() external virtual view returns(uint256){
         return _totalSupply;
     }
 
-    function _baseURI() internal view override returns (string memory) {
+    function _baseURI() internal view virtual override returns (string memory) {
         return _stateBaseURI;
     }
 
