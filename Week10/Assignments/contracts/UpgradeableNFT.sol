@@ -20,14 +20,14 @@ contract UpNFT is Initializable, UUPSUpgradeable, ERC721Upgradeable, OwnableUpgr
     event NewURI(string newURI);
 
     //~~~~~~~~ State variables ~~~~~~~~ 
-    uint256 private _totalSupply;
-    string private _stateBaseURI;
+    uint256 private s_totalSupply;
+    string private s_stateBaseURI;
 
     //~~~~~~~~ Constructor "Init" ~~~~~~~~
     function init(string memory _name, string memory _symbol) external initializer(){
         __ERC721_init(_name, _symbol);
         __Ownable_init();
-        _stateBaseURI = "ipfs://QmSzfiayDizzpydoFN9SPFgP2MaGCkS85d1JLECy14DQUn/";
+        s_stateBaseURI = "ipfs://QmSzfiayDizzpydoFN9SPFgP2MaGCkS85d1JLECy14DQUn/";
     }
 
     //~~~~~~~~ external functions ~~~~~~~~
@@ -36,22 +36,22 @@ contract UpNFT is Initializable, UUPSUpgradeable, ERC721Upgradeable, OwnableUpgr
     }
 
     function updateURI(string memory _newBaseURI) external virtual onlyOwner{
-        _stateBaseURI = _newBaseURI;
+        s_stateBaseURI = _newBaseURI;
         emit NewURI(_newBaseURI);
     }
 
     function mint() external virtual {
-        _totalSupply++;
-        _mint(msg.sender, _totalSupply);
+        s_totalSupply++;
+        _mint(msg.sender, s_totalSupply);
     }
 
     //~~~~~~~~ view/pure functions ~~~~~~~~
     function totalSupply() external virtual view returns(uint256){
-        return _totalSupply;
+        return s_totalSupply;
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
-        return _stateBaseURI;
+        return s_stateBaseURI;
     }
 
 }
