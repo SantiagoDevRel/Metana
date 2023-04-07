@@ -3,7 +3,8 @@
     1. Make the three contracts for the NFT, ERC20 token, and staking contract upgradeable using Openzeppelin upgradability plugin. Deploy it from hardhat. 
 
 ## ERC20
-[Upgradeable ERC20 v1](./contracts/UpgradeableERC20.sol)
+[Proxy - Upgradeable ERC20 ](https://mumbai.polygonscan.com/address/0x0107d14a5c1038ed8e1bf0e7b470bb812a396945#code)
+[Implementation - Upgradeable ERC20 v1](./contracts/UpgradeableERC20.sol)
 [0x0107d14A5C1038ED8E1bf0e7b470Bb812A396945](https://mumbai.polygonscan.com/address/0x80433a85A31fF3A7693566A859aFe799522875c6#code)
 
 ## NFT
