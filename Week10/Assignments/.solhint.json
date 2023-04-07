@@ -4,10 +4,10 @@
   "rules": {
     "avoid-suicide": "error",
     "avoid-sha3": "warn",
-    "compiler-version":"off",
+    "compiler-version": "off",
     "no-global-import": "off",
-    "reason-string":"off",
-    "not-rely-on-time":"off",
-    "no-unused-vars":"off"
+    "reason-string": "off",
+    "not-rely-on-time": "off",
+    "no-unused-vars": "off"
   }
 }
