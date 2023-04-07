@@ -17,8 +17,8 @@ contract UpNFT is Initializable, UUPSUpgradeable, ERC721Upgradeable, OwnableUpgr
     using AddressUpgradeable for address;
 
     //~~~~~~~~ State variables ~~~~~~~~ 
-    uint256 _totalSupply;
-    string _stateBaseURI;
+    uint256 private _totalSupply;
+    string private _stateBaseURI;
 
     //~~~~~~~~ Constructor "Init" ~~~~~~~~
     function init(string memory _name, string memory _symbol) external initializer(){
@@ -29,7 +29,7 @@ contract UpNFT is Initializable, UUPSUpgradeable, ERC721Upgradeable, OwnableUpgr
 
     //~~~~~~~~ external functions ~~~~~~~~
     function _authorizeUpgrade(address newImplementation) internal virtual override onlyOwner{
-        require(newImplementation.isContract(), "UpERC20: New implementation is not a contract");
+        require(newImplementation.isContract(), "UpERC20: New implementation isn't a contract");
     }
 
     function updateURI(string memory _newBaseURI) external onlyOwner{
