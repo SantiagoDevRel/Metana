@@ -23,6 +23,7 @@ contract UpNFT is Initializable, UUPSUpgradeable, ERC721Upgradeable, OwnableUpgr
     //~~~~~~~~ Constructor "Init" ~~~~~~~~
     function init(string memory _name, string memory _symbol) external initializer(){
         __ERC721_init(_name, _symbol);
+        __Ownable_init();
         _stateBaseURI = "ipfs://QmSzfiayDizzpydoFN9SPFgP2MaGCkS85d1JLECy14DQUn/";
     }
 
