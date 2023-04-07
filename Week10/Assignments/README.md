@@ -4,21 +4,30 @@
 
 ## ERC20
 
-[Proxy - Upgradeable ERC20 ](https://mumbai.polygonscan.com/address/0x0107d14a5c1038ed8e1bf0e7b470bb812a396945#code)
-[Implementation - Upgradeable ERC20 v1](./contracts/UpgradeableERC20.sol)
-[0x0107d14A5C1038ED8E1bf0e7b470Bb812A396945](https://mumbai.polygonscan.com/address/0x80433a85A31fF3A7693566A859aFe799522875c6#code)
+[Contract v1](./contracts/UpgradeableERC20.sol)
+[Implementation v1](https://mumbai.polygonscan.com/address/0xe8c8ca5fafbe877eb7ea6e267e952d09732c05e5#code)
+[Proxy ERC20 v1](https://mumbai.polygonscan.com/address/0xe631dd6e70653df04dca12ba03cef7baed2e45b0#code)
 
 ## NFT
 
-[Proxy - Upgradeable ERC721 ](https://mumbai.polygonscan.com/address/0x48a91e9e438f4eae9c64980abfe470d240ef76b7#code)
-[Implementation - Upgradeable ERC721 v1](./contracts/UpgradeableNFT.sol)
-[0x48a91e9e438F4EAE9C64980abFE470D240eF76B7](https://mumbai.polygonscan.com/address/0x93720C489f926a757C41b8F3AC7c85e404BFd3f5#code)
+[Contract](./contracts/UpgradeableNFT.sol)
+[Implementation v1](https://mumbai.polygonscan.com/address/0x5a46c15e514cdadff1ef5d2a28d1dcd0a41d69e3#code)
+[Proxy ERC721 v1](https://mumbai.polygonscan.com/address/0x93fe8d93957a27571b2c58f7f4521a74b43b971c#code)
 
 ## Staking
 
-[Proxy - Upgradeable ERC721 ](https://mumbai.polygonscan.com/address/0x48a91e9e438f4eae9c64980abfe470d240ef76b7#code)
-
-[Upgradeable Staking v1](./contracts/UpgradeableStaking.sol)
-[0x849B7F16D39BF00Ef10760f4B9cE7CA3D1f90F1a](https://mumbai.polygonscan.com/address/0xdB6Ef0C7b10673F41Dc178d4CC68a0AeAc282Aa1#code)
+[Contract](./contracts/UpgradeableStaking.sol)
+[Implementation v1](https://mumbai.polygonscan.com/address/0x8cffa76ac8bb3c0c860fea8cf81248c91787ee27#code)
+[Proxy Staking v1](https://mumbai.polygonscan.com/address/0xc7d02dab37ac1b81118875f663e0d7e0120269f5#code)
 
     2. Build a new version of the NFT that adds god mode to the NFT (the ability to transfer NFTs between accounts forcefully). Etherscan should show the previous version and the new version
+
+Just after updating to NFTv2, Etherscan ask me to verify the new implementation to show the ABI properly
+
+![Updated to V2](./nft_v1-v2.png)
+
+## NFT v2
+
+[Contract](./contracts/UpgradeableNFTGodMode.sol)
+[Implementation v2](https://mumbai.polygonscan.com/address/0x50059d33365d96743bb0b794e725746e69c94c4c#code)
+[Proxy NFT(same as before)](https://mumbai.polygonscan.com/address/0x93fe8d93957a27571b2c58f7f4521a74b43b971c#code)
