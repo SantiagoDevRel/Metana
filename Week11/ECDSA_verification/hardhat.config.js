@@ -1,19 +1,19 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
 
-const { GOERLY_NODE, PRIVATE_KEY, GOERLI_KEY } = process.env;
+const { PRIVATE_KEY, MUMBAI_NODE, POLY_KEY } = process.env;
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  defaultNetwork: "goerli",
+  defaultNetwork: "mumbai",
   solidity: "0.8.19",
   networks: {
-    goerli: {
-      url: GOERLY_NODE,
+    mumbai: {
+      url: MUMBAI_NODE,
       accounts: [PRIVATE_KEY],
     },
   },
   etherscan: {
-    apiKey: GOERLI_KEY,
+    apiKey: POLY_KEY,
   },
 };
