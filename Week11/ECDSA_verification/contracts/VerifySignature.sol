@@ -13,18 +13,21 @@ contract DemoSignature {
         owner = msg.sender;
     }
 
-    function isMessageValid(bytes memory _signature)external view returns(bool){
+    function isMessageValid(bytes memory _signature, address _userAddress)external view returns(address){
+       
         //1. Find the message hash --> Hash(thisContract + msg.sender)
-        bytes32 _messageHash = keccak256(abi.encodePacked(address(this),msg.sender));
+        bytes32 _messageHash = keccak256(abi.encodePacked(address(this),_userAddress));
+       
         //2. Find the ETH message hash (\x19Ethereum Signed Message:\n32,_messageHash)
         bytes32 _ETHMsg = _messageHash.toEthSignedMessageHash();
+       
         //3. Recover the address of the signer
-        address _signer = _ETHMsg.recover(_signature);     
-        //4. must return owner address, otherwise will return address(0)
-        return _signer == owner;   
+        address _signer = _ETHMsg.recover(_signature);  
+
+        //4. must return owner address
+        return _signer;   
 
     }
-
 
 
 }
