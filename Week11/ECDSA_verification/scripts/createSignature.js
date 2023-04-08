@@ -4,7 +4,7 @@ require("dotenv").config();
 const { PRIVATE_KEY } = process.env;
 const provider = new ethers.providers.InfuraProvider("goerli");
 const signer = new ethers.Wallet(PRIVATE_KEY, provider); //testnet2
-const CONTRACT_ADDRESS = "0xd9145CCE52D386f254917e481eB44e9943F39138"; //contract
+const CONTRACT_ADDRESS = "0x614ac46D354093518E9330258C7EA142F02faFc3"; //contract
 const USER_ADDRESS = "0x5875da5854c2adAdBc1a7a448b5B2A09b26Baff8"; //testnet3
 
 async function sign() {
@@ -27,8 +27,10 @@ async function sign() {
   const { r, s, v } = ethers.utils.splitSignature(rawSignature);
   const formattedSignature = { r, s, v };
   console.log(formattedSignature);
-  const signerAddress = ethers.utils.recoverAddress(abiEncodePackedInHexString, formattedSignature);
+  const signerAddress = ethers.utils.recoverAddress(keccak256ofAbiEncodePackedToBytes, formattedSignature);
+  //MUST be the same
   console.log(signerAddress);
+  console.log(await signer.getAddress());
 }
 
 sign().catch((error) => {
