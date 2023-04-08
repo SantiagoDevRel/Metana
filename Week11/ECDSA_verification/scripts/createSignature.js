@@ -1,3 +1,4 @@
+const { Wallet } = require("ethers");
 const { ethers } = require("hardhat");
 require("dotenv").config();
 
@@ -31,6 +32,7 @@ async function sign() {
   //MUST be the same
   console.log(signerAddress);
   console.log(await signer.getAddress());
+  console.log(Wallet.isSigner(signer));
 }
 
 sign().catch((error) => {
