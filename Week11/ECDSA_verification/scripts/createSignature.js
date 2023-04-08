@@ -1,38 +1,22 @@
-const { Wallet } = require("ethers");
-const { ethers } = require("hardhat");
 require("dotenv").config();
+const { parse } = require("dotenv");
+const { ethers } = require("hardhat");
 
-const { PRIVATE_KEY } = process.env;
-const provider = new ethers.providers.InfuraProvider("goerli");
+const { PRIVATE_KEY, MUMBAI_NODE } = process.env;
+
+const provider = new ethers.providers.AlchemyProvider("maticmum", MUMBAI_NODE);
+
 const signer = new ethers.Wallet(PRIVATE_KEY, provider); //testnet2
-const CONTRACT_ADDRESS = "0x614ac46D354093518E9330258C7EA142F02faFc3"; //contract
-const USER_ADDRESS = "0x5875da5854c2adAdBc1a7a448b5B2A09b26Baff8"; //testnet3
+const CONTRACT_ADDRESS = "0x9c3c2469DE37bA75e958C79f52c15E0FF9f619e8"; //contract
+const USER_ADDRESS = "0xA3286628134baD128faeef82F44e99AA64085C94"; //testnet3
 
 async function sign() {
-  //1. abi.encodePacked(CONTRACT_ADDRESS,USER_ADDRESS) --> return string of 64 bytes long
-  const abiEncodePackedInHexString = ethers.utils.defaultAbiCoder.encode(["address", "address"], [CONTRACT_ADDRESS, USER_ADDRESS]);
-  console.log(abiEncodePackedInHexString);
+  //1. Hash the message with solidityKeccak256()
+  const HashMessage = ethers.utils.solidityKeccak256(["address", "address"], [CONTRACT_ADDRESS, USER_ADDRESS]);
 
-  //2. abiEncodePackedInHexString to array of bytes
-  const abiEncodePackedToBytes = ethers.utils.arrayify(abiEncodePackedInHexString);
-  console.log(abiEncodePackedToBytes);
-
-  //3. keccak256(of the previous arrayOfBytes)
-  const keccak256ofAbiEncodePackedToBytes = ethers.utils.hashMessage(abiEncodePackedToBytes);
-  console.log(keccak256ofAbiEncodePackedToBytes);
-
-  //4. sign the previous hash
-  const rawSignature = await signer.signMessage(keccak256ofAbiEncodePackedToBytes);
-  console.log(rawSignature);
-
-  const { r, s, v } = ethers.utils.splitSignature(rawSignature);
-  const formattedSignature = { r, s, v };
-  console.log(formattedSignature);
-  const signerAddress = ethers.utils.recoverAddress(keccak256ofAbiEncodePackedToBytes, formattedSignature);
-  //MUST be the same
-  console.log(signerAddress);
-  console.log(await signer.getAddress());
-  console.log(Wallet.isSigner(signer));
+  //2. Sign the hash in ARRAY format, NOT in hexstring
+  const rawSignature = await signer.signMessage(ethers.utils.arrayify(HashMessage));
+  console.log("RAW SIGNATURE", rawSignature);
 }
 
 sign().catch((error) => {
