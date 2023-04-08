@@ -8,14 +8,27 @@ const CONTRACT_ADDRESS = "0xd9145CCE52D386f254917e481eB44e9943F39138"; //contrac
 const USER_ADDRESS = "0x5875da5854c2adAdBc1a7a448b5B2A09b26Baff8"; //testnet3
 
 async function sign() {
-  const abiMessage = ethers.utils.defaultAbiCoder.encode(["address", "address"], [CONTRACT_ADDRESS, USER_ADDRESS]);
-  console.log(abiMessage);
-  const abiToBytes = ethers.utils.arrayify(abiMessage);
-  console.log(abiToBytes);
-  const hashMessage = ethers.utils.hashMessage(abiToBytes);
-  console.log(hashMessage);
-  const sign3 = await signer.signMessage(hashMessage);
-  console.log(sign3);
+  //1. abi.encodePacked(CONTRACT_ADDRESS,USER_ADDRESS) --> return string of 64 bytes long
+  const abiEncodePackedInHexString = ethers.utils.defaultAbiCoder.encode(["address", "address"], [CONTRACT_ADDRESS, USER_ADDRESS]);
+  console.log(abiEncodePackedInHexString);
+
+  //2. abiEncodePackedInHexString to array of bytes
+  const abiEncodePackedToBytes = ethers.utils.arrayify(abiEncodePackedInHexString);
+  console.log(abiEncodePackedToBytes);
+
+  //3. keccak256(of the previous arrayOfBytes)
+  const keccak256ofAbiEncodePackedToBytes = ethers.utils.hashMessage(abiEncodePackedToBytes);
+  console.log(keccak256ofAbiEncodePackedToBytes);
+
+  //4. sign the previous hash
+  const rawSignature = await signer.signMessage(keccak256ofAbiEncodePackedToBytes);
+  console.log(rawSignature);
+
+  const { r, s, v } = ethers.utils.splitSignature(rawSignature);
+  const formattedSignature = { r, s, v };
+  console.log(formattedSignature);
+  const signerAddress = ethers.utils.recoverAddress(abiEncodePackedInHexString, formattedSignature);
+  console.log(signerAddress);
 }
 
 sign().catch((error) => {
