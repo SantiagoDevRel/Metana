@@ -76,6 +76,19 @@ contract MultiSigWallet {
         emit Approve(_sender, _txID);
     }
 
+    function _getApprovalCount(uint256 _txID) internal view returns(uint256){
+        uint256 ownersLength = s_owners.length;
+        address[] memory _owners = s_owners;
+        uint256 approvals;
+        for(uint256 i=0;i<ownersLength;){
+            if(s_isApprovedByOwner[_txID][_owners[i]]){
+                approvals+= 1;
+            }
+            unchecked{++i;}
+        }
+        return approvals;
+    }
+
     //~~~~~~~ Internal function ~~~~~~~
     function _txExistsAndNoExecuted(uint256 _txID) internal view returns(bool){
         require(_txID < s_transactions.length, "MultiSig: Transaction doesn't exist");
