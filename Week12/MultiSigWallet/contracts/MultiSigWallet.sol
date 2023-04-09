@@ -75,6 +75,18 @@ contract MultiSigWallet {
         s_isApprovedByOwner[_txID][_sender] = true;
         emit Approve(_sender, _txID);
     }
+    
+    function executeTx(uint256 _txID) external onlyOwners{
+        require(_txExistsAndNoExecuted(_txID));
+        require(_getApprovalCount(_txID) >= s_requiredSignatures, "MultiSig: Not enough approvals yet");
+        s_transactions[_txID].executed = true;
+        Transaction memory _transaction = s_transactions[_txID];
+        uint256 _value = _transaction.value;
+        address _to = _transaction.to;     
+        bytes memory _data = _transaction.data;  
+        (bool success, ) = (_to).call{value: _value}(_data);
+        require(success);
+    }
 
     
 
