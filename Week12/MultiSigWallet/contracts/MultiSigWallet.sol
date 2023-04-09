@@ -29,7 +29,6 @@ contract MultiSigWallet {
     constructor(address[] memory _owners, uint256 _requiredSigns){
         require(_owners.length > 1, "MultiSig: >1 owner required");
         require(_requiredSigns > 0  && _requiredSigns <= _owners.length);
-        s_owners = _owners;
         s_requiredSignatures = _requiredSigns;
 
         for(uint256 i=0;i<_owners.length;){
@@ -39,7 +38,7 @@ contract MultiSigWallet {
             s_isOwner[owner] = true;
             s_owners.push(owner);
             unchecked {
-                ++i;
+                i++;
             }
         }
     }
@@ -51,6 +50,7 @@ contract MultiSigWallet {
 
     //~~~~~~~ OnlyOwners functions ~~~~~~~
     function setSignaturesRequired(uint256 newSignaturesRequired) external onlyOwners {
+        require(newSignaturesRequired > 0  && newSignaturesRequired <= s_owners.length, "MultiSig: Wrong number of signatures required");
         uint256 oldSignsRequired = s_requiredSignatures;
         s_requiredSignatures = newSignaturesRequired;
         emit MinimumSignaturesUpdated(oldSignsRequired, newSignaturesRequired);
