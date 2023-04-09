@@ -78,11 +78,8 @@ contract MultiSigWallet {
 
     //~~~~~~~ Internal function ~~~~~~~
     function _txExistsAndNoExecuted(uint256 _txID) internal view returns(bool){
-        Transaction memory _tx = getTransactionAtIndex(_txID);
-        require(!_tx.executed, "MultiSig: Transaction already executed");
-        if(_tx.data.length == 0 || _tx.value == 0 || _tx.to == address(0)){
-            revert("MultiSig: Transaction doesn't exist");
-        }
+        require(_txID < s_transactions.length, "MultiSig: Transaction doesn't exist");
+        require(!s_transactions[_txID].executed, "MultiSig: Transaction already executed");
         return true;
     }
 
@@ -99,7 +96,7 @@ contract MultiSigWallet {
         return s_requiredSignatures;
     }
 
-    function getTransactionAtIndex(uint256 index) public view returns(Transaction memory){
+    function getTransactionAtIndex(uint256 index) external view returns(Transaction memory){
         return s_transactions[index];
     }
 
