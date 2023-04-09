@@ -56,6 +56,18 @@ contract MultiSigWallet {
         emit MinimumSignaturesUpdated(oldSignsRequired, newSignaturesRequired);
     }
 
+    function submitNewTx(address _to, uint256 _value, bytes calldata _data) external onlyOwners{
+        Transaction memory newTx = Transaction({
+            to: _to,
+            value: _value,
+            data: _data,
+            executed: false
+        });
+        uint256 txID = s_transactions.length;
+        s_transactions.push(newTx);
+        emit Submit(txID);
+    }
+
 
     //~~~~~~~ View/Pure functions ~~~~~~~
     function isOwner(address user) external view returns(bool){
@@ -76,5 +88,10 @@ contract MultiSigWallet {
 
     function TxIsApprovedByOwner(uint256 txID, address owner) external view returns(bool){
         return s_isApprovedByOwner[txID][owner];
+    }
+
+    //~~~~~~~ Receive function ~~~~~~~
+    receive() external payable{
+        emit Deposit(msg.sender, msg.value);
     }
 }
