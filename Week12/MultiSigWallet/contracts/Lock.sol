@@ -68,6 +68,22 @@ contract MultiSigWallet {
         emit Submit(txID);
     }
 
+    function approveTx(uint256 _txID) external onlyOwners {
+        require(_txExists(_txID));
+        address _sender = msg.sender;
+        require(!s_isApprovedByOwner[_txID][_sender], "MultiSig: You already approved this Tx");
+        s_isApprovedByOwner[_txID][_sender] = true;
+        emit Approve(_sender, _txID);
+    }
+
+    //~~~~~~~ Internal function ~~~~~~~
+    function _txExists(uint256 _txID) internal view returns(bool){
+        Transaction memory _tx = getTransactionAtIndex(_txID);
+        if(_tx.data.length == 0 || _tx.value == 0 || _tx.to == address(0)){
+            revert("Transaction doesn't exist");
+        }
+        return true;
+    }
 
     //~~~~~~~ View/Pure functions ~~~~~~~
     function isOwner(address user) external view returns(bool){
@@ -82,7 +98,7 @@ contract MultiSigWallet {
         return s_requiredSignatures;
     }
 
-    function getTransactionAtIndex(uint256 index) external view returns(Transaction memory){
+    function getTransactionAtIndex(uint256 index) public view returns(Transaction memory){
         return s_transactions[index];
     }
 
