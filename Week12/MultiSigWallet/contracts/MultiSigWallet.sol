@@ -89,6 +89,14 @@ contract MultiSigWallet {
         emit Executed(_txID);
     }
 
+    function revokeBeforeExecute(uint256 _txID) external onlyOwners{
+        require(_txExistsAndNoExecuted(_txID));
+        address _sender = msg.sender;
+        require(s_isApprovedByOwner[_txID][_sender], "MultiSig: You haven't approved this tx yet");
+        s_isApprovedByOwner[_txID][_sender] = false;
+        emit Revoke(_sender, _txID);
+    }
+
     
 
     //~~~~~~~ Internal function ~~~~~~~
