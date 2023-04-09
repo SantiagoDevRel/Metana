@@ -69,7 +69,7 @@ contract MultiSigWallet {
     }
 
     function approveTx(uint256 _txID) external onlyOwners {
-        require(_txExists(_txID));
+        require(_txExistsAndNoExecuted(_txID));
         address _sender = msg.sender;
         require(!s_isApprovedByOwner[_txID][_sender], "MultiSig: You already approved this Tx");
         s_isApprovedByOwner[_txID][_sender] = true;
@@ -77,10 +77,11 @@ contract MultiSigWallet {
     }
 
     //~~~~~~~ Internal function ~~~~~~~
-    function _txExists(uint256 _txID) internal view returns(bool){
+    function _txExistsAndNoExecuted(uint256 _txID) internal view returns(bool){
         Transaction memory _tx = getTransactionAtIndex(_txID);
+        require(!_tx.executed, "MultiSig: Transaction already executed");
         if(_tx.data.length == 0 || _tx.value == 0 || _tx.to == address(0)){
-            revert("Transaction doesn't exist");
+            revert("MultiSig: Transaction doesn't exist");
         }
         return true;
     }
