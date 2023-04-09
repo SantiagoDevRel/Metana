@@ -50,3 +50,15 @@ function isMessageValid(bytes memory _signature, address _userAddress)external v
 
     }
 ```
+
+## Sign message on console using metamask
+
+    Another way to sign a message (only for learning purposes)
+    can be using Eth RCP methods
+    1. open the console in the browser
+    2. type: ethereum.enable()
+    3. connect your metamask account
+    4. send the RPC method: ethereum.request({method: "personal_sign", params: [account, hash]})
+        account = your address
+        hash = hash of the message you want to sign
+    5. it will return a fulfilled Promise and the signature will be in the PromiseResult
