@@ -76,10 +76,19 @@ contract MultiSigWallet {
         emit Approve(_sender, _txID);
     }
 
+    
+
+    //~~~~~~~ Internal function ~~~~~~~
+    function _txExistsAndNoExecuted(uint256 _txID) internal view returns(bool){
+        require(_txID < s_transactions.length, "MultiSig: Transaction doesn't exist");
+        require(!s_transactions[_txID].executed, "MultiSig: Transaction already executed");
+        return true;
+    }
+
     function _getApprovalCount(uint256 _txID) internal view returns(uint256){
-        uint256 ownersLength = s_owners.length;
-        address[] memory _owners = s_owners;
         uint256 approvals;
+        address[] memory _owners = s_owners;
+        uint256 ownersLength = _owners.length;
         for(uint256 i=0;i<ownersLength;){
             if(s_isApprovedByOwner[_txID][_owners[i]]){
                 approvals+= 1;
@@ -89,17 +98,12 @@ contract MultiSigWallet {
         return approvals;
     }
 
-    //~~~~~~~ Internal function ~~~~~~~
-    function _txExistsAndNoExecuted(uint256 _txID) internal view returns(bool){
-        require(_txID < s_transactions.length, "MultiSig: Transaction doesn't exist");
-        require(!s_transactions[_txID].executed, "MultiSig: Transaction already executed");
-        return true;
-    }
-
     //~~~~~~~ View/Pure functions ~~~~~~~
     function isOwner(address user) external view returns(bool){
         return s_isOwner[user];
     }
+
+    
 
     function getOwner(uint256 index) external view returns(address){
         return s_owners[index];
