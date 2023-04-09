@@ -46,5 +46,23 @@ contract MultiSigWallet {
 
 
     //~~~~~~~ View/Pure functions ~~~~~~~
-   
+    function isOwner(address user) external view returns(bool){
+        return s_isOwner[user];
+    }
+
+    function getOwner(uint256 index) external view returns(address){
+        return s_owners[index];
+    }
+
+    function signaturesRequired() external view returns(uint256){
+        return s_requiredSignatures;
+    }
+
+    function getTransactionAtIndex(uint256 index) external view returns(Transaction memory){
+        return s_transactions[index];
+    }
+
+    function TxIsApprovedByOwner(uint256 txID, address owner) external view returns(bool){
+        return s_isApprovedByOwner[txID][owner];
+    }
 }
