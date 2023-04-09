@@ -28,9 +28,20 @@ contract MultiSigWallet {
 
     constructor(address[] memory _owners, uint256 _requiredSigns){
         require(_owners.length > 1, "MultiSig: >1 owner required");
+        require(_requiredSigns > 0  && _requiredSigns <= _owners.length);
         s_owners = _owners;
         s_requiredSignatures = _requiredSigns;
 
+        for(uint256 i=0;i<_owners.length;){
+            address owner = _owners[i];
+            require(owner != address(0), "Invalid address");
+            require(!s_isOwner[owner], "Owner is already on the list");
+            s_isOwner[owner] = true;
+            s_owners.push(owner);
+            unchecked {
+                ++i;
+            }
+        }
     }
 
     modifier onlyOwners(){
