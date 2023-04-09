@@ -9,7 +9,7 @@ contract MultiSigWallet {
     event Submit (uint256 indexed transactionID);
     event Approve (address indexed owner, uint256 indexed transactionID);
     event Revoke (address indexed owner, uint256 indexed transactionID);
-    event Execute (uint256 indexed transactionID);
+    event Executed (uint256 indexed transactionID);
     event MinimumSignaturesUpdated(uint256 oldSignsRequired, uint256 newSignsRequired);
 
     //~~~~~~~ State variables ~~~~~~~
@@ -86,6 +86,7 @@ contract MultiSigWallet {
         bytes memory _data = _transaction.data;  
         (bool success, ) = (_to).call{value: _value}(_data);
         require(success);
+        emit Executed(_txID);
     }
 
     
