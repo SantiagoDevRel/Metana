@@ -34,6 +34,7 @@ contract MultiSigWallet {
     }
 
     modifier onlyOwners(){
+        require(s_isOwner[msg.sender],"MultiSig: Caller must be an owner");
         _;
     }
 
