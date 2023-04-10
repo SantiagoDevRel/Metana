@@ -49,7 +49,32 @@ contract LazyNFT is ERC721, ERC721URIStorage, Ownable, EIP712 {
         s_isTrustedSigner[newSigner] = false;
     }
 
-    
+    // ~~~~~~ Internal Functions ~~~~~~
+    function _verifySigner(NFTicket calldata ticket)
+        internal
+        view
+        returns (address signer)
+    {
+        bytes32 digest = _hashTypedDataV4(
+            keccak256(
+                abi.encode(
+                    keccak256("NFTicket(uint256 tokenId,address buyer,uint256 price,string uri)"),
+                    ticket.tokenId,
+                    ticket.buyer,
+                    ticket.price,
+                    keccak256(bytes(ticket.uri))
+                )
+            )
+        );
+        signer = ECDSA.recover(digest, ticket.signature);
+    }
+
+
+    // ~~~~~~ View/Pure Functions ~~~~~~
+    function getTrustedSigner(address signer) external view returns(bool) {
+        return s_isTrustedSigner[signer];
+    }
+
     // The following functions are overrides required by Solidity.
 
     function _burn(uint256 tokenId)
