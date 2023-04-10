@@ -32,7 +32,24 @@ contract LazyNFT is ERC721, ERC721URIStorage, Ownable, EIP712 {
         s_isTrustedSigner[msg.sender] = true;
     }
 
-  
+    // ~~~~~~ Public/Ext Functions ~~~~~~
+    function mintByUser(NFTicket calldata ticket) public payable {
+        address signer = _verifySigner(ticket);
+        require(s_isTrustedSigner[signer], "LazyNFT: Wrong signer");
+        require(msg.value >= ticket.price, "LazyNFT: Not enough ether sent");
+        _safeMint(ticket.buyer, ticket.tokenId);
+        _setTokenURI(ticket.tokenId, ticket.uri);
+    }
+
+    function addTrustedSigner(address newSigner) external onlyOwner{
+        s_isTrustedSigner[newSigner] = true;
+    }
+
+    function removeTrustedSigner(address newSigner) external onlyOwner{
+        s_isTrustedSigner[newSigner] = false;
+    }
+
+    
     // The following functions are overrides required by Solidity.
 
     function _burn(uint256 tokenId)
