@@ -1,5 +1,10 @@
 const { ethers } = require("ethers");
 
+//1. Update the contract address
+//2. Update the DOMAIN_NAME and VERSION with the same info of the current contract
+//3. Update buyer's address
+//4. Generate the signature
+
 //~~~~~~ Constants to generate the signature ~~~~~~
 const SIGNER_GANACHE = new ethers.Wallet("50c20848802ade8a7c87c364316b069a71b4290643d731d28eb27012184cd162");
 const DOMAIN_NAME = "Vouchers-Santiago"; //Same as the smart contract
