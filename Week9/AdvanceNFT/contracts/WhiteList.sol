@@ -32,6 +32,8 @@ contract WhiteListForERC721 is Ownable, PaymentSplitter {
         address[] memory _teamMembers,
         uint256[] memory _sharesTeamMembers
     ) PaymentSplitter(_teamMembers, _sharesTeamMembers) {
+        require(_maxSupplyPublicList > _maxSupplyPrivateList,
+            "WhiteList: Max supply must be greater than the private supply");
         MAX_SUPPLY_PRIVATE_LIST = _maxSupplyPrivateList;
         MAX_SUPPLY_PUBLIC_LIST = _maxSupplyPublicList;
         PRICE_FOR_PRIVATE_LIST_IN_WEI = _priceForPrivate;
