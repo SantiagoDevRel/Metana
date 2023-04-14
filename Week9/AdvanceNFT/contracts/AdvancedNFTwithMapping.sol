@@ -3,10 +3,12 @@ pragma solidity 0.8.1;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "./WhiteList.sol";
 
-contract AdvancedNFT is ERC721 {
+contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     //~~~~~~~ Events ~~~~~~~
     event RevealedRandomTokenId(uint256 _randomNumber, address _owner);
 
@@ -25,14 +27,17 @@ contract AdvancedNFT is ERC721 {
     }
 
     //~~~~~~~ State variables ~~~~~~~
+    uint256 private immutable START_FROM = 1;
     uint256 public immutable MAX_SUPPLY;
     uint256 public immutable PRIVATE_MINT_SUPPLY;
     bytes32 public immutable PRIVATE_LIST_MERKLE_ROOT;
     bytes32 public immutable PUBLIC_LIST_MERKLE_ROOT;
+    uint256 private s_tokenCount;
     uint256 public s_totalSupply;
     States public s_state;
     WhiteListForERC721 public s_whitelist;
     mapping(address => Commit) public s_commits;
+    mapping(uint256 => uint256) private tokenMatrix;
     mapping(address => bool) public s_addressHasMinted;
 
     //~~~~~~~ Constructor ~~~~~~~
@@ -43,8 +48,8 @@ contract AdvancedNFT is ERC721 {
     ) ERC721("NFBIT", "NFB") {
         s_state = States.MINT_PRIVATE_LIST;
         s_whitelist = _whiteList;
-        MAX_SUPPLY = s_whitelist.MAX_SUPPLY_PRIVATE_LIST();
-        PRIVATE_MINT_SUPPLY = s_whitelist.MAX_SUPPLY_PUBLIC_LIST();
+        MAX_SUPPLY = s_whitelist.MAX_SUPPLY_PUBLIC_LIST();
+        PRIVATE_MINT_SUPPLY = s_whitelist.MAX_SUPPLY_PRIVATE_LIST();
         PRIVATE_LIST_MERKLE_ROOT = _privateRoot;
         PUBLIC_LIST_MERKLE_ROOT = _publicRoot;
     }
@@ -60,7 +65,8 @@ contract AdvancedNFT is ERC721 {
 
     //~~~~~~~ External / Public Functions ~~~~~~~
 
-    //1st step of minting/buying --> setYourCommit() user will set the commit putting a number and a salt
+    // ~~~ 1st step for the user --> setYourCommit() ~~~
+    // user will set the commit putting a number and a salt
     function setYourCommit(bytes32 _yourHash) external {
         Commit memory _commit;
         _commit.commitedHash = _yourHash;
@@ -68,8 +74,8 @@ contract AdvancedNFT is ERC721 {
         s_commits[msg.sender] = _commit;
     }
 
-    //2nd step of minting/buying --> getYourTokenId() by verifying your commit
-    function getYourTokenId(uint256 _randomUserNumber, uint256 _salt) internal {
+    // ~~~ 2nd step for the user --> getYourTokenId() by verifying your commit ~~~ 
+    function verifyYourCommit(uint256 _randomUserNumber, uint256 _salt) internal {
         Commit memory _commit = s_commits[msg.sender];
         require(
             _commit.tokenIdForNFT == 0,
@@ -88,17 +94,17 @@ contract AdvancedNFT is ERC721 {
             "NFB: Wrong hash"
         );
         bytes32 commitedBlockHash = blockhash(_commit.blockNumber);
-        uint256 MAX_RANDOM_NUMBER_FOR_TOKEN_ID = 1000000000000;
-        bytes32 randomHash = bytes32(
-            keccak256(abi.encodePacked(commitedBlockHash, _commit.commitedHash))
+        uint256 randomNumber = uint256(bytes32(
+            keccak256(abi.encodePacked(commitedBlockHash, _commit.commitedHash)))
         );
-        uint256 randomNumber = uint256(randomHash) %
-            MAX_RANDOM_NUMBER_FOR_TOKEN_ID;
-        s_commits[msg.sender].tokenIdForNFT = randomNumber;
+
+        uint256 tokenId = _getRandomTokenId(randomNumber);
+
+        s_commits[msg.sender].tokenIdForNFT = tokenId;
         emit RevealedRandomTokenId(randomNumber, msg.sender);
     }
 
-    //3rd step of minting/buying --> mint()
+    //~~~ 3rd step for the user --> mint() ~~~
 
     //Only users registered in the early private round can mint here
     function privateRoundMint(bytes32[] memory _proof) external {
@@ -122,7 +128,45 @@ contract AdvancedNFT is ERC721 {
         _allocateToken();
     }
 
+    function availableTokenCount() public view returns (uint256) {
+        return MAX_SUPPLY - s_tokenCount;
+    }
+
+    modifier ensureAvailability() {
+        require(availableTokenCount() > 0, "No more tokens available");
+        _;
+    }
+
     //~~~~~~~ Internal Functions ~~~~~~~
+
+    function _getRandomTokenId(uint256 randomNumber) internal ensureAvailability returns (uint256){
+        uint256 maxIndex = MAX_SUPPLY - s_tokenCount;
+        uint random = randomNumber % maxIndex;
+        uint256 value = 0;
+
+        if (tokenMatrix[random] == 0) {
+            // If this matrix position is empty, set the value to the generated random number.
+            value = random;
+        } else {
+            // Otherwise, use the previously stored number from the matrix.
+            value = tokenMatrix[random];
+        }
+
+        // If the last available tokenID is still unused...
+        if (tokenMatrix[maxIndex - 1] == 0) {
+            // ...store that ID in the current matrix position.
+            tokenMatrix[random] = maxIndex - 1;
+        } else {
+            // ...otherwise copy over the stored number to the current matrix position.
+            tokenMatrix[random] = tokenMatrix[maxIndex - 1];
+        }
+
+        // Increment counts
+        s_tokenCount++;
+
+        return value + START_FROM;
+    }
+
 
     function _validatePreMint(uint256 _ticketNumber, bytes32[] memory _proof)
         internal
