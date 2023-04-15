@@ -54,7 +54,13 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         PUBLIC_LIST_MERKLE_ROOT = _publicRoot;
     }
 
-    //Activate the preSale state
+    //~~~~~~~ Modifiers ~~~~~~~
+    modifier ensureAvailability() {
+        require(_availableTokenCount() > 0, "No more tokens available");
+        _;
+    }
+
+    //~~~~~~~ onlyAdmin/Team Functions ~~~~~~~
     function openPrivateMint() external onlyOwner {
         s_state = States.MINT_PRIVATE_LIST;
     }
@@ -64,7 +70,6 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     }
 
     //~~~~~~~ External / Public Functions ~~~~~~~
-
     // ~~~ 1st step for the user --> setYourCommit() ~~~
     // user will set the commit putting a number and a salt
     function setYourCommit(bytes32 _yourHash) external {
@@ -128,14 +133,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         _allocateToken();
     }
 
-    function availableTokenCount() public view returns (uint256) {
-        return MAX_SUPPLY - s_tokenCount;
-    }
-
-    modifier ensureAvailability() {
-        require(availableTokenCount() > 0, "No more tokens available");
-        _;
-    }
+   
 
     //~~~~~~~ Internal Functions ~~~~~~~
 
@@ -211,6 +209,10 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         require(!s_addressHasMinted[_user], "NFB: Ticket already spent.");
         s_addressHasMinted[_user] = true;
         return true;
+    }
+
+    function _availableTokenCount() internal view returns (uint256) {
+        return MAX_SUPPLY - s_tokenCount;
     }
 
     function _allocateToken() internal {
