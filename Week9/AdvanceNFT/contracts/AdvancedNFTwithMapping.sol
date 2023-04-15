@@ -79,8 +79,49 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         s_commits[msg.sender] = _commit;
     }
 
-    // ~~~ 2nd step for the user --> getYourTokenId() by verifying your commit ~~~ 
-    function verifyYourCommit(uint256 _randomUserNumber, uint256 _salt) external {
+    //~~~ 2nd step for the user --> mint() ~~~
+
+    //Only users registered in the early private round can mint here
+    function privateRoundMint(bytes32[] memory _proof, uint256 _randomNumber, uint256 _salt) external {
+        require(
+            s_state == States.MINT_PRIVATE_LIST,
+            "NFB: Minting is not in private minting state."
+        );
+        uint256 tokenId = _verifyYourCommit(_randomNumber, _salt);
+        uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
+        require(_validatePreMint(_ticketNumber, _proof));
+        _allocateToken(tokenId);
+    }
+
+    //Only users registered for the public sale can mint here
+    function publicRoundMint(bytes32[] memory _proof, uint256 _randomNumber, uint256 _salt) external {
+        require(
+            s_state == States.MINT_PUBLIC_LIST,
+            "NFB: Minting is not in public minting state."
+        );
+        uint256 tokenId = _verifyYourCommit(_randomNumber, _salt);
+        uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
+        require(_validatePreMint(_ticketNumber, _proof));
+        _allocateToken(tokenId);
+    }
+
+    //Multitransfer
+    function multiTransfer(address[] memory to, uint256[] memory tokenIds) external {
+        require(to.length == tokenIds.length, "AdvancedNFT: length doesn't match");
+        uint256 length = to.length;
+        for(uint256 i=0;i<length;){
+            _transfer(msg.sender,to[i],tokenIds[i]);
+            unchecked {
+                ++i;
+            }
+        }
+    }
+
+   
+
+    //~~~~~~~ Internal Functions ~~~~~~~
+
+    function _verifyYourCommit(uint256 _randomUserNumber, uint256 _salt) internal returns(uint256) {
         Commit memory _commit = s_commits[msg.sender];
         require(
             _commit.tokenIdForNFT == 0,
@@ -106,48 +147,8 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         uint256 tokenId = _getRandomTokenId(randomNumber);
 
         s_commits[msg.sender].tokenIdForNFT = tokenId;
-        emit RevealedRandomTokenId(randomNumber, msg.sender);
+        return tokenId;
     }
-
-    //~~~ 3rd step for the user --> mint() ~~~
-
-    //Only users registered in the early private round can mint here
-    function privateRoundMint(bytes32[] memory _proof) external {
-        require(
-            s_state == States.MINT_PRIVATE_LIST,
-            "NFB: Minting is not in private minting state."
-        );
-        uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
-        require(_validatePreMint(_ticketNumber, _proof));
-        _allocateToken();
-    }
-
-    //Only users registered for the public sale can mint here
-    function publicRoundMint(bytes32[] memory _proof) external {
-        require(
-            s_state == States.MINT_PUBLIC_LIST,
-            "NFB: Minting is not in public minting state."
-        );
-        uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
-        require(_validatePreMint(_ticketNumber, _proof));
-        _allocateToken();
-    }
-
-    //Multitransfer
-    function multiTransfer(address[] memory to, uint256[] memory tokenIds) external {
-        require(to.length == tokenIds.length, "AdvancedNFT: length doesn't match");
-        uint256 length = to.length;
-        for(uint256 i=0;i<length;){
-            _transfer(msg.sender,to[i],tokenIds[i]);
-            unchecked {
-                ++i;
-            }
-        }
-    }
-
-   
-
-    //~~~~~~~ Internal Functions ~~~~~~~
 
     function _getRandomTokenId(uint256 randomNumber) internal ensureAvailability returns (uint256){
         uint256 maxIndex = MAX_SUPPLY - s_tokenCount;
@@ -227,11 +228,10 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         return MAX_SUPPLY - s_tokenCount;
     }
 
-    function _allocateToken() internal {
+    function _allocateToken(uint256 tokenId) internal {
         s_totalSupply++;
         uint256 _totalSupply = s_totalSupply;
-        uint256 _tokenId = s_commits[msg.sender].tokenIdForNFT;
-        _safeMint(msg.sender, _tokenId);
+        _safeMint(msg.sender, tokenId);
         _updateState(_totalSupply);
     }
 
