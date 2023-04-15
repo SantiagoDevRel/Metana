@@ -61,7 +61,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
 
     //~~~~~~~ Modifier ~~~~~~~
     modifier ensureAvailability() {
-        require(availableTokenCount() > 0, "No more tokens available");
+        require(_availableTokenCount() > 0, "No more tokens available");
         _;
     }
 
@@ -117,11 +117,6 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         emit RevealedRandomTokenId(randomNumber, msg.sender);
     }
 
-    function availableTokenCount() public view returns (uint256) {
-        return MAX_SUPPLY - s_tokenCount;
-    }
-
-
     //~~~ 3rd step for the user --> mint() ~~~
 
     //Only users registered in the early private round can mint here
@@ -144,6 +139,18 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
         require(_validatePreMint(_ticketNumber, _proof));
         _allocateToken();
+    }
+
+    //Multitransfer
+    function multiTransfer(address[] memory to, uint256[] memory tokenIds) external {
+        require(to.length == tokenIds.length, "AdvancedNFT: length doesn't match");
+        uint256 length = to.length;
+        for(uint256 i=0;i<length;){
+            _transfer(msg.sender,to[i],tokenIds[i]);
+            unchecked {
+                ++i;
+            }
+        }
     }
 
     //~~~~~~~ Internal Functions ~~~~~~~
@@ -251,6 +258,10 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         else if (_totalSupply == MAX_SUPPLY) {
             s_state = States.CLOSED;
         }
+    }
+
+    function _availableTokenCount() internal view returns (uint256) {
+        return MAX_SUPPLY - s_tokenCount;
     }
 
     //~~~~~~~ Pure / View Functions ~~~~~~~
