@@ -28,17 +28,17 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
 
     //~~~~~~~ State variables ~~~~~~~
     uint256 private immutable START_FROM = 1;
-    uint256 public immutable MAX_SUPPLY;
-    uint256 public immutable PRIVATE_MINT_SUPPLY;
-    bytes32 public immutable PRIVATE_LIST_MERKLE_ROOT;
-    bytes32 public immutable PUBLIC_LIST_MERKLE_ROOT;
+    uint256 private immutable MAX_SUPPLY;
+    uint256 private immutable PRIVATE_MINT_SUPPLY;
+    bytes32 private immutable PRIVATE_LIST_MERKLE_ROOT;
+    bytes32 private immutable PUBLIC_LIST_MERKLE_ROOT;
     uint256 private s_tokenCount;
-    uint256 public s_totalSupply;
-    States public s_state;
-    WhiteListForERC721 public s_whitelist;
-    mapping(address => Commit) public s_commits;
+    uint256 private s_totalSupply;
+    States private s_state;
+    WhiteListForERC721 private s_whitelist;
+    mapping(address => Commit) private s_commits;
     mapping(uint256 => uint256) private tokenMatrix;
-    mapping(address => bool) public s_addressHasMinted;
+    mapping(address => bool) private s_addressHasMinted;
 
     //~~~~~~~ Constructor ~~~~~~~
     constructor(
@@ -283,5 +283,8 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         return s_commits[msg.sender];
     }
 
+    function addressHasMinted(address user) external view returns(bool){
+        return s_addressHasMinted[user];
+    }
     
 }
