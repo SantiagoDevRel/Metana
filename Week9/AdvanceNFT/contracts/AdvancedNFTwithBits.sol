@@ -59,6 +59,12 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         PUBLIC_LIST_MERKLE_ROOT = _publicRoot;
     }
 
+    //~~~~~~~ Modifier ~~~~~~~
+    modifier ensureAvailability() {
+        require(availableTokenCount() > 0, "No more tokens available");
+        _;
+    }
+
     //~~~~~~~ onlyAdmin/Team Functions ~~~~~~~
 
     //Activate the preSale state
@@ -81,7 +87,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     }
 
     //2nd step of minting/buying --> getYourTokenId() by verifying your commit
-    function getYourTokenId(uint256 _randomUserNumber, uint256 _salt) internal {
+    function verifyYourCommit(uint256 _randomUserNumber, uint256 _salt) internal {
         Commit memory _commit = s_commits[msg.sender];
         require(
             _commit.tokenIdForNFT == 0,
@@ -114,10 +120,32 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         return MAX_SUPPLY - s_tokenCount;
     }
 
-    modifier ensureAvailability() {
-        require(availableTokenCount() > 0, "No more tokens available");
-        _;
+
+    //3rd step of minting/buying --> mint()
+
+    //Only users registered in the early private round can mint here
+    function privateRoundMint(bytes32[] memory _proof) external {
+        require(
+            s_state == States.MINT_PRIVATE_LIST,
+            "NFB: Minting is not in private minting state."
+        );
+        uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
+        require(_validatePreMint(_ticketNumber, _proof));
+        _allocateToken();
     }
+
+    //Only users registered for the public sale can mint here
+    function publicRoundMint(bytes32[] memory _proof) external {
+        require(
+            s_state == States.MINT_PUBLIC_LIST,
+            "NFB: Minting is not in public minting state."
+        );
+        uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
+        require(_validatePreMint(_ticketNumber, _proof));
+        _allocateToken();
+    }
+
+    //~~~~~~~ Internal Functions ~~~~~~~
 
     function _getRandomTokenId(uint256 randomNumber) internal ensureAvailability returns (uint256){
         uint256 maxIndex = MAX_SUPPLY - s_tokenCount;
@@ -146,32 +174,6 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
 
         return value + START_FROM;
     }
-
-    //3rd step of minting/buying --> mint()
-
-    //Only users registered in the early private round can mint here
-    function privateRoundMint(bytes32[] memory _proof) external {
-        require(
-            s_state == States.MINT_PRIVATE_LIST,
-            "NFB: Minting is not in private minting state."
-        );
-        uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
-        require(_validatePreMint(_ticketNumber, _proof));
-        _allocateToken();
-    }
-
-    //Only users registered for the public sale can mint here
-    function publicRoundMint(bytes32[] memory _proof) external {
-        require(
-            s_state == States.MINT_PUBLIC_LIST,
-            "NFB: Minting is not in public minting state."
-        );
-        uint256 _ticketNumber = _getTicketNumberFromUser(msg.sender);
-        require(_validatePreMint(_ticketNumber, _proof));
-        _allocateToken();
-    }
-
-    //~~~~~~~ Internal Functions ~~~~~~~
 
     function _validatePreMint(uint256 _ticketNumber, bytes32[] memory _proof)
         internal
