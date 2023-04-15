@@ -261,8 +261,37 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         return keccak256(abi.encodePacked(_randomUserNumber, _salt));
     }
 
-    
+    function maxSupply() external view returns(uint256){
+        return MAX_SUPPLY;
+    }
+    function supplyForPrivate() external view returns(uint256){
+        return PRIVATE_MINT_SUPPLY;
+    }
+    function supplyForPublic() external view returns(uint256){
+        return MAX_SUPPLY - PRIVATE_MINT_SUPPLY;
+    }
+    function getPrivateMerkleRoot() external view returns(bytes32){
+        return PRIVATE_LIST_MERKLE_ROOT;
+    }
+    function getPublicMerkleRoot() external view returns(bytes32){
+        return PUBLIC_LIST_MERKLE_ROOT;
+    }
+    function MaxSupply() external view returns(uint256){
+        return MAX_SUPPLY;
+    }
+    function currentSupply() external view returns(uint256){
+        return s_totalSupply;
+    }
+    function currentState() external view returns(States){
+        return s_state;
+    }
+    function getContractWhiteList() external view returns(WhiteListForERC721){
+        return s_whitelist;
+    }
 
+    function getYourCommit() external view returns(Commit memory){
+        return s_commits[msg.sender];
+    }
 
 
     //~~~~ Extra function just to check the bits behaviour ~~~~~
