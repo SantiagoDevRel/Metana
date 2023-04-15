@@ -232,15 +232,6 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         }
     }
 
-    //~~~~~~~ Pure / View Functions ~~~~~~~
-    function getYourHash(uint256 _randomUserNumber, uint256 _salt)
-        public
-        pure
-        returns (bytes32)
-    {
-        return keccak256(abi.encodePacked(_randomUserNumber, _salt));
-    }
-
     function _getTicketNumberFromUser(address _user)
         internal
         view
@@ -250,4 +241,47 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         require(_ticketNumber != 0, "NFB: Ticket number is invalid.");
         return _ticketNumber;
     }
+
+    //~~~~~~~ Pure / View Functions ~~~~~~~
+    function getYourHash(uint256 _randomUserNumber, uint256 _salt)
+        public
+        pure
+        returns (bytes32)
+    {
+        return keccak256(abi.encodePacked(_randomUserNumber, _salt));
+    }
+
+    function maxSupply() external view returns(uint256){
+        return MAX_SUPPLY;
+    }
+    function supplyForPrivate() external view returns(uint256){
+        return PRIVATE_MINT_SUPPLY;
+    }
+    function supplyForPublic() external view returns(uint256){
+        return MAX_SUPPLY - PRIVATE_MINT_SUPPLY;
+    }
+    function getPrivateMerkleRoot() external view returns(bytes32){
+        return PRIVATE_LIST_MERKLE_ROOT;
+    }
+    function getPublicMerkleRoot() external view returns(bytes32){
+        return PUBLIC_LIST_MERKLE_ROOT;
+    }
+    function MaxSupply() external view returns(uint256){
+        return MAX_SUPPLY;
+    }
+    function currentSupply() external view returns(uint256){
+        return s_totalSupply;
+    }
+    function currentState() external view returns(States){
+        return s_state;
+    }
+    function getContractWhiteList() external view returns(WhiteListForERC721){
+        return s_whitelist;
+    }
+
+    function getYourCommit() external view returns(Commit memory){
+        return s_commits[msg.sender];
+    }
+
+    
 }
