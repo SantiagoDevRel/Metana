@@ -265,7 +265,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
 
 
 
-    //~~~~ Manage the data structure bits ~~~~~
+    //~~~~ Extra function just to check the bits behaviour ~~~~~
     function getBit(uint256 _index) external view returns (bool) {
         return s_myBitMap.get(_index);
     }
