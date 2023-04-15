@@ -80,7 +80,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     }
 
     // ~~~ 2nd step for the user --> getYourTokenId() by verifying your commit ~~~ 
-    function verifyYourCommit(uint256 _randomUserNumber, uint256 _salt) internal {
+    function verifyYourCommit(uint256 _randomUserNumber, uint256 _salt) external {
         Commit memory _commit = s_commits[msg.sender];
         require(
             _commit.tokenIdForNFT == 0,
