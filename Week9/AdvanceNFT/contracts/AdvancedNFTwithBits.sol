@@ -219,6 +219,20 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         return true;
     }
 
+    function _getTicketNumberFromUser(address _user)
+        internal
+        view
+        returns (uint256)
+    {
+        uint256 _ticketNumber = s_whitelist.getTicketNumber(_user);
+        require(_ticketNumber != 0, "NFB: Ticket number is invalid.");
+        return _ticketNumber;
+    }
+
+    function totalSupply() public view returns(uint256){
+        return s_totalSupply;
+    }
+
     function _allocateToken() internal {
         s_totalSupply++;
         uint256 _totalSupply = s_totalSupply;
@@ -247,19 +261,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         return keccak256(abi.encodePacked(_randomUserNumber, _salt));
     }
 
-    function _getTicketNumberFromUser(address _user)
-        internal
-        view
-        returns (uint256)
-    {
-        uint256 _ticketNumber = s_whitelist.getTicketNumber(_user);
-        require(_ticketNumber != 0, "NFB: Ticket number is invalid.");
-        return _ticketNumber;
-    }
-
-    function totalSupply() public view returns(uint256){
-        return s_totalSupply;
-    }
+    
 
 
 
