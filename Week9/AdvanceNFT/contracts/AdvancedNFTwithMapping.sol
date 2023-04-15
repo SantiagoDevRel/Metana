@@ -133,6 +133,18 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         _allocateToken();
     }
 
+    //Multitransfer
+    function multiTransfer(address[] memory to, uint256[] memory tokenIds) external {
+        require(to.length == tokenIds.length, "AdvancedNFT: length doesn't match");
+        uint256 length = to.length;
+        for(uint256 i=0;i<length;){
+            _transfer(msg.sender,to[i],tokenIds[i]);
+            unchecked {
+                ++i;
+            }
+        }
+    }
+
    
 
     //~~~~~~~ Internal Functions ~~~~~~~
