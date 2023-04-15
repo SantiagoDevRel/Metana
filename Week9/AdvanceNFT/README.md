@@ -1,12 +1,12 @@
 ### Questions Week #9
 
-##### 1. Should you be using pausable or nonReentrant in your NFT? Why or why not?
+#### 1. Should you be using pausable or nonReentrant in your NFT? Why or why not?
 
 No, because I used 2 different contracts, the first one to raise the funds (Whitelist.sol) and then a different contract (AdvancedNFTwithBitmaps.sol) that based on the merkle tree proof, allows the wallets to mint.
 
 Also, in the Whitelist.sol I used the payment splitter library from OZ, so the only ones that can receive the funds, are the addresses in the array (partners/team members) and this transfer is maded using the Address library, by address.sendValue() that makes a call{}() with a require() to check the payment went through, but there is no sense or reward by making a reentrancy attack here.
 
-##### 2. What trick does OpenZeppelin use to save gas on the nonReentrant modifier?
+#### 2. What trick does OpenZeppelin use to save gas on the nonReentrant modifier?
 
 -The library is not using "0" values, it's only using "1" and "2" because is cheaper to update non-zero values to non-zero values, than zero to non-zero.
 
