@@ -78,7 +78,8 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
 
     //~~~~~~~ External / Public Functions ~~~~~~~
 
-    //1st step of minting/buying --> setYourCommit() user will set the commit putting a number and a salt
+    // ~~~ 1st step for the user --> setYourCommit() ~~~
+    // user will set the commit putting a number and a salt    
     function setYourCommit(bytes32 _yourHash) external {
         Commit memory _commit;
         _commit.commitedHash = _yourHash;
@@ -86,7 +87,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
         s_commits[msg.sender] = _commit;
     }
 
-    //2nd step of minting/buying --> getYourTokenId() by verifying your commit
+    // ~~~ 2nd step for the user --> getYourTokenId() by verifying your commit ~~~ 
     function verifyYourCommit(uint256 _randomUserNumber, uint256 _salt) internal {
         Commit memory _commit = s_commits[msg.sender];
         require(
@@ -121,7 +122,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     }
 
 
-    //3rd step of minting/buying --> mint()
+    //~~~ 3rd step for the user --> mint() ~~~
 
     //Only users registered in the early private round can mint here
     function privateRoundMint(bytes32[] memory _proof) external {
