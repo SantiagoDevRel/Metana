@@ -57,7 +57,7 @@ contract WhiteListForERC721 is Ownable, PaymentSplitter {
             s_state == State.PRIVATE_SALE,
             "WhiteList: State must be in Private Sale."
         );
-        require(msg.value == PRICE_FOR_PRIVATE_LIST_IN_WEI, "WhiteList: Please send the right ether amount");
+        //require(msg.value == PRICE_FOR_PRIVATE_LIST_IN_WEI, "WhiteList: Please send the right ether amount");
         address _buyer = msg.sender;
         require(
             s_ticketNumber[_buyer] == 0,
