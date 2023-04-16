@@ -77,6 +77,12 @@ describe("Compromised challenge", function () {
     //sell the NFTs to the exchange
     const sellNFT0 = await exchange.connect(player).sellOne(0);
     await sellNFT0.wait();
+
+    //set prices again to initial price
+    const setPrices3 = await oracle.connect(source1).postPrice(symbol, INITIAL_NFT_PRICE);
+    await setPrices3.wait();
+    const setPrices4 = await oracle.connect(source1).postPrice(symbol, INITIAL_NFT_PRICE);
+    await setPrices4.wait();
   });
 
   after(async function () {
