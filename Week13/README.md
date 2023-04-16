@@ -43,9 +43,11 @@
 
 [Youtube source](https://www.youtube.com/watch?v=-JhgcqvyYeM)
 
-We have 3 types of transactions in an AMM
+1. What can we do with an AMM?
 
-**Add liquidity**: an user send token A and token B to the liquidity pool
+**Add liquidity**: user send token A and token B to the liquidity pool
 in return it gets some shares that represent the % of shares provided to the LP
 
-**Swap**: an user send token A(add to the LP) to get token B(subtract from the LP)
+**Swap**: user send token A(add to the LP) to get token B(subtract from the LP)
+
+**Remove Liquidity**: user can withdraw his tokens from the LP, depending on his shares, that % will be sent to him (quantity of token A and B may vary)
