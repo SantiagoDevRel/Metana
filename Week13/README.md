@@ -32,3 +32,13 @@
         (10-1) * (1_000 + 111) = 10_000
         9 * 1_111 = 10_000
         10_000 = 10_000
+
+#### Constant Sum AMM Math
+
+[Youtube source](https://www.youtube.com/watch?v=-JhgcqvyYeM)
+
+We have 3 types of transactions in an AMM
+_Add liquidity_: an user send token A and token B to the liquidity pool
+in return it gets some shares that represent the % of shares provided to the LP
+
+_Swap_: an user send token A(add to the LP) to get token B(subtract from the LP)
