@@ -48,6 +48,13 @@ describe("Compromised challenge", function () {
     const key2 = "0x208242c40acdfa9ed889e685c23547acbed9befc60371e9875fbcd736340bb48";
     const source1 = new ethers.Wallet(key1, ethers.provider);
     const source2 = new ethers.Wallet(key2, ethers.provider);
+
+    //change prices to 1 wei
+    const oneWei = 1;
+    const changePricetx1 = await oracle.connect(source1).postPrice(symbol, oneWei);
+    await changePricetx1.wait();
+    const changePricetx2 = await oracle.connect(source2).postPrice(symbol, oneWei);
+    await changePricetx2.wait();
   });
 
   after(async function () {
