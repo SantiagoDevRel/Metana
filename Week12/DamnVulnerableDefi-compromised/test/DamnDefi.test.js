@@ -55,6 +55,10 @@ describe("Compromised challenge", function () {
     await changePricetx1.wait();
     const changePricetx2 = await oracle.connect(source2).postPrice(symbol, oneWei);
     await changePricetx2.wait();
+
+    //buy x1 DVNFT for 1 wei
+    const buyNFT1 = await exchange.connect(player).buyOne({ value: oneWei });
+    await buyNFT1.wait();
   });
 
   after(async function () {
