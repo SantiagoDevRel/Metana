@@ -2,6 +2,8 @@
 
 #### Order Books vs AMM
 
+[Youtube source](https://www.youtube.com/watch?v=Ui1TBPdnEJU)
+
 1.  Order books
     -Order book is what the exchanges uses
     -Alice wants to sell 1 BTC for 20k
