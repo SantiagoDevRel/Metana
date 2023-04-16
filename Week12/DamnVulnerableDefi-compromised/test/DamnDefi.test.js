@@ -43,9 +43,6 @@ describe("Compromised challenge", function () {
   it("Execution", async function () {
     /** CODE YOUR SOLUTION HERE */
     const symbol2 = "DVNFT";
-    const oracle2 = await ethers.getContractAt("TrustfulOracle", oracle.address, player);
-    //console.log(oracle2);
-    console.log(await oracle.getMedianPrice(symbol2));
   });
 
   after(async function () {
