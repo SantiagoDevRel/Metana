@@ -45,7 +45,7 @@
 
 We have 3 types of transactions in an AMM
 
-_Add liquidity_: an user send token A and token B to the liquidity pool
+**Add liquidity**: an user send token A and token B to the liquidity pool
 in return it gets some shares that represent the % of shares provided to the LP
 
-_Swap_: an user send token A(add to the LP) to get token B(subtract from the LP)
+**Swap**: an user send token A(add to the LP) to get token B(subtract from the LP)
