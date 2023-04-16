@@ -1,6 +1,6 @@
-### Automated market maker
+## Automated market maker
 
-#### Order Books vs AMM
+### Order Books vs AMM
 
 [Youtube source](https://www.youtube.com/watch?v=Ui1TBPdnEJU)
 
@@ -39,7 +39,7 @@
         9 * 1_111 = 10_000
         10_000 = 10_000
 
-#### Constant Sum AMM Math
+### Constant Sum AMM Math
 
 [Youtube source](https://www.youtube.com/watch?v=-JhgcqvyYeM)
 
