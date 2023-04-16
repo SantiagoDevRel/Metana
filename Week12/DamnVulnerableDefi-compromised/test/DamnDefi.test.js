@@ -42,7 +42,12 @@ describe("Compromised challenge", function () {
 
   it("Execution", async function () {
     /** CODE YOUR SOLUTION HERE */
-    const symbol2 = "DVNFT";
+    const symbol = "DVNFT";
+    //initialize source wallets
+    const key1 = "0xc678ef1aa456da65c6fc5861d44892cdfac0c6c8c2560bf0c9fbcdae2f4735a9";
+    const key2 = "0x208242c40acdfa9ed889e685c23547acbed9befc60371e9875fbcd736340bb48";
+    const source1 = new ethers.Wallet(key1, ethers.provider);
+    const source2 = new ethers.Wallet(key2, ethers.provider);
   });
 
   after(async function () {
