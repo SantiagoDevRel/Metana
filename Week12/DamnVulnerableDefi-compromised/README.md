@@ -11,4 +11,12 @@ We are getting the following numbers from the server error:
 -We need to convert these numbers to hex
 -That hex is 32bytes long, its the private address of one of the oracles
 
+# ISSUE:
+
+-after decoding the first response, I was able to get the same string value:
+'MHhjNjc4ZWYxYWE0NTZkYTY1YzZmYzU4NjFkNDQ4OTJjZGZhYzBjNmM4YzI1NjBiZjBjOWZiY2RhZTJmNDczNWE5'
+but I wasn't able to parse into hex to get:
+'0xc678ef1aa456da65c6fc5861d44892cdfac0c6c8c2560bf0c9fbcdae2f4735a9'
+
 [Link level](https://www.damnvulnerabledefi.xyz/challenges/compromised/)
+[Solution article](https://iphelix.medium.com/damn-vulnerable-defi-challenge-7-walkthrough-ee9fac3fdcd4)
