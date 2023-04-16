@@ -18,5 +18,16 @@ We are getting the following numbers from the server error:
 but I wasn't able to parse into hex to get:
 '0xc678ef1aa456da65c6fc5861d44892cdfac0c6c8c2560bf0c9fbcdae2f4735a9'
 
+## Solution
+
+-will assume these 2 are the private keys:
+0xc678ef1aa456da65c6fc5861d44892cdfac0c6c8c2560bf0c9fbcdae2f4735a9
+0x208242c40acdfa9ed889e685c23547acbed9befc60371e9875fbcd736340bb48
+
+1. there are 3 oracles in total, so we will update the prices of 2 oracles to make it 0.001
+2. we will be able to buy the NFT for 0.001
+3. then we can raise the prices again to 999eth
+4. we can sell the NFT to the exchange again
+
 [Link level](https://www.damnvulnerabledefi.xyz/challenges/compromised/)
 [Solution article](https://iphelix.medium.com/damn-vulnerable-defi-challenge-7-walkthrough-ee9fac3fdcd4)
