@@ -6,14 +6,20 @@
 
 1.  Order books
     -Order book is what the exchanges uses
+
     -Alice wants to sell 1 BTC for 20k
+
     -Bob wants to buy 1 BTC for 19k
+
     -the exchange will wait until the users get into a middle price and execute the order from user A to user B
 
 2.  AMM
     -Blockchain is too expensive and slow to wait to execute this transactions
+
     -We use liquidity pools with a constant to determine the price of the asset
+
     -example of a liquidity pool of 10eth and 1000usdt
+
     -FORMULA (X \* Y) = K(constant)
 
         Case study:
@@ -38,6 +44,7 @@
 [Youtube source](https://www.youtube.com/watch?v=-JhgcqvyYeM)
 
 We have 3 types of transactions in an AMM
+
 _Add liquidity_: an user send token A and token B to the liquidity pool
 in return it gets some shares that represent the % of shares provided to the LP
 
