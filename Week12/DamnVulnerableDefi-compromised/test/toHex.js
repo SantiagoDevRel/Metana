@@ -12,6 +12,7 @@ async function main(response) {
   const asciiString = ethers.utils.toUtf8String(bytes);
   console.log(asciiString);
   //MHhjNjc4ZWYxYWE0NTZkYTY1YzZmYzU4NjFkNDQ4OTJjZGZhYzBjNmM4YzI1NjBiZjBjOWZiY2RhZTJmNDczNWE5
+  //console.log(utils.hexlify(utils.base64.decode(asciiString)));
 
   //4. convert eh ASCII to base64
   /* const decode64 = utils.base64.decode(hexString);
