@@ -24,10 +24,15 @@ but I wasn't able to parse into hex to get:
 0xc678ef1aa456da65c6fc5861d44892cdfac0c6c8c2560bf0c9fbcdae2f4735a9
 0x208242c40acdfa9ed889e685c23547acbed9befc60371e9875fbcd736340bb48
 
-1. there are 3 oracles in total, so we will update the prices of 2 oracles to make it 0.001
-2. we will be able to buy the NFT for 0.001
-3. then we can raise the prices again to 999eth
-4. we can sell the NFT to the exchange again
+1. there are 3 oracles in total, so we will update the prices of 2 oracles to make it 1 wei
+2. we call the oracle.postPrice(1 wei) function in the oracles from the 2 sources
+3. we can buy 1 NFT for 1 wei, by calling exchange.buyOne({value: 1 wei})
+4. then we can raise the prices again to the total exchange balance
+   by calling oracle.postPrice(exchangeBalance) from our 2 sources
+5. we can sell the NFT to the exchange again for the whole exchange balance by calling
+   exchange.sellOne(nftId) - we need to approve the nft first
+6. we set the prices of the oracle to the initial price
+7. we are done
 
 [Link level](https://www.damnvulnerabledefi.xyz/challenges/compromised/)
 [Solution article](https://iphelix.medium.com/damn-vulnerable-defi-challenge-7-walkthrough-ee9fac3fdcd4)
