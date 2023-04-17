@@ -5,14 +5,20 @@ export class Wallet {
   chainId;
   provider;
   nonce;
-  privateKey;
+  mnemonic;
+  privateKeyUint8;
+  privateKeyHex;
+
   accounts = [];
   assets = [];
   activity = [];
 
-  constructor(_privateKey) {
+  constructor(_mnemonic, _privateKeyUint8, _privateKeyHex) {
     this.nonce = 0;
-    this.privateKey = _privateKey;
+    this.mnemonic = _mnemonic;
+    this.privateKeyUint8 = _privateKeyUint8;
+    this.privateKeyHex = _privateKeyHex;
+
     this.chainId = 80001; //Only compatible with Mumbai for now
   }
 
@@ -22,5 +28,3 @@ export class Wallet {
 
   changeAccount() {}
 }
-
-export const wallet = new Wallet();
