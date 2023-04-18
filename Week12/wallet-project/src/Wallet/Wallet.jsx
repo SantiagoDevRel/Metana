@@ -6,6 +6,7 @@ export class Wallet {
   seedUint8;
   seedHex;
   chainId;
+  currentNonce;
   currentAddress;
   currentPrivateKeyToSign;
 
@@ -64,7 +65,7 @@ export class Wallet {
     this.accountsEVM.push(account);
     this.currentAddress = account["address"];
     this.currentPrivateKeyToSign = account["privateKey"];
-    console.log("ACCOUNT", account);
+    this.currentNonce = account["nonce"];
   }
 
   createNewAccount() {
@@ -96,6 +97,11 @@ export class Wallet {
       throw Error("Index greater than your account number");
     } else {
       //Account and private key MUST have the same index
+      const _array = this.accountsEVM;
+      const _account = _array[index];
+      this.currentAddress = _account["address"];
+      this.currentPrivateKeyToSign = _account["privateKey"];
+      this.currentNonce = _account["nonce"];
     }
   }
 }
