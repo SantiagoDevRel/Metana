@@ -10,7 +10,7 @@ function CreateWallet() {
   const [privateKeyHex, setPrivateKeyHex] = useState("");
   const [privateKeyUint8, setPrivateKeyUint8] = useState("");
   const [nonce, setNonce] = useState("");
-  const [account, setAccount] = useState("0x");
+  const [currentAccount, setCurrentAccount] = useState("0x");
 
   async function createPrivateKey() {
     const _mnemomic = createPk();
@@ -25,6 +25,7 @@ function CreateWallet() {
     const _wallet = new Wallet(_mnemonic, _privateKeyUint8, _privateKeyHex);
     setNonce(_wallet.nonce);
     setWallet(_wallet);
+    setCurrentAccount(_wallet.currentAddress);
     //setAccount(_wallet.address);
     //console.log(mainWallet);
   }
@@ -35,6 +36,8 @@ function CreateWallet() {
 
   async function changeAccount(index) {
     wallet.changeAccount(index);
+    console.log("CURRENT ADDRESS:", wallet.currentAddress);
+    setCurrentAccount(wallet.currentAddress);
   }
 
   function printWallet() {
@@ -52,11 +55,11 @@ function CreateWallet() {
       <button onClick={() => createNewWallet(mnemonic, privateKeyUint8, privateKeyHex)}>Create new wallet</button>
       <button onClick={() => createNewAccount()}>Create new account</button>
       <button onClick={() => changeAccount(1)}>change account 1</button>
-      <button onClick={() => changeAccount(2)}>change account 1</button>
-      <button onClick={() => changeAccount(3)}>change account 1</button>
+      <button onClick={() => changeAccount(2)}>change account 2</button>
+      <button onClick={() => changeAccount(3)}>change account 3</button>
       <button onClick={() => printWallet()}>PRINT WALLET</button>
 
-      <Footer nonce={1} />
+      <Footer nonce={nonce} currentAccount={currentAccount} />
     </div>
   );
 }
