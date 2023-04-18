@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createPk, mnemonicToUint8, uint8ToHex } from "../Wallet/CreatePrivateKey";
 import { Wallet } from "../Wallet/Wallet";
 import styles from "./MainWallet.module.css";
 
+let listAccounts = [];
+
 function CreateWallet(props) {
+  const [numberAccounts, setNumberAccounts] = useState(0);
+  const [allAddresses, setAllAddresses] = useState([]);
   const [pkCreated, setPkCreated] = useState(false);
   const [wallet, setWallet] = useState({});
   const [mnemonic, setMnemonic] = useState("");
@@ -13,11 +17,14 @@ function CreateWallet(props) {
   const [currentAccount, setCurrentAccount] = useState("0x");
   const [currentSigner, setCurrentSigner] = useState("0x");
 
+  useEffect(() => {
+    createPrivateKey();
+  }, []);
+
   /**
    * This function is to send the current wallet instance to the parent
    */
-  const handleWallet = () => {
-    console.log("sending wallet", wallet);
+  const handleWallet = (wallet) => {
     props.mainWallet(wallet);
   };
 
@@ -49,11 +56,24 @@ function CreateWallet(props) {
       setCurrentAccount(_wallet.currentAddress);
       setCurrentNonce(_wallet.currentNonce);
       setCurrentSigner(_wallet.currentPrivateKeyToSign);
+      setNumberAccounts(_wallet.numberOfAccounts);
+      setAllAddresses(_wallet.allAddresses);
+      listAccounts.push(_wallet.currentAddress);
+      console.log("LIST", listAccounts);
+
+      handleWallet(_wallet);
     }
   }
 
   async function createNewAccount() {
-    wallet.createNewAccount();
+    const newAddress = wallet.createNewAccount();
+    setNumberAccounts(wallet.numberOfAccounts);
+    setAllAddresses(wallet.allAddresses);
+
+    listAccounts.push(newAddress);
+    console.log("LIST", listAccounts);
+    setAllAddresses();
+    handleWallet(wallet);
   }
 
   async function changeAccount(index) {
@@ -65,9 +85,15 @@ function CreateWallet(props) {
       setCurrentNonce(wallet.currentNonce);
       setCurrentSigner(wallet.currentPrivateKeyToSign);
       console.log("CURRENT ADDRESS:", wallet.currentAddress);
+      handleWallet(wallet);
     }
   }
+  function handleChangeAccount(event) {
+    event.preventDefault();
+    console.log("number", num);
+  }
 
+  //DELETE
   function printWallet() {
     const pk = wallet.currentPrivateKeyToSign;
     console.log("PK GET", pk);
@@ -75,25 +101,35 @@ function CreateWallet(props) {
   }
 
   return (
-    <div className={styles.main_container}>
-      <div className={styles.container}>
-        <button onClick={() => createPrivateKey()}>Create new random Private Key</button>
-        <div>
-          <p>{mnemonic}</p>
+    <>
+      <button onClick={() => createPrivateKey()}>Create new seed phrase</button>
+      <div>
+        <p>{mnemonic}</p>
+      </div>
+      <div className={styles.main_container}>
+        <div className={styles.container}>
+          <h4>Functionalities</h4>
+          <button onClick={() => createNewWallet(mnemonic, privateKeyUint8, privateKeyHex)}>Create first account</button>
+          <button onClick={() => createNewAccount()}>Create new account</button>
+          <form onSubmit={handleChangeAccount}>
+            <label>
+              <button>Choose your account</button>
+              <input type="number" name="num" onChange={handleChangeAccount}></input>
+            </label>
+          </form>
+
+          <button onClick={() => printWallet()}>PRINT WALLET</button>
         </div>
-        <button onClick={() => createNewWallet(mnemonic, privateKeyUint8, privateKeyHex)}>Create new wallet</button>
-        <button onClick={() => createNewAccount()}>Create new account</button>
-        <button onClick={() => changeAccount(1)}>change account 1</button>
-        <button onClick={() => changeAccount(2)}>change account 2</button>
-        <button onClick={() => changeAccount(3)}>change account 3</button>
-        <button onClick={() => printWallet()}>PRINT WALLET</button>
-        <button onClick={() => handleWallet()}>handle wallet</button>
+        <div className={styles.container}>
+          <h4>Accounts {numberAccounts}</h4>
+          <div className={styles.addresses}>
+            {listAccounts.map((key, index) => {
+              return <button style={{ backgroundColor: key === currentAccount ? "green" : "" }}>{`#${index} :` + key}</button>;
+            })}
+          </div>
+        </div>
       </div>
-      <div className={styles.container}>
-        <h2>Accounts</h2>
-        <h2> right square</h2>
-      </div>
-    </div>
+    </>
   );
 }
 
