@@ -34,6 +34,15 @@ export class Wallet {
     return this.activity;
   }
 
+  get allAddresses() {
+    const addresses = [];
+    const arrayOfAccounts = this.accountsEVM;
+    for (let i = 0; i < arrayOfAccounts.length; i++) {
+      addresses.push(arrayOfAccounts[i]["address"]);
+    }
+    return addresses;
+  }
+
   get currentAddress() {
     return this.currentAddress;
   }
@@ -100,6 +109,7 @@ export class Wallet {
       nonce: 0,
     };
     this.accountsEVM.push(account);
+    return _address;
   }
 
   changeAccount(index) {
