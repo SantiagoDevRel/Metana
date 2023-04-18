@@ -14,7 +14,7 @@ function Home() {
    * This fucntion is to get the wallet instance from the child CreateWallet
    */
   const handleWallet = (wallet) => {
-    console.log("Received data from child:", wallet);
+    //console.log("Received data from child:", wallet);
     setAccount(wallet);
     const { currentAddress, currentNonce } = wallet;
     setCurrentAddress(currentAddress);
