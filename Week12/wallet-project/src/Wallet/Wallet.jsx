@@ -3,6 +3,7 @@ import { createPk } from "./CreatePrivateKey";
 
 export class Wallet {
   mnemonic;
+  provider;
   seedUint8;
   seedHex;
   chainId;
@@ -19,6 +20,7 @@ export class Wallet {
     this.seedUint8 = _privateKeyUint8;
     this.seedHex = _privateKeyHex;
     this.chainId = 80001; //Only compatible with Mumbai for now
+    this.provider = new ethers.providers.getDefaultProvider();
     this.setupWallet();
   }
 
@@ -59,11 +61,27 @@ export class Wallet {
     return this.accountsEVM.length;
   }
 
-  signTransaction() {
+  signMessage(message) {
+    //hash the message WITH the nonce
+    const _hash = ethers.utils.solidityKeccak256(["string", "uint256"], [message, this.currentNonce]);
+    //create a signer instance
+    const signer = new ethers.Wallet(this.currentPrivateKeyToSign, this.provider);
+    //sign the message
+    const signature = signer.signMessage(_hash);
     console.log("signing from wallet");
-    //receive message
-    //increase nonce
+
+    //increase nonce of the current account
+    const array = this.accountsEVM;
+    for (let i = 0; i < array.length; i++) {
+      if (array[i]["privateKey"] == this.currentPrivateKeyToSign) {
+        array[i]["nonce"] += 1;
+      }
+    }
+
+    console.log("ARRAY", array);
     this.currentNonce++;
+    //this.currentNonce++;
+    return signature;
     //return hash
   }
 
