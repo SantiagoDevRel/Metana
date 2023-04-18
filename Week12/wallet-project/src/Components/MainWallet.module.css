@@ -14,4 +14,11 @@
 .addresses {
   display: flex;
   flex-direction: column;
+  row-gap: 1vh;
+}
+
+.hashing {
+  width: 90%;
+  margin: 0vw;
+  padding: 1vh;
 }
