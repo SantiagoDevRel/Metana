@@ -1,8 +1,7 @@
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import MainWallet from "./Components/MainWallet";
-import Assets from "./Components/Assets";
-import Activity from "./Components/Activity";
+
 import { useState } from "react";
 import Footer from "./Components/Footer";
 
