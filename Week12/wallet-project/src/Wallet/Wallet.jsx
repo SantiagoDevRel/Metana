@@ -6,7 +6,7 @@ export class Wallet {
   seedUint8;
   seedHex;
   chainId;
-  currentAccount;
+  currentAddress;
   currentPrivateKeyToSign;
 
   accountsEVM = [];
@@ -34,7 +34,7 @@ export class Wallet {
   }
 
   get currentAddress() {
-    return this.currentAccount;
+    return this.currentAddress;
   }
 
   get currentPrivateKeyToSign() {
@@ -62,6 +62,8 @@ export class Wallet {
       nonce: 0,
     };
     this.accountsEVM.push(account);
+    this.currentAddress = account["address"];
+    this.currentPrivateKeyToSign = account["privateKey"];
     console.log("ACCOUNT", account);
   }
 
