@@ -42,6 +42,10 @@ export class Wallet {
     return this.currentPrivateKeyToSign;
   }
 
+  get currentNonce() {
+    return this.currentNonce;
+  }
+
   get numberOfAccounts() {
     return this.accountsEVM.length;
   }
@@ -94,7 +98,7 @@ export class Wallet {
 
   changeAccount(index) {
     if (index > this.accountsEVM.length - 1) {
-      throw Error("Index greater than your account number");
+      return false;
     } else {
       //Account and private key MUST have the same index
       const _array = this.accountsEVM;
@@ -102,6 +106,7 @@ export class Wallet {
       this.currentAddress = _account["address"];
       this.currentPrivateKeyToSign = _account["privateKey"];
       this.currentNonce = _account["nonce"];
+      return true;
     }
   }
 }
