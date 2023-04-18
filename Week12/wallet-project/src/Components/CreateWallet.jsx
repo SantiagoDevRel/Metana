@@ -30,10 +30,17 @@ function CreateWallet() {
   }
 
   async function createNewAccount() {
-    console.log("call created");
     wallet.createNewAccount();
+  }
+
+  async function changeAccount(index) {
+    wallet.changeAccount(index);
+  }
+
+  function printWallet() {
+    const pk = wallet.currentPrivateKeyToSign;
+    console.log("PK GET", pk);
     console.log(wallet);
-    console.log("call created");
   }
 
   return (
@@ -44,6 +51,11 @@ function CreateWallet() {
       </div>
       <button onClick={() => createNewWallet(mnemonic, privateKeyUint8, privateKeyHex)}>Create new wallet</button>
       <button onClick={() => createNewAccount()}>Create new account</button>
+      <button onClick={() => changeAccount(1)}>change account 1</button>
+      <button onClick={() => changeAccount(2)}>change account 1</button>
+      <button onClick={() => changeAccount(3)}>change account 1</button>
+      <button onClick={() => printWallet()}>PRINT WALLET</button>
+
       <Footer nonce={1} />
     </div>
   );
