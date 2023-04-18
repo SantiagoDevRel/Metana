@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import { createPk, mnemonicToUint8, uint8ToHex } from "../Wallet/CreatePrivateKey";
 import { Wallet } from "../Wallet/Wallet";
 import styles from "./MainWallet.module.css";
+import { useRef } from "react";
+import * as ethers from "ethers";
 
 let listAccounts = [];
 
 function CreateWallet(props) {
+  const numRef = useRef();
+  const messageRef = useRef();
   const [numberAccounts, setNumberAccounts] = useState(0);
   const [allAddresses, setAllAddresses] = useState([]);
-  const [pkCreated, setPkCreated] = useState(false);
+  const [accountCreated, setAccountCreated] = useState(false);
   const [wallet, setWallet] = useState({});
   const [mnemonic, setMnemonic] = useState("");
   const [privateKeyHex, setPrivateKeyHex] = useState("");
@@ -16,6 +20,7 @@ function CreateWallet(props) {
   const [currentNonce, setCurrentNonce] = useState("");
   const [currentAccount, setCurrentAccount] = useState("0x");
   const [currentSigner, setCurrentSigner] = useState("0x");
+  const [hash, setHash] = useState("");
 
   useEffect(() => {
     createPrivateKey();
@@ -40,57 +45,75 @@ function CreateWallet(props) {
     setPrivateKeyUint8(_uint8);
     const _hexPK = uint8ToHex(_uint8);
     setPrivateKeyHex(_hexPK);
-    setPkCreated(true);
   }
 
   /*
    *the user will create a new wallet with the previous mnemonic created
    */
   async function createNewWallet(_mnemonic, _privateKeyUint8, _privateKeyHex) {
-    if (!pkCreated) {
-      //user MUST create a private key first
-      console.log("please create a private key first.");
-    } else {
-      const _wallet = new Wallet(_mnemonic, _privateKeyUint8, _privateKeyHex);
-      setWallet(_wallet);
-      setCurrentAccount(_wallet.currentAddress);
-      setCurrentNonce(_wallet.currentNonce);
-      setCurrentSigner(_wallet.currentPrivateKeyToSign);
-      setNumberAccounts(_wallet.numberOfAccounts);
-      setAllAddresses(_wallet.allAddresses);
-      listAccounts.push(_wallet.currentAddress);
-      console.log("LIST", listAccounts);
-
-      handleWallet(_wallet);
-    }
+    const _wallet = new Wallet(_mnemonic, _privateKeyUint8, _privateKeyHex);
+    setWallet(_wallet);
+    setCurrentAccount(_wallet.currentAddress);
+    setCurrentNonce(_wallet.currentNonce);
+    setCurrentSigner(_wallet.currentPrivateKeyToSign);
+    setNumberAccounts(_wallet.numberOfAccounts);
+    setAllAddresses(_wallet.allAddresses);
+    listAccounts.push(_wallet.currentAddress);
+    setAccountCreated(true);
+    handleWallet(_wallet);
   }
 
   async function createNewAccount() {
-    const newAddress = wallet.createNewAccount();
-    setNumberAccounts(wallet.numberOfAccounts);
-    setAllAddresses(wallet.allAddresses);
+    if (!accountCreated) {
+      //user MUST create a private key first
+      alert("You must create the first account before continuing.");
+    } else {
+      const newAddress = wallet.createNewAccount();
+      setNumberAccounts(wallet.numberOfAccounts);
+      setAllAddresses(wallet.allAddresses);
 
-    listAccounts.push(newAddress);
-    console.log("LIST", listAccounts);
-    setAllAddresses();
-    handleWallet(wallet);
+      listAccounts.push(newAddress);
+      setAllAddresses();
+      handleWallet(wallet);
+    }
   }
 
-  async function changeAccount(index) {
+  function changeAccount(index) {
     if (!wallet.changeAccount(index)) {
       //manage error if the user wants to change to an inexisting address
-      console.log("ERROR CHANGING ACCOUNT");
+      alert("Number is greater than your current accounts");
     } else {
       setCurrentAccount(wallet.currentAddress);
       setCurrentNonce(wallet.currentNonce);
       setCurrentSigner(wallet.currentPrivateKeyToSign);
-      console.log("CURRENT ADDRESS:", wallet.currentAddress);
       handleWallet(wallet);
     }
   }
   function handleChangeAccount(event) {
+    if (!accountCreated) {
+      //user MUST create a private key first
+      alert("You must create the first account before continuing.");
+    }
     event.preventDefault();
-    console.log("number", num);
+    const changeToNumber = parseInt(numRef.current.value);
+    changeAccount(changeToNumber);
+  }
+
+  function handleHashing(event) {
+    event.preventDefault();
+    const _msg = event.target.value;
+    //HASH MESSAGE + CURRENT NONCE TO PREVENT REPLAY ATTACK
+    console.log("Current nonce", currentNonce);
+    const _hash = ethers.utils.solidityKeccak256(["string", "uint256"], [_msg, currentNonce]);
+    setHash(_hash);
+  }
+
+  async function handleSigning(event) {
+    event.preventDefault();
+    const signature = await wallet.signMessage(hash);
+    console.log("signature", signature);
+    setCurrentNonce(wallet.currentNonce);
+    handleWallet(wallet);
   }
 
   //DELETE
@@ -109,22 +132,47 @@ function CreateWallet(props) {
       <div className={styles.main_container}>
         <div className={styles.container}>
           <h4>Functionalities</h4>
-          <button onClick={() => createNewWallet(mnemonic, privateKeyUint8, privateKeyHex)}>Create first account</button>
-          <button onClick={() => createNewAccount()}>Create new account</button>
-          <form onSubmit={handleChangeAccount}>
-            <label>
-              <button>Choose your account</button>
-              <input type="number" name="num" onChange={handleChangeAccount}></input>
-            </label>
-          </form>
+          {/* CREATE FIRST ACCOUNT */}
+          <button onClick={() => createNewWallet(mnemonic, privateKeyUint8, privateKeyHex)}>1. Create first account</button>
+          {/* CREATE NEW ACCOUNT */}
+          <button onClick={() => createNewAccount()}>2. Create new account</button>
+
+          {/* HASH A MESSAGE */}
+          <button>3. Hash your message w/ current nonce</button>
+          <div>
+            <form>
+              <label>
+                <input className={styles.hashing} type="text" onChange={handleHashing} placeholder={"Insert your message here"}></input>
+                <p>{hash}</p>
+              </label>
+            </form>
+          </div>
+
+          {/* SIGN THE HASH */}
+          <button onClick={() => handleSigning(event)}>4. Sign The hash</button>
 
           <button onClick={() => printWallet()}>PRINT WALLET</button>
         </div>
+        {/* SHOW ACCOUNTS - RIGHT CONTAINER */}
         <div className={styles.container}>
-          <h4>Accounts {numberAccounts}</h4>
+          <h4>Total Accounts: {numberAccounts}</h4>
+
           <div className={styles.addresses}>
+            <div>
+              {/* CHANGE ACCOUNT */}
+              <form onSubmit={handleChangeAccount}>
+                <label>
+                  <button type="submit">Choose your account #</button>
+                  <input type="number" name="num" ref={numRef} defaultValue={0} min={0}></input>
+                </label>
+              </form>
+            </div>
             {listAccounts.map((key, index) => {
-              return <button style={{ backgroundColor: key === currentAccount ? "green" : "" }}>{`#${index} :` + key}</button>;
+              return (
+                <button key={index} style={{ backgroundColor: key === currentAccount ? "green" : "" }}>
+                  {`#${index} :` + key}
+                </button>
+              );
             })}
           </div>
         </div>
