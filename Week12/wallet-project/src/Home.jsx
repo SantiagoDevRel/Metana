@@ -8,12 +8,17 @@ import Footer from "./Components/Footer";
 
 function Home() {
   const [account, setAccount] = useState({});
+  const [currentNonce, setCurrentNonce] = useState("0x");
+  const [currentAddress, setCurrentAddress] = useState("0x");
   /**
    * This fucntion is to get the wallet instance from the child CreateWallet
    */
   const handleWallet = (wallet) => {
     console.log("Received data from child:", wallet);
     setAccount(wallet);
+    const { currentAddress, currentNonce } = wallet;
+    setCurrentAddress(currentAddress);
+    setCurrentNonce(currentNonce);
   };
 
   return (
@@ -35,7 +40,8 @@ function Home() {
           <Activity mainWallet={account} />
         </TabPanel>
       </Tabs>
-      <Footer mainWallet={account} />
+
+      <Footer nonce={currentNonce ? currentNonce : 0} address={currentAddress ? currentAddress : 0} />
     </div>
   );
 }
