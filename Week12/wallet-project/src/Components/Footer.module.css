@@ -1,0 +1,7 @@
+.footer {
+  display: flex;
+  justify-content: space-evenly;
+  position: fixed;
+  bottom: 5vh;
+  width: 90vw;
+}
