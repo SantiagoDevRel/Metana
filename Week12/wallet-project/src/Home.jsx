@@ -1,33 +1,30 @@
-import { createPk, mnemonicToUint8, uint8ToHex } from "./Wallet/CreatePrivateKey";
-import { Wallet } from "./Wallet/Wallet";
-import React, { useState } from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import CreateWallet from "./Components/CreateWallet";
+import Footer from "./Components/Footer";
 
 function Home() {
-  const [mnemonic, setMnemonic] = useState("");
-  const [privateKeyHex, setPrivateKeyHex] = useState("");
-  const [privateKeyUint8, setPrivateKeyUint8] = useState("");
-
-  async function createPrivateKey() {
-    const _mnemomic = createPk();
-    setMnemonic(_mnemomic);
-    const _uint8 = mnemonicToUint8(_mnemomic);
-    setPrivateKeyUint8(_uint8);
-    const _hexPK = uint8ToHex(_uint8);
-    setPrivateKeyHex(_hexPK);
-  }
-
-  async function createNewWallet(_mnemonic, _privateKeyUint8, _privateKeyHex) {
-    const _wallet = new Wallet(_mnemonic, _privateKeyUint8, _privateKeyHex);
-    console.log(_wallet);
-  }
-
   return (
     <div>
-      <button onClick={() => createPrivateKey()}>Create new random Private Key</button>
-      <div>
-        <p>{mnemonic}</p>
-      </div>
-      <button onClick={() => createNewWallet(mnemonic, privateKeyUint8, privateKeyHex)}>Create new wallet</button>
+      <Tabs>
+        <TabList>
+          <Tab>Create wallet</Tab>
+          <Tab>Sign message</Tab>
+          <Tab>Assets</Tab>
+          <Tab>Change account</Tab>
+        </TabList>
+
+        <TabPanel>
+          <CreateWallet />
+        </TabPanel>
+        <TabPanel>
+          <h2>Any content 2</h2>
+        </TabPanel>
+        <TabPanel>
+          <h2>Any content 3</h2>
+        </TabPanel>
+      </Tabs>
+      <Footer />
     </div>
   );
 }
