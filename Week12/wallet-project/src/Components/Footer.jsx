@@ -1,11 +1,10 @@
 import React from "react";
 import styles from "./Footer.module.css";
-function Footer() {
+function Footer(props) {
   return (
     <div className={styles.footer}>
-      <div>Nonce: </div>
-      <div>Current account: </div>
-      <div>Current network: </div>
+      <div>Current account: {props.currentAccount} </div>
+      <div>Nonce: {props.nonce}</div>
     </div>
   );
 }
