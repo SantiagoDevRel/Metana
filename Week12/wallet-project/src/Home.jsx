@@ -1,6 +1,9 @@
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import CreateWallet from "./Components/CreateWallet";
+import SignMessage from "./Components/SignMessage";
+import Assets from "./Components/Assets";
+import Activity from "./Components/Activity";
 
 function Home() {
   return (
@@ -10,20 +13,20 @@ function Home() {
           <Tab>Create wallet</Tab>
           <Tab>Sign message</Tab>
           <Tab>Assets</Tab>
-          <Tab>Change account</Tab>
+          <Tab>Activity</Tab>
         </TabList>
 
         <TabPanel>
           <CreateWallet />
         </TabPanel>
         <TabPanel>
-          <h2>Any content 2</h2>
+          <SignMessage />
         </TabPanel>
         <TabPanel>
-          <h2>Any content 3</h2>
+          <Assets />
         </TabPanel>
         <TabPanel>
-          <h2>Any content 4</h2>
+          <Activity />
         </TabPanel>
       </Tabs>
     </div>
