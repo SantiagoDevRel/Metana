@@ -50,7 +50,13 @@ export class Wallet {
     return this.accountsEVM.length;
   }
 
-  signTransaction() {}
+  signTransaction() {
+    console.log("signing from wallet");
+    //receive message
+    //increase nonce
+    this.currentNonce++;
+    //return hash
+  }
 
   setupWallet() {
     //instanciate the  Hierarchical Deterministic Node
