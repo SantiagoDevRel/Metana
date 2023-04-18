@@ -7,7 +7,6 @@ export class Wallet {
   seedHex;
   chainId;
   nonce;
-  address;
   currentAccount;
   currentPrivateKeyToSign;
 
@@ -37,10 +36,6 @@ export class Wallet {
     return this.mnemonic;
   }
 
-  get address() {
-    return this.address;
-  }
-
   get assets() {
     return this.assets;
   }
@@ -49,8 +44,12 @@ export class Wallet {
     return this.activity;
   }
 
-  get currentAccount() {
+  get currentAddress() {
     return this.currentAccount;
+  }
+
+  get currentPrivateKeyToSign() {
+    return this.currentPrivateKeyToSign;
   }
 
   signTransaction() {}
@@ -66,8 +65,10 @@ export class Wallet {
     this.accountsEVM.push(firstAccount);
 
     //Account and private key MUST have the same index
-    this.currentAccount = this.accountsEVM[0];
-    this.currentPrivateKeyToSign = this.privateKeyEVM[0];
+    const arrayAccounts = this.accountsEVM;
+    const arrayPrivateKeys = this.privateKeysEVM;
+    this.currentAccount = arrayAccounts[0];
+    this.currentPrivateKeyToSign = arrayPrivateKeys[0];
   }
 
   createNewAccount() {
@@ -90,7 +91,14 @@ export class Wallet {
   }
 
   changeAccount(index) {
-    this.currentAccount = this.accountsEVM[index];
-    this.currentPrivateKeyToSign = this.privateKeysEVM[index];
+    if (index > this.accountsEVM.length - 1) {
+      throw Error("Index greater than your account number");
+    } else {
+      //Account and private key MUST have the same index
+      const arrayAccounts = this.accountsEVM;
+      const arrayPrivateKeys = this.privateKeysEVM;
+      this.currentAccount = arrayAccounts[index];
+      this.currentPrivateKeyToSign = arrayPrivateKeys[index];
+    }
   }
 }
