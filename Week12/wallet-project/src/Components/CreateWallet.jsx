@@ -4,7 +4,6 @@ import { Wallet } from "../Wallet/Wallet";
 import Footer from "./Footer";
 
 function CreateWallet() {
-  let mainWallet;
   const [wallet, setWallet] = useState({});
   const [mnemonic, setMnemonic] = useState("");
   const [privateKeyHex, setPrivateKeyHex] = useState("");
@@ -28,7 +27,6 @@ function CreateWallet() {
     setCurrentAccount(_wallet.currentAddress);
     setCurrentNonce(_wallet.currentNonce);
     //setAccount(_wallet.address);
-    //console.log(mainWallet);
   }
 
   async function createNewAccount() {
