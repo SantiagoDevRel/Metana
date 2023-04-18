@@ -9,7 +9,6 @@ let listAccounts = [];
 
 function CreateWallet(props) {
   const numRef = useRef();
-  const messageRef = useRef();
   const [numberAccounts, setNumberAccounts] = useState(0);
   const [allAddresses, setAllAddresses] = useState([]);
   const [accountCreated, setAccountCreated] = useState(false);
@@ -20,7 +19,9 @@ function CreateWallet(props) {
   const [currentNonce, setCurrentNonce] = useState("");
   const [currentAccount, setCurrentAccount] = useState("0x");
   const [currentSigner, setCurrentSigner] = useState("0x");
+  const [signature, setSignature] = useState("0x");
   const [hash, setHash] = useState("");
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
     createPrivateKey();
@@ -67,6 +68,9 @@ function CreateWallet(props) {
     if (!accountCreated) {
       //user MUST create a private key first
       alert("You must create the first account before continuing.");
+    }
+    if (listAccounts.length > 3) {
+      alert("You can create only up to 4 wallets for learning purposes");
     } else {
       const newAddress = wallet.createNewAccount();
       setNumberAccounts(wallet.numberOfAccounts);
@@ -81,7 +85,7 @@ function CreateWallet(props) {
   function changeAccount(index) {
     if (!wallet.changeAccount(index)) {
       //manage error if the user wants to change to an inexisting address
-      alert("Number is greater than your current accounts");
+      alert("Invalid account number");
     } else {
       setCurrentAccount(wallet.currentAddress);
       setCurrentNonce(wallet.currentNonce);
@@ -100,20 +104,33 @@ function CreateWallet(props) {
   }
 
   function handleHashing(event) {
-    event.preventDefault();
-    const _msg = event.target.value;
-    //HASH MESSAGE + CURRENT NONCE TO PREVENT REPLAY ATTACK
-    console.log("Current nonce", currentNonce);
-    const _hash = ethers.utils.solidityKeccak256(["string", "uint256"], [_msg, currentNonce]);
-    setHash(_hash);
+    if (!accountCreated) {
+      //user MUST create a private key first
+      alert("You must create an account first.");
+    } else {
+      event.preventDefault();
+      const _msg = event.target.value;
+      //HASH MESSAGE + CURRENT NONCE TO PREVENT REPLAY ATTACK
+      console.log("Current nonce", currentNonce);
+      const _hash = ethers.utils.solidityKeccak256(["string", "uint256"], [_msg, currentNonce]);
+      setHash(_hash);
+      setMsg(`${_msg}` + `${currentNonce}`);
+    }
   }
 
   async function handleSigning(event) {
-    event.preventDefault();
-    const signature = await wallet.signMessage(hash);
-    console.log("signature", signature);
-    setCurrentNonce(wallet.currentNonce);
-    handleWallet(wallet);
+    if (!accountCreated) {
+      //user MUST create a private key first
+      alert("You must create an account first.");
+    } else {
+      event.preventDefault();
+      console.log("msg", msg);
+      const signature = await wallet.signMessage(msg);
+      console.log("signature", signature);
+      setCurrentNonce(wallet.currentNonce);
+      handleWallet(wallet);
+      setSignature(signature);
+    }
   }
 
   //DELETE
@@ -121,6 +138,7 @@ function CreateWallet(props) {
     const pk = wallet.currentPrivateKeyToSign;
     console.log("PK GET", pk);
     console.log(wallet);
+    console.log("verify:", ethers.utils.verifyMessage(msg, signature));
   }
 
   return (
@@ -138,35 +156,27 @@ function CreateWallet(props) {
           <button onClick={() => createNewAccount()}>2. Create new account</button>
 
           {/* HASH A MESSAGE */}
-          <button>3. Hash your message w/ current nonce</button>
+          <button>3. Hash your message + the current nonce:</button>
           <div>
             <form>
               <label>
                 <input className={styles.hashing} type="text" onChange={handleHashing} placeholder={"Insert your message here"}></input>
-                <p>{hash}</p>
+                <p className={styles.text}>{hash}</p>
               </label>
             </form>
           </div>
-
-          {/* SIGN THE HASH */}
-          <button onClick={() => handleSigning(event)}>4. Sign The hash</button>
-
-          <button onClick={() => printWallet()}>PRINT WALLET</button>
         </div>
         {/* SHOW ACCOUNTS - RIGHT CONTAINER */}
         <div className={styles.container}>
           <h4>Total Accounts: {numberAccounts}</h4>
 
           <div className={styles.addresses}>
-            <div>
-              {/* CHANGE ACCOUNT */}
-              <form onSubmit={handleChangeAccount}>
-                <label>
-                  <button type="submit">Choose your account #</button>
-                  <input type="number" name="num" ref={numRef} defaultValue={0} min={0}></input>
-                </label>
-              </form>
-            </div>
+            {/* CHANGE ACCOUNT */}
+            <form onSubmit={handleChangeAccount}>
+              <button type="submit">Select your account #</button>
+              <input type="number" name="num" ref={numRef} defaultValue={0} min={0}></input>
+            </form>
+
             {listAccounts.map((key, index) => {
               return (
                 <button key={index} style={{ backgroundColor: key === currentAccount ? "green" : "" }}>
@@ -176,6 +186,11 @@ function CreateWallet(props) {
             })}
           </div>
         </div>
+      </div>
+      {/* SIGN THE HASH */}
+      <div>
+        <button onClick={() => handleSigning(event)}>4. Sign The hash:</button>
+        <p className={styles.text}>{signature}</p>
       </div>
     </>
   );

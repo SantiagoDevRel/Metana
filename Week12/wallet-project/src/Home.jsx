@@ -25,19 +25,11 @@ function Home() {
     <div>
       <Tabs>
         <TabList>
-          <Tab>Create wallet</Tab>
-          <Tab>Assets</Tab>
-          <Tab>Activity</Tab>
+          <Tab>Wallet</Tab>
         </TabList>
 
         <TabPanel>
           <MainWallet mainWallet={handleWallet} />
-        </TabPanel>
-        <TabPanel>
-          <Assets mainWallet={account} />
-        </TabPanel>
-        <TabPanel>
-          <Activity mainWallet={account} />
         </TabPanel>
       </Tabs>
 
