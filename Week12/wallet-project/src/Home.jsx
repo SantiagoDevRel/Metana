@@ -1,7 +1,6 @@
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import CreateWallet from "./Components/CreateWallet";
-import Footer from "./Components/Footer";
 
 function Home() {
   return (
@@ -23,8 +22,10 @@ function Home() {
         <TabPanel>
           <h2>Any content 3</h2>
         </TabPanel>
+        <TabPanel>
+          <h2>Any content 4</h2>
+        </TabPanel>
       </Tabs>
-      <Footer />
     </div>
   );
 }
