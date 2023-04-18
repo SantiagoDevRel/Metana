@@ -9,7 +9,7 @@ function CreateWallet() {
   const [mnemonic, setMnemonic] = useState("");
   const [privateKeyHex, setPrivateKeyHex] = useState("");
   const [privateKeyUint8, setPrivateKeyUint8] = useState("");
-  const [nonce, setNonce] = useState("");
+  const [currentNonce, setCurrentNonce] = useState("");
   const [currentAccount, setCurrentAccount] = useState("0x");
 
   async function createPrivateKey() {
@@ -23,9 +23,10 @@ function CreateWallet() {
 
   async function createNewWallet(_mnemonic, _privateKeyUint8, _privateKeyHex) {
     const _wallet = new Wallet(_mnemonic, _privateKeyUint8, _privateKeyHex);
-    setNonce(_wallet.nonce);
+    setCurrentNonce(_wallet.nonce);
     setWallet(_wallet);
     setCurrentAccount(_wallet.currentAddress);
+    setCurrentNonce(_wallet.currentNonce);
     //setAccount(_wallet.address);
     //console.log(mainWallet);
   }
@@ -35,9 +36,14 @@ function CreateWallet() {
   }
 
   async function changeAccount(index) {
-    wallet.changeAccount(index);
-    console.log("CURRENT ADDRESS:", wallet.currentAddress);
-    setCurrentAccount(wallet.currentAddress);
+    if (!wallet.changeAccount(index)) {
+      //manage error if the user wants to change to an inexisting address
+      console.log("ERROR CHANGING ACCOUNT");
+    } else {
+      setCurrentAccount(wallet.currentAddress);
+      setCurrentNonce(wallet.currentNonce);
+      console.log("CURRENT ADDRESS:", wallet.currentAddress);
+    }
   }
 
   function printWallet() {
@@ -59,7 +65,7 @@ function CreateWallet() {
       <button onClick={() => changeAccount(3)}>change account 3</button>
       <button onClick={() => printWallet()}>PRINT WALLET</button>
 
-      <Footer nonce={nonce} currentAccount={currentAccount} />
+      <Footer nonce={currentNonce} currentAccount={currentAccount} />
     </div>
   );
 }
