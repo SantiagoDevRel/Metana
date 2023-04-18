@@ -10,3 +10,8 @@
   display: flex;
   flex-direction: column;
 }
+
+.addresses {
+  display: flex;
+  flex-direction: column;
+}
