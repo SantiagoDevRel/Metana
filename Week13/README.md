@@ -51,3 +51,13 @@ in return it gets some shares that represent the % of shares provided to the LP
 **Swap**: user send token A(add to the LP) to get token B(subtract from the LP)
 
 **Remove Liquidity**: user can withdraw his tokens from the LP, depending on his shares, that % will be sent to him (quantity of token A and B may vary)
+
+2. What is a constant sum AMM?
+
+X + Y = K
+X= amount of token A in the AMM
+Y= amount of token B in the AMM
+K= product of X\*Y
+
+**SWAP**
+![Swap X + Y = K](./swap.png)
