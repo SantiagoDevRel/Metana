@@ -7,9 +7,9 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract AMM{
 
     // ~~~~~~~ Immutable variables ~~~~~~~ 
-    IERC20 public immutable tokenA;
-    IERC20 public immutable tokenB;
-    uint256 public constant BASE_PERCENTAGE = 1000;
+    IERC20 private immutable tokenA;
+    IERC20 private immutable tokenB;
+    uint256 private constant BASE_PERCENTAGE = 1000;
 
     // ~~~~~~~ State variables ~~~~~~~ 
     /* 
@@ -19,11 +19,11 @@ contract AMM{
      * tradingfee 5 = 0.5%
      * tradingfee 3 = 0.3%
      */
-    uint256 public tradingFeeBase1000;
-    uint256 public reserveTokenA;
-    uint256 public reserveTokenB;
-    uint256 public totalShares;
-    mapping (address => uint256) public sharesPerUser;
+    uint256 private tradingFeeBase1000;
+    uint256 private reserveTokenA;
+    uint256 private reserveTokenB;
+    uint256 private totalShares;
+    mapping (address => uint256) private sharesPerUser;
 
     constructor(IERC20 _tokenA, IERC20 _tokenB, uint256 _fee){
         require(_fee <= BASE_PERCENTAGE, "AMM: Fee can't bee higher than 1_000 = (100%)");
@@ -178,6 +178,26 @@ contract AMM{
 
     function getTotalShares() public view returns(uint256){
         return totalShares;
+    }
+
+    function basePercentage() public pure returns(uint256){
+        return BASE_PERCENTAGE;
+    }
+
+    function currentFee() public view returns(uint256){
+        return tradingFeeBase1000;
+    }
+
+    function shares(address user) public view returns(uint256){
+        return sharesPerUser[user];
+    }
+
+    function addressTokenA() public view returns(IERC20){
+        return tokenA;
+    }
+
+    function addressTokenB() public view returns(IERC20){
+        return tokenB;
     }
 
 }
