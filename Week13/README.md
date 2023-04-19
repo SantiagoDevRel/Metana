@@ -57,8 +57,11 @@ in return it gets some shares that represent the % of shares provided to the LP
 ### 2. What is a constant sum AMM?
 
 X + Y = K
+
 X= amount of token A in the AMM
+
 Y= amount of token B in the AMM
+
 K= product of X\*Y
 
 **SWAP**
