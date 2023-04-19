@@ -65,6 +65,36 @@
     K= product of X\*Y
 
 **SWAP**
+
 ![Swap X + Y = K](./swap.png)
 
 **ADD LIQUIDITY**
+
+    X = amount token A in the LP
+    Y = amount token B in the LP
+    dx = amount token A coming into the LP
+    dy = amount token B coming into the LP
+
+    FINAL FORMULA:
+
+    shares to mint =  ((amount token A coming in)+(amount token B coming in))*total shares
+                      _____________________________________________________________________
+                                (token A in the LP + token B in the LP)
+
+![Add liquidity](./add_liquidity1.png)
+
+**REMOVE LIQUIDITY**
+
+![Remove liquidity](./remove_liquidity1.png)
+
+    FINAL FORMULA:
+    token out A = (amount token A in the LP)*(shares to burn)
+                   __________________________________________
+                                    total shares
+
+
+    token out B = (amount token B in the LP)*(shares to burn)
+                   __________________________________________
+                                    total shares
+
+![Final formula](./remove_liquidity2.png)
