@@ -22,7 +22,7 @@
 
     -example of a liquidity pool of 10eth and 1000usdt
 
-    -FORMULA (X \* Y) = K(constant)
+    -FORMULA (X * Y) = K(constant)
 
         Case study:
         10(eth) * 1_000(usdt) = 10_000(constant)
@@ -88,12 +88,12 @@
 ![Remove liquidity](./remove_liquidity1.png)
 
     FINAL FORMULA:
-    token out A = (amount token A in the LP)*(shares to burn)
+    token out A(dx) = (amount token A in the LP)*(shares to burn)
                    __________________________________________
                                     total shares
 
 
-    token out B = (amount token B in the LP)*(shares to burn)
+    token out B(dy) = (amount token B in the LP)*(shares to burn)
                    __________________________________________
                                     total shares
 
