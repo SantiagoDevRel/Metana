@@ -29,6 +29,9 @@ async function main() {
   //ADD LIQUIDITY
   const addLiquidity = await amm.addLiquidity(balanceDeployerA, balanceDeployerB);
   await addLiquidity.wait();
+
+  console.log("Shares of owner:", await amm.shares(owner.address));
+  console.log("Total shares", await amm.getTotalShares());
 }
 
 // We recommend this pattern to be able to use async/await everywhere
