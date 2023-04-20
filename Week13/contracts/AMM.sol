@@ -5,6 +5,13 @@ pragma solidity ^0.8.10;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract AMM{
+    // ~~~~~~~ Events ~~~~~~~ 
+    event Swap(address indexed user, address tokenOut, uint256 amountOut);
+    event SharesMinted(address indexed user, uint256 shares);
+    event SharesBurned(address indexed user, uint256 shares);
+    event AddedLiquidity(address indexed user, uint256 tokenA, uint256 tokenB);
+    event RemovedLiquidity(address indexed user, uint256 tokenA, uint256 tokenB);
+
 
     // ~~~~~~~ Immutable variables ~~~~~~~ 
     IERC20 private immutable tokenA;
@@ -33,7 +40,7 @@ contract AMM{
     }  
 
     // ~~~~~~~ Public/External functions ~~~~~~~  
-    function swap(IERC20 _tokenIn, uint256 _amountIn) external returns(uint256 amountOut) {
+    function swap(IERC20 _tokenIn, uint256 _amountIn) external {
         require(_tokenIn == tokenA || _tokenIn == tokenB, "AMM: Invalid token");
         
         address _user = msg.sender;
@@ -52,7 +59,7 @@ contract AMM{
             uint256 feeTokenIn = _calculateFee(amountIn);
 
              //3. calculate the amountOut
-            amountOut = amountIn - feeTokenIn;
+            uint256 amountOut = amountIn - feeTokenIn;
             require(getReserveB() > amountOut,"AMM: Insufficient liquidity of token B to swap");
 
             //4. update the reserve token A and B
@@ -61,7 +68,7 @@ contract AMM{
 
             //5. transfer amountOut to the user
             require(tokenB.transfer(_user,amountOut),"AMM: Error transfering the funds to the user");
-
+            emit Swap(_user, address(tokenB), amountOut);
         }else{
             //1. transfer tokenIn to address(this)
             tokenB.transferFrom(_user,_thisContract,_amountIn);
@@ -72,7 +79,7 @@ contract AMM{
             uint256 feeTokenIn = _calculateFee(amountIn);
 
              //3. calculate the amountOut
-            amountOut = amountIn - feeTokenIn;
+            uint256 amountOut = amountIn - feeTokenIn;
             require(getReserveA() > amountOut,"AMM: Insufficient liquidity of token A to swap");
 
             //4. update the reserve token A and B
@@ -81,10 +88,11 @@ contract AMM{
 
             //5. transfer amountOut to the user
             require(tokenA.transfer(_user,amountOut),"AMM: Error transfering the funds to the user");
+            emit Swap(_user, address(tokenA), amountOut);
         }
     }
 
-    function addLiquidity(uint256 _amountTokenA, uint256 _amountTokenB) external returns(uint256 sharesToMint) {
+    function addLiquidity(uint256 _amountTokenA, uint256 _amountTokenB) external {
         //transfer tokens from user to thisContract
         address _thisContract = address(this);
         address _user = msg.sender;
@@ -96,13 +104,15 @@ contract AMM{
         uint256 _amountB = tokenB.balanceOf(_thisContract) - reserveTokenB;
 
         //calculate shares
-        sharesToMint = _calculateSharesToMint(_amountA, _amountB);
+        uint256 sharesToMint = _calculateSharesToMint(_amountA, _amountB);
         require(sharesToMint>0, "AMM: Shares can't be 0");
         _mintShares(_user, sharesToMint);
 
         //update the reserves
         _increaseReserveA(_amountA);
         _increaseReserveB(_amountB);
+        emit AddedLiquidity(_user, _amountA, _amountB);
+        emit SharesMinted(_user, sharesToMint);
     }
 
     function removeLiquidity(uint256 _sharesToBurn) external returns(uint256 tokenAOut, uint256 tokenBOut){
@@ -125,6 +135,8 @@ contract AMM{
         if(tokenBOut > 0){
             tokenB.transfer(_user, tokenBOut);
         }
+        emit SharesBurned(_user, _sharesToBurn);
+        emit RemovedLiquidity(_user, tokenAOut, tokenBOut);
     }
 
     // ~~~~~~~ Internal/Private functions ~~~~~~~ 
