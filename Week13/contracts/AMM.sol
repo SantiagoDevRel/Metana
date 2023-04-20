@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 
-pragma solidity ^0.8.10;
+pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 
 contract AMM{
     // ~~~~~~~ Events ~~~~~~~ 
@@ -94,11 +95,11 @@ contract AMM{
 
     function addLiquidity(uint256 _amountTokenA, uint256 _amountTokenB) external {
         //transfer tokens from user to thisContract
+        
         address _thisContract = address(this);
         address _user = msg.sender;
         require(tokenA.transferFrom(_user, _thisContract, _amountTokenA),"AMM: Failed transfering token A");
         require(tokenB.transferFrom(_user,_thisContract, _amountTokenB),"AMM: Failed transfering token B");
-
         //recalculate the amounts in for security reasons
         uint256 _amountA = tokenA.balanceOf(_thisContract) - reserveTokenA;
         uint256 _amountB = tokenB.balanceOf(_thisContract) - reserveTokenB;
@@ -118,16 +119,18 @@ contract AMM{
     function removeLiquidity(uint256 _sharesToBurn) external returns(uint256 tokenAOut, uint256 tokenBOut){
         address _user = msg.sender;
 
-        //burn the shares
-        _burnShares(_user, _sharesToBurn);
 
         //calculate the amount of tokens to give to the user
         (tokenAOut, tokenBOut) = _calculateAmountsOut(_sharesToBurn);
 
+        
         //decrease both reserves with the token amounts
         _decreaseReserveA(tokenAOut);
         _decreaseReserveB(tokenBOut);
 
+        //burn the shares
+        _burnShares(_user, _sharesToBurn);
+        
         //transfer both tokens back to the user
         if(tokenAOut > 0){
             tokenA.transfer(_user, tokenAOut);
@@ -142,14 +145,14 @@ contract AMM{
     // ~~~~~~~ Internal/Private functions ~~~~~~~ 
     function _calculateSharesToMint(uint256 _amountA, uint256 _amountB) private view returns(uint256){
         if(getTotalShares() > 0){
-            return ((_amountA + _amountB) * getTotalShares()) / (getReserveA() - getReserveB());
+            return ((_amountA + _amountB) * getTotalShares()) / (getReserveA() + getReserveB());
         }
         return (_amountA + _amountB);
     }
 
     function _calculateAmountsOut(uint256 _sharesToBurn) private view returns(uint256 _tokenAOut, uint256 _tokenBOut){
-        _tokenAOut = (getReserveA()*_sharesToBurn) / getTotalShares();
-        _tokenBOut = (getReserveB() * _sharesToBurn) / getTotalShares();
+        _tokenAOut = (getReserveA()* (_sharesToBurn)) / getTotalShares();
+        _tokenBOut = (getReserveB() * (_sharesToBurn)) / getTotalShares();
     }
     
     function _mintShares(address _to, uint256 _amount) internal{
