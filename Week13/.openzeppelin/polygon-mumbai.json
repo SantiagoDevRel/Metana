@@ -1,0 +1,152 @@
+{
+  "manifestVersion": "3.2",
+  "proxies": [
+    {
+      "address": "0xB36CE6411cDCE46f7d6a9076FafA79d7f7431AC2",
+      "txHash": "0x2a3bb31281cfe730647ac44ad51e534f1cd8af5b80e235f6f98a1c59ea112f5d",
+      "kind": "uups"
+    }
+  ],
+  "impls": {
+    "1a768fc3fa668432217e2cca970b45fc6709cec38aeda1b9ac47ae69da60b91a": {
+      "address": "0xd74dE6d379F14701D5f531c253A59C89fD8a0E6e",
+      "txHash": "0x98e8110f5f64e614d04e4e277f4dbf6fc4f58a6c6408349bdd6a83dbe6a471a2",
+      "layout": {
+        "solcVersion": "0.8.9",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:67"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "tokenA",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_contract(IERC20)1049",
+            "contract": "AMM",
+            "src": "contracts/AMM.sol:28"
+          },
+          {
+            "label": "tokenB",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_contract(IERC20)1049",
+            "contract": "AMM",
+            "src": "contracts/AMM.sol:29"
+          },
+          {
+            "label": "tradingFeeBase1000",
+            "offset": 0,
+            "slot": "103",
+            "type": "t_uint256",
+            "contract": "AMM",
+            "src": "contracts/AMM.sol:30"
+          },
+          {
+            "label": "reserveTokenA",
+            "offset": 0,
+            "slot": "104",
+            "type": "t_uint256",
+            "contract": "AMM",
+            "src": "contracts/AMM.sol:31"
+          },
+          {
+            "label": "reserveTokenB",
+            "offset": 0,
+            "slot": "105",
+            "type": "t_uint256",
+            "contract": "AMM",
+            "src": "contracts/AMM.sol:32"
+          },
+          {
+            "label": "totalShares",
+            "offset": 0,
+            "slot": "106",
+            "type": "t_uint256",
+            "contract": "AMM",
+            "src": "contracts/AMM.sol:33"
+          },
+          {
+            "label": "sharesPerUser",
+            "offset": 0,
+            "slot": "107",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "AMM",
+            "src": "contracts/AMM.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(IERC20)1049": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    }
+  }
+}

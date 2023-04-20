@@ -1,10 +1,10 @@
-const hre = require("hardhat");
+const { ethers, upgrades } = require("hardhat");
 
 async function main() {
   const [owner] = await ethers.getSigners();
   //DEPLOY TOKENS
-  const TokenA = await hre.ethers.getContractFactory("TokenA");
-  const TokenB = await hre.ethers.getContractFactory("TokenB");
+  const TokenA = await ethers.getContractFactory("TokenA");
+  const TokenB = await ethers.getContractFactory("TokenB");
   const tokenA = await TokenA.deploy();
   const tokenB = await TokenB.deploy();
   await tokenA.deployed();
@@ -13,8 +13,9 @@ async function main() {
   console.log("TokenB", tokenB.address);
 
   //DEPLOY AMM
-  const AMM = await hre.ethers.getContractFactory("AMM");
-  const amm = await AMM.deploy(tokenA.address, tokenB.address, 100); //100 = 10% fee
+  const AMM = await ethers.getContractFactory("AMM");
+  const amm = await upgrades.deployProxy(AMM, [tokenA.address, tokenB.address, 100], { initializer: "init", kind: "uups" }); //100 = 10% fee
+
   await amm.deployed();
   console.log("AMM", amm.address);
 
@@ -29,9 +30,6 @@ async function main() {
   //ADD LIQUIDITY
   const addLiquidity = await amm.addLiquidity(balanceDeployerA, balanceDeployerB);
   await addLiquidity.wait();
-
-  console.log("Shares of owner:", await amm.shares(owner.address));
-  console.log("Total shares", await amm.getTotalShares());
 }
 
 // We recommend this pattern to be able to use async/await everywhere
