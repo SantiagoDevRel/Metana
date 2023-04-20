@@ -2,22 +2,19 @@
 
 pragma solidity ^0.8.9;
 
+import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 
-contract AMM{
+contract AMM is Initializable, ERC1967Upgrade, OwnableUpgradeable {
     // ~~~~~~~ Events ~~~~~~~ 
     event Swap(address indexed user, address tokenOut, uint256 amountOut);
     event SharesMinted(address indexed user, uint256 shares);
     event SharesBurned(address indexed user, uint256 shares);
     event AddedLiquidity(address indexed user, uint256 tokenA, uint256 tokenB);
     event RemovedLiquidity(address indexed user, uint256 tokenA, uint256 tokenB);
-
-
-    // ~~~~~~~ Immutable variables ~~~~~~~ 
-    IERC20 private immutable tokenA;
-    IERC20 private immutable tokenB;
-    uint256 private constant BASE_PERCENTAGE = 1000;
 
     // ~~~~~~~ State variables ~~~~~~~ 
     /* 
@@ -27,13 +24,17 @@ contract AMM{
      * tradingfee 5 = 0.5%
      * tradingfee 3 = 0.3%
      */
+    uint256 private constant BASE_PERCENTAGE = 1000;
+    IERC20 private tokenA;
+    IERC20 private tokenB;
     uint256 private tradingFeeBase1000;
     uint256 private reserveTokenA;
     uint256 private reserveTokenB;
     uint256 private totalShares;
     mapping (address => uint256) private sharesPerUser;
 
-    constructor(IERC20 _tokenA, IERC20 _tokenB, uint256 _fee){
+    function init(IERC20 _tokenA, IERC20 _tokenB, uint256 _fee) external initializer() {
+        __Ownable_init();
         require(_fee <= BASE_PERCENTAGE, "AMM: Fee can't bee higher than 1_000 = (100%)");
         tokenA = _tokenA;
         tokenB = _tokenB;
@@ -218,5 +219,12 @@ contract AMM{
     function addressTokenB() public view returns(IERC20){
         return tokenB;
     }
+
+    // ~~~~~~~ Proxy upgrade functions ~~~~~~~ 
+
+    function upgradeTo(address newImplementation) external onlyOwner{
+        _upgradeTo(newImplementation);
+    }
+
 
 }
