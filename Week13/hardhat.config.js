@@ -1,4 +1,6 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("@openzeppelin/hardhat-upgrades");
+
 require("dotenv").config();
 
 const { PRIVATE_KEY, MUMBAI_NODE, POLY_KEY } = process.env;
