@@ -17,6 +17,14 @@ async function main() {
   const amm = await AMM.deploy(tokenA.address, tokenB.address, 100); //100 = 10% fee
   await amm.deployed();
   console.log("AMM", amm.address);
+
+  //APPROVE TOKENS - AMM
+  const balanceDeployerA = await tokenA.balanceOf(owner.address);
+  const balanceDeployerB = await tokenB.balanceOf(owner.address);
+  const approveA = await tokenA.approve(amm.address, balanceDeployerA);
+  const approveB = await tokenB.approve(amm.address, balanceDeployerB);
+  await approveA.wait();
+  await approveB.wait();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
