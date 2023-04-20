@@ -25,6 +25,10 @@ async function main() {
   const approveB = await tokenB.approve(amm.address, balanceDeployerB);
   await approveA.wait();
   await approveB.wait();
+
+  //ADD LIQUIDITY
+  const addLiquidity = await amm.addLiquidity(balanceDeployerA, balanceDeployerB);
+  await addLiquidity.wait();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
