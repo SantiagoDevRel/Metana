@@ -1,27 +1,22 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
 const hre = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  const [owner] = await ethers.getSigners();
+  //DEPLOY TOKENS
+  const TokenA = await hre.ethers.getContractFactory("TokenA");
+  const TokenB = await hre.ethers.getContractFactory("TokenB");
+  const tokenA = await TokenA.deploy();
+  const tokenB = await TokenB.deploy();
+  await tokenA.deployed();
+  await tokenB.deployed();
+  console.log("TokenA", tokenA.address);
+  console.log("TokenB", tokenB.address);
 
-  const lockedAmount = hre.ethers.utils.parseEther("0.001");
-
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
-  console.log(
-    `Lock with ${ethers.utils.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
+  //DEPLOY AMM
+  const AMM = await hre.ethers.getContractFactory("AMM");
+  const amm = await AMM.deploy(tokenA.address, tokenB.address, 100); //100 = 10% fee
+  await amm.deployed();
+  console.log("AMM", amm.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
