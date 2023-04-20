@@ -35,12 +35,15 @@ contract AMM{
     // ~~~~~~~ Public/External functions ~~~~~~~  
     function swap(IERC20 _tokenIn, uint256 _amountIn) external returns(uint256 amountOut) {
         require(_tokenIn == tokenA || _tokenIn == tokenB, "AMM: Invalid token");
+        
         address _user = msg.sender;
         address _thisContract = address(this);
         //1. transfer tokenIn to address(this)
 
+
         uint256 amountIn;
         if(_tokenIn == tokenA){
+            require(getReserveB() > 0,"AMM: Insufficient liquidity of token B to swap");
             //1. transfer tokenIn to address(this)
             tokenA.transferFrom(_user,_thisContract,_amountIn);
             //recalculate amountIn for security reasons --> balanceOf - against the reserves
@@ -60,6 +63,7 @@ contract AMM{
             require(tokenB.transfer(_user,amountOut),"AMM: Error transfering the funds to the user");
 
         }else{
+            require(getReserveA() > 0,"AMM: Insufficient liquidity of token A to swap");
             //1. transfer tokenIn to address(this)
             tokenB.transferFrom(_user,_thisContract,_amountIn);
             //recalculate amountIn for security reasons --> balanceOf - against the reserves
