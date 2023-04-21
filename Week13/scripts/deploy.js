@@ -12,23 +12,23 @@ async function main() {
   console.log("TokenA", tokenA.address);
   console.log("TokenB", tokenB.address);
 
-  //DEPLOY AMM
-  const AMM = await ethers.getContractFactory("AMM");
-  const amm = await upgrades.deployProxy(AMM, [tokenA.address, tokenB.address, 100], { initializer: "init", kind: "uups" }); //100 = 10% fee
+  //DEPLOY constant sum automated market maker
+  const CSAMM = await ethers.getContractFactory("CSAMM");
+  const csamm = await upgrades.deployProxy(CSAMM, [tokenA.address, tokenB.address, 100], { initializer: "init", kind: "uups" }); //100 = 10% fee
 
-  await amm.deployed();
-  console.log("AMM", amm.address);
+  await csamm.deployed();
+  console.log("csamm", csamm.address);
 
-  //APPROVE TOKENS - AMM
+  //APPROVE TOKENS - csamm
   const balanceDeployerA = await tokenA.balanceOf(owner.address);
   const balanceDeployerB = await tokenB.balanceOf(owner.address);
-  const approveA = await tokenA.approve(amm.address, balanceDeployerA);
-  const approveB = await tokenB.approve(amm.address, balanceDeployerB);
+  const approveA = await tokenA.approve(csamm.address, balanceDeployerA);
+  const approveB = await tokenB.approve(csamm.address, balanceDeployerB);
   await approveA.wait();
   await approveB.wait();
 
   //ADD LIQUIDITY
-  const addLiquidity = await amm.addLiquidity(balanceDeployerA, balanceDeployerB);
+  const addLiquidity = await csamm.addLiquidity(balanceDeployerA, balanceDeployerB);
   await addLiquidity.wait();
 }
 
