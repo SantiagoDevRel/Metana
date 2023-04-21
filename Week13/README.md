@@ -1,6 +1,6 @@
 ## Automated market maker
 
-## Order Books vs AMM
+# Order Books vs AMM
 
 [Youtube source](https://www.youtube.com/watch?v=Ui1TBPdnEJU)
 
@@ -41,7 +41,7 @@
         9 * 1_111 = 10_000
         10_000 = 10_000
 
-## Constant Sum AMM Math
+# Constant Sum AMM Math
 
 [Youtube source](https://www.youtube.com/watch?v=-JhgcqvyYeM)
 
@@ -63,6 +63,8 @@
     Y= amount of token B in the AMM
 
     K= product of X\*Y
+
+# CSAMM Formulas
 
 **SWAP**
 
@@ -98,3 +100,82 @@
                                     total shares
 
 ![Final formula](./remove_liquidity2.png)
+
+# Constant Product AMM Math
+
+[Youtube source](https://www.youtube.com/watch?v=QNPyFs8Wybk)
+
+### 1. Price is determined by the equation
+
+    X * Y = K
+    X = token A
+    Y = token B
+    K = constant product
+
+    Example 1:
+        Sell token A(in), buy B(out)
+        Price before trade: A * B = K
+        Price after trade: (A + da) * (B - db) = K
+
+    Example 2:
+        -Reserve A = 500
+        -Reserve B = 2000
+        -Buy 100 token B
+        User swaping 100 token B for "da" token A
+        db = +100tokenB (in)
+        da = -da (out)
+
+        LONG FORMULA:
+            (TokenA - da) * (TokenB + db) = 1_000_000
+            (500 - da) * (2_000 + db) = 1_000_000
+            (500 - da) * (2_000 + 100) = 1_000_000
+            (500 - da) * (2_100) = 1_000_000
+            (500 - da) = 1_000_000 / 2_100
+            (500 - da) = 476,19
+            - da = -500 + 476,19
+            da = 500 - 476,19
+            da = 23,80
+
+        SHORT FORMULA:
+            da = A * db / B + db
+            da = 500 * 100 / 2_000 + 100
+            da = 23.80
+
+        CONSTANT:
+            (500 - 23,80) * (2_000 + 100) = 1_000_000
+            476,2 * 2_100 = 1_000_000
+
+        SOLUTION
+            The user will receive 23,80 token A in exchange of selling 100 token B
+
+### 2 Formulas in total:
+
+    SWAP A for B
+        1. user selling token A
+            +da
+            -db
+        (A + da) * (B - db)= K
+
+        2. user buying token B
+            +da
+            -db
+        (A + da) * (B - db)= K
+
+        FINAL FORMULA:
+
+        da = A*db
+            ______
+            B + db
+
+    OR
+
+    SWAP B for A
+        3. user selling token B
+            +db
+            -da
+        (A - da) * (B + db)= K
+
+        4. user buying token A
+            +db
+            -da
+        (A - da) * (B + db)= K
