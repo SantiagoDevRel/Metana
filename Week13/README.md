@@ -64,13 +64,13 @@
 
     K= product of X\*Y
 
-# CSAMM Formulas
+# Constant Sum AMM Formulas
 
-**SWAP**
+# SWAP FORMULA CSAMM
 
 ![Swap X + Y = K](./swap.png)
 
-**ADD LIQUIDITY**
+# ADD LIQUIDITY FORMULA CSAMM
 
     X = amount token A in the LP
     Y = amount token B in the LP
@@ -85,7 +85,7 @@
 
 ![Add liquidity](./add_liquidity1.png)
 
-**REMOVE LIQUIDITY**
+# REMOVE LIQUIDITY FORMULA CSAMM
 
 ![Remove liquidity](./remove_liquidity1.png)
 
@@ -101,11 +101,58 @@
 
 ![Final formula](./remove_liquidity2.png)
 
-# Constant Product AMM Math
+# Constant Product AMM Formulas
 
 [Youtube source](https://www.youtube.com/watch?v=QNPyFs8Wybk)
 
-### 1. Price is determined by the equation
+    A = Total token A
+    B = Total token B
+    da = tokenA coming in/out
+    db = tokenB coming in/out
+    TS = total shares
+
+# 1. SWAP FORMULA CPAMM
+
+![](./cp_swap.png)
+
+    da = A*db
+        ______
+        B + db
+
+    db = B*da
+        ______
+        A + da
+
+# 2. ADD LIQUIDITY FORMULA CPAMM
+
+![](./cp_addLiquidity.png)
+
+    Formula how many tokens to add:
+        (the left side should be equal to the division of A/B)
+     da      A
+    ____  = ____
+     db      B
+
+    SHORT:
+        TS = total shares
+
+                         da       TS      db      TS
+        sharesToMint = ______ * _____ =  _____ * ____
+                          A       1        B       1
+
+    LONG:
+        TotalLiquidityBefore = sqrt(A*B)
+        TotalLiquidityAfter = sqrt( (A+da) * (B+db) )
+
+                        LiquidityAfter - LiquidityBefore   Total shares
+        sharesToMint = ________________________________ * ______________
+                                LiquidityBefore                  1
+
+# 3. REMOVE LIQUIDITY FORMULA CPAMM
+
+![](./cp_removeLiquidity.png)
+
+### 1. Explanation Swap
 
     X * Y = K
     X = token A
@@ -115,7 +162,7 @@
     Example 1:
         Sell token A(in), buy B(out)
         Price before trade: A * B = K
-        Price after trade: (A + da) * (B - db) = K
+        Price after trade: (A + da) * (B - db) = K'
 
     Example 2:
         -Reserve A = 500
@@ -148,34 +195,66 @@
         SOLUTION
             The user will receive 23,80 token A in exchange of selling 100 token B
 
-### 2 Formulas in total:
+### 2. Explanation Add liquidity (constraints)
 
-    SWAP A for B
-        1. user selling token A
-            +da
-            -db
-        (A + da) * (B - db)= K
+    before trade -->  A * B = K
+    after trade --> ( A + da ) * ( B + db ) = K
 
-        2. user buying token B
-            +da
-            -db
-        (A + da) * (B - db)= K
+    -No price changes before and after adding liquidity
 
-        FINAL FORMULA:
+    Example 1:
+    A = 500
+    B = 1500
 
-        da = A*db
-            ______
-            B + db
+    Formula:
+     da      A
+    ____  = ____
+     db      B
 
-    OR
+    -Add 1000 tokenB
+        A/B = 0.33
 
-    SWAP B for A
-        3. user selling token B
-            +db
-            -da
-        (A - da) * (B + db)= K
+        da/1000 = 0.33
+        da = 0.33*1000
+        da = 333.33
 
-        4. user buying token A
-            +db
-            -da
-        (A - da) * (B + db)= K
+        330      500
+        ______ = ____ = 0.3333
+        1000     1500
+
+    -Add 1000 tokenA
+
+        A/B = 0.3333
+
+        1000/db = 0.33
+        db = 1000/0.33
+        db = 3000
+
+        1000     500
+        ______ = ____ = 0.3333
+        3000     1500
+
+    -Shares to mint for the first time (when total shares = 0)
+
+        SharesToMint = sqrt(A * B)
+        SharesToMint = sqrt(500*1500)
+        SharesToMint = 866
+
+    -Shares to mint (when totalShares > 0)
+        -adding 1000 Token A and 3000 Token B
+
+        1.
+            SharesToMint = sqrt((A+1000) * (B+3000))
+            SharesToMint = sqrt((1500) * (4500))
+            SharesToMint = 2598 - 866(currentShares)
+            SharesToMint = 1732
+
+        OR
+
+        2.              1000           3000
+        SharesToMint = ______ * 866 = ______ * 866
+                         500           1500
+
+        SharesToMint = ( 866_000 / 500 ) =( 2_598_000 / 1500 )
+
+        SharesToMint = 1732 = 1732
