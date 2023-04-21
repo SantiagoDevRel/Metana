@@ -150,6 +150,9 @@
 
 # 3. REMOVE LIQUIDITY FORMULA CPAMM
 
+    da = reserveTokenA * (SharesToBurn / TotalShares)
+    db = reserveTokenB * (SharesToBurn / TotalShares)
+
 ![](./cp_removeLiquidity.png)
 
 ### 1. Explanation Swap
@@ -244,9 +247,8 @@
         -adding 1000 Token A and 3000 Token B
 
         1.
-            SharesToMint = sqrt((A+1000) * (B+3000))
-            SharesToMint = sqrt((1500) * (4500))
-            SharesToMint = 2598 - 866(currentShares)
+            SharesToMint = sqrt((da) * (db))
+            SharesToMint = sqrt((1000) * (3000))
             SharesToMint = 1732
 
         OR
@@ -258,3 +260,25 @@
         SharesToMint = ( 866_000 / 500 ) =( 2_598_000 / 1500 )
 
         SharesToMint = 1732 = 1732
+
+### 2. Explanation Remove liquidity
+
+    Example 1:
+        A = 4500
+        B = 1500
+        TS = 2598
+
+        Let's butn 1598 shares
+        da = reserveTokenA * (SharesToBurn / TotalShares)
+        da = 4500 * (1598/2598)
+        da = 2767
+        A = 4500 - 2767
+
+        db = reserveTokenB * (SharesToBurn / TotalShares)
+        db = 1500 * (1598/2598)
+        db = 922
+        B = 1500 - 922
+
+        new reserves:
+        A = 1733
+        B = 578
