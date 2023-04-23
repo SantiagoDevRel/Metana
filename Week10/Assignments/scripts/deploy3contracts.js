@@ -6,6 +6,7 @@ async function main() {
 
   const erc20 = await upgrades.deployProxy(UpERC20, ["MetaToken", "MTN"], { initializer: "init", kind: "uups" });
 
+  console.log("CONSOLE ERC20", erc20);
   await erc20.deployed();
   const ADDRESS_ERC20 = erc20.address;
   console.log("erc20 deployed to:", ADDRESS_ERC20);
