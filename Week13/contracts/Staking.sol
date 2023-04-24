@@ -8,7 +8,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Staking is Ownable{
 
-
+    //~~~~~~ Events ~~~~~~
+    event RewardsAdded(address indexed owner, uint256 amount);
+     
 
     //~~~~~~ Immutable ~~~~~~
     IERC20 public immutable stakingToken;
@@ -53,7 +55,8 @@ contract Staking is Ownable{
         require(rewardsToken.transferFrom(_from, address(this), _amount));
         rewardPerSecond = _amount / duration;
         require(_validateRewardsAndTime(rewardPerSecond, duration));
-        //emit RewardsAdded()
+        emit RewardsAdded(_from, _amount);
+
     }
 
     //renew amount and duration of the staking
@@ -71,7 +74,7 @@ contract Staking is Ownable{
         duration = _newDuration;
         rewardPerSecond = _amount / _newDuration;
         require(_validateRewardsAndTime(rewardPerSecond, _newDuration));
-        //emit RewardsAdded()
+        emit RewardsAdded(_from, _amount);
     }
 
     function withdrawLeftOverRewards(address _to) external onlyOwner{
@@ -133,7 +136,6 @@ contract Staking is Ownable{
         require(rewardsToken.balanceOf(address(this)) >= _rewardPerSecond * _duration,"Staking: Insufficient funds to pay rewards");
         finishAt = block.timestamp + duration;
         updatedAt = block.timestamp;
-        //emit FinishAtSet()
         return true;    
     }
 
