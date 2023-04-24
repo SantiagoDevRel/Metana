@@ -24,6 +24,16 @@ contract Staking is Ownable{
     uint256 private totalStaked;    
     mapping (address => uint256) private balanceOf;
 
+    modifier updateRewards(address _user){
+        rewardPerTokenStored = rewardPerToken();
+        updatedAt = lastTimeRewardApplicable();
+        if(_user != address(0)){
+            rewardsEarned[_user] = earned(_user);
+            userRewardPerTokenPaid[_user] = rewardPerTokenStored;
+        }
+        _;
+    }
+
     //~~~~~~ Constructor ~~~~~~
     constructor(address _staking, address _rewards, uint256 _duration){
         stakingToken = IERC20(_staking);
@@ -35,7 +45,7 @@ contract Staking is Ownable{
 
     //set the total amount of rewards that will be paid for the specific duration
     //add initial amount of rewards to start the contract
-    function addRewardsToStart(address _from, uint256 _amount) external onlyOwner{
+    function addRewardsToStart(address _from, uint256 _amount) updatedAt(address(0)) external onlyOwner{
         require(duration > 0, "Staking: duration hasn't been set yet");
         require(rewardPerSecond == 0, "Staking: rewards rate already set");
         require(rewardsToken.transferFrom(_from, address(this), _amount));
@@ -45,7 +55,7 @@ contract Staking is Ownable{
     }
 
     //add more rewards to the pool of rewards while the contract is running
-    function addRewardsAndNewDuration(address _from, uint256 _amount) external onlyOwner{
+    function addRewardsAndNewDuration(address _from, uint256 _amount) updatedAt(address(0)) external onlyOwner{
         require(rewardPerSecond > 0, "Staking: rewards rate hasn't been set yet");
         require(rewardsToken.transferFrom(_from, address(this), _amount));
         uint256 remainingRewards = rewardPerSecond * (finishAt - block.timestamp);
@@ -56,7 +66,7 @@ contract Staking is Ownable{
 
     
 
-    function stake(uint256 _amount) external{
+    function stake(uint256 _amount) updateRewards(msg.sender) external {
         require(_amount> 0, "Staking: amount can't be 0");
         require(stakingToken.transferFrom(msg.sender, address(this), _amount));
         balanceOf[msg.sender] += _amount;
@@ -64,7 +74,7 @@ contract Staking is Ownable{
 
     }
 
-    function withdraw(uint256 _amount) external{
+    function withdraw(uint256 _amount) updateRewards(msg.sender) external{
         require(_amount>0, "Staking: Amount can't be 0");
         require(balanceOf[msg.sender] >= _amount, "Insufficient funds");
         balanceOf -= _amount;
@@ -73,7 +83,7 @@ contract Staking is Ownable{
 
     }
 
-    function earned(address _user) external view returns(uint256){
+    function earned(address _user) public view returns(uint256){
         return balanceOf[_user] * (
             (rewardPerToken() - userRewardPerTokenPaid[_user]) / 1e18) 
             + rewardsEarned[_user];
