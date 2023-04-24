@@ -8,6 +8,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Staking is Ownable{
 
+
+
     //~~~~~~ Immutable ~~~~~~
     IERC20 public immutable stakingToken;
     IERC20 public immutable rewardsToken;
@@ -54,14 +56,28 @@ contract Staking is Ownable{
         //emit RewardsAdded()
     }
 
-    //add more rewards to the pool of rewards while the contract is running
-    function addRewardsAndNewDuration(address _from, uint256 _amount) updateRewards(address(0)) external onlyOwner{
+    //renew amount and duration of the staking
+    //(previous round of staking must be over)
+    function renewStakingRewardsAndDuration(address _from, uint256 _amount, uint256 _newDuration) updateRewards(address(0)) external onlyOwner{
         require(rewardPerSecond > 0, "Staking: rewards rate hasn't been set yet");
+        require(finishAt < block.timestamp, "Staking: staking round isn't over yet");
         require(rewardsToken.transferFrom(_from, address(this), _amount));
-        uint256 remainingRewards = rewardPerSecond * (finishAt - block.timestamp);
-        rewardPerSecond = (remainingRewards + _amount) / duration;
-        require(_validateRewardsAndTime(rewardPerSecond, duration));
+        uint256 remainingRewards = rewardsToken.balanceOf(address(this));
+        if(remainingRewards > 0){
+            //if there are leftover rewards
+            //add leftover rewards to the new amount of rewards to be distributed            
+            _amount += remainingRewards;
+        }
+        duration = _newDuration;
+        rewardPerSecond = _amount / _newDuration;
+        require(_validateRewardsAndTime(rewardPerSecond, _newDuration));
         //emit RewardsAdded()
+    }
+
+    function withdrawLeftOverRewards(address _to) external onlyOwner{
+        require(block.timestamp > finishAt, "Staking: wait until round is over to withdraw the leftover");
+        uint256 _leftOverRewards = rewardsToken.balanceOf(address(this));
+        rewardsToken.transfer(_to, _leftOverRewards);
     }
 
     
@@ -125,5 +141,41 @@ contract Staking is Ownable{
         return a <= b ? a : b;
     }
 
+    //~~~~~~ View functions ~~~~~~
+
+    function getRewardPerSecond() external view returns(uint256){
+        return rewardPerSecond;
+    }
+
+    function getRewardPerTokenStored() external view returns(uint256){
+        return rewardPerTokenStored;
+    }
+
+    function getRewardsEarned(address _user) external view returns(uint256){
+        return rewardsEarned[_user];
+    }
+
+    function getRewardsPerTokenPaid(address _user) external view returns(uint256){
+        return userRewardPerTokenPaid[_user];
+    }
+
+    function getDuration() external view returns(uint256){
+        return duration;
+    }
+
+    function getFinishTime() external view returns(uint256){
+        return finishAt;
+    }
+
+    function getBalanceOf(address _user) external view returns(uint256){
+        return balanceOf[_user];
+    }
+
+    function getTotalStaked() external view returns(uint256){
+        return totalStaked;
+    }
+
+
+    
 
 }
