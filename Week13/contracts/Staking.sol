@@ -102,7 +102,11 @@ contract Staking is Ownable{
         return _min(block.timestamp,finishAt);
     }
 
-    function claimRewards() external{
+    function claimRewards() updatedAt(msg.sender) external{
+        uint256 _rewards = rewardsEarned[msg.sender];
+        require(_rewards>0);
+        rewardsEarned[msg.sender] = 0;
+        require(rewardsToken.transfer(msg.sender, _rewards));
 
     }
 
