@@ -34,7 +34,7 @@ contract Staking is Ownable{
 
     //set the duration for this staking contract
     function setRewardsDuration(uint256 _duration) external onlyOwner {
-        require(block.timestamp < finishAt, "Staking: Wait until the round is over");
+        require(block.timestamp > finishAt, "Staking: Wait until the round is over");
         duration = _duration;
     }
 
