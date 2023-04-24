@@ -32,5 +32,31 @@ contract Staking is Ownable{
 
     //~~~~~~ Public/External functions ~~~~~~
 
+    //set the duration for this staking contract
+    function setRewardsDuration(uint256 _duration) external onlyOwner {
+        require(block.timestamp < finishAt, "Staking: Wait until the round is over");
+        duration = _duration;
+    }
+
+    //set the total amount of rewards that will be paid for this specific above duration
+    function notifyRewardAmount(uint256 _amount) external onlyOwner{
+
+    }
+
+    function stake(uint256 _amount) external{
+
+    }
+
+    function withdraw(uint256 _amount) external{
+
+    }
+
+    function earned(address _user) external view returns(uint256){
+        return rewardsEarned[_user];
+    }
+
+    function claimRewards() external{
+
+    }
 
 }
