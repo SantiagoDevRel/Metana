@@ -8,9 +8,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Staking is Ownable{
 
+    //~~~~~~ Immutable ~~~~~~
     IERC20 public immutable stakingToken;
     IERC20 public immutable rewardsToken;
 
+    //~~~~~~ State variables ~~~~~~
     uint256 private duration;
     uint256 private finishAt;
     uint256 private updatedAt;
@@ -22,12 +24,13 @@ contract Staking is Ownable{
     uint256 private totalStaked;
     mapping (address => uint256) private balanceOf;
 
+    //~~~~~~ Constructor ~~~~~~
     constructor(address _staking, address _rewards){
         stakingToken = IERC20(_staking);
         rewardsToken = IERC20(_rewards);
     }
 
-    
+    //~~~~~~ Public/External functions ~~~~~~
 
 
 }
