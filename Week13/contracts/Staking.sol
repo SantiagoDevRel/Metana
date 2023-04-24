@@ -45,7 +45,7 @@ contract Staking is Ownable{
 
     //set the total amount of rewards that will be paid for the specific duration
     //add initial amount of rewards to start the contract
-    function addRewardsToStart(address _from, uint256 _amount) updatedAt(address(0)) external onlyOwner{
+    function addRewardsToStart(address _from, uint256 _amount) updateRewards(address(0)) external onlyOwner{
         require(duration > 0, "Staking: duration hasn't been set yet");
         require(rewardPerSecond == 0, "Staking: rewards rate already set");
         require(rewardsToken.transferFrom(_from, address(this), _amount));
@@ -55,7 +55,7 @@ contract Staking is Ownable{
     }
 
     //add more rewards to the pool of rewards while the contract is running
-    function addRewardsAndNewDuration(address _from, uint256 _amount) updatedAt(address(0)) external onlyOwner{
+    function addRewardsAndNewDuration(address _from, uint256 _amount) updateRewards(address(0)) external onlyOwner{
         require(rewardPerSecond > 0, "Staking: rewards rate hasn't been set yet");
         require(rewardsToken.transferFrom(_from, address(this), _amount));
         uint256 remainingRewards = rewardPerSecond * (finishAt - block.timestamp);
@@ -77,15 +77,15 @@ contract Staking is Ownable{
     function withdraw(uint256 _amount) updateRewards(msg.sender) external{
         require(_amount>0, "Staking: Amount can't be 0");
         require(balanceOf[msg.sender] >= _amount, "Insufficient funds");
-        balanceOf -= _amount;
+        balanceOf[msg.sender] -= _amount;
         totalStaked -= _amount;
         require(stakingToken.transfer(msg.sender,_amount));
 
     }
 
     function earned(address _user) public view returns(uint256){
-        return balanceOf[_user] * (
-            (rewardPerToken() - userRewardPerTokenPaid[_user]) / 1e18) 
+        return (balanceOf[_user] * 
+            (rewardPerToken() - userRewardPerTokenPaid[_user])) / 1e18
             + rewardsEarned[_user];
     }
 
@@ -102,10 +102,10 @@ contract Staking is Ownable{
         return _min(block.timestamp,finishAt);
     }
 
-    function claimRewards() updatedAt(msg.sender) external{
+    function claimRewards() updateRewards(msg.sender) external{
         uint256 _rewards = rewardsEarned[msg.sender];
         require(_rewards>0);
-        rewardsEarned[msg.sender] = 0;
+        rewardsEarned[msg.sender] = 0;  
         require(rewardsToken.transfer(msg.sender, _rewards));
 
     }
