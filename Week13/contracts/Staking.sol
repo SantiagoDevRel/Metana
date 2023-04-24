@@ -54,14 +54,7 @@ contract Staking is Ownable{
         //emit RewardsAdded()
     }
 
-    function _validateRewardsAndTime(uint256 _rewardPerSecond, uint256 _duration) internal returns(bool){
-        require(_rewardPerSecond > 0, "Staking: reward rate can't be 0");
-        require(rewardsToken.balanceOf(address(this)) >= _rewardPerSecond * _duration,"Staking: Insufficient funds to pay rewards");
-        finishAt = block.timestamp + duration;
-        updatedAt = block.timestamp;
-        //emit FinishAtSet()
-        return true;    
-    }
+    
 
     function stake(uint256 _amount) external{
         require(_amount> 0, "Staking: amount can't be 0");
@@ -81,11 +74,42 @@ contract Staking is Ownable{
     }
 
     function earned(address _user) external view returns(uint256){
-        return rewardsEarned[_user];
+        return balanceOf[_user] * (
+            (rewardPerToken() - userRewardPerTokenPaid[_user]) / 1e18) 
+            + rewardsEarned[_user];
+    }
+
+    function rewardPerToken() public view returns(uint256){
+        if(totalStaked == 0 ){
+            return rewardPerTokenStored;
+        }else{
+            return rewardPerTokenStored + (rewardPerSecond * 
+            (lastTimeRewardApplicable() - updatedAt) * 1e18) / totalStaked;
+        }
+    }
+
+    function lastTimeRewardApplicable() public view returns(uint256){
+        return _min(block.timestamp,finishAt);
     }
 
     function claimRewards() external{
 
     }
+
+    //~~~~~~ Internal/Private functions ~~~~~~
+
+    function _validateRewardsAndTime(uint256 _rewardPerSecond, uint256 _duration) internal returns(bool){
+        require(_rewardPerSecond > 0, "Staking: reward rate can't be 0");
+        require(rewardsToken.balanceOf(address(this)) >= _rewardPerSecond * _duration,"Staking: Insufficient funds to pay rewards");
+        finishAt = block.timestamp + duration;
+        updatedAt = block.timestamp;
+        //emit FinishAtSet()
+        return true;    
+    }
+
+    function _min(uint256 a, uint256 b) private pure returns(uint256){
+        return a <= b ? a : b;
+    }
+
 
 }
