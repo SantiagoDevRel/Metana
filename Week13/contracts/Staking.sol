@@ -64,10 +64,19 @@ contract Staking is Ownable{
     }
 
     function stake(uint256 _amount) external{
+        require(_amount> 0, "Staking: amount can't be 0");
+        require(stakingToken.transferFrom(msg.sender, address(this), _amount));
+        balanceOf[msg.sender] += _amount;
+        totalStaked += _amount;
 
     }
 
     function withdraw(uint256 _amount) external{
+        require(_amount>0, "Staking: Amount can't be 0");
+        require(balanceOf[msg.sender] >= _amount, "Insufficient funds");
+        balanceOf -= _amount;
+        totalStaked -= _amount;
+        require(stakingToken.transfer(msg.sender,_amount));
 
     }
 
