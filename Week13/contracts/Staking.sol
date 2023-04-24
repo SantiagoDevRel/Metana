@@ -64,16 +64,18 @@ contract Staking is Ownable{
     function renewStakingRewardsAndDuration(address _from, uint256 _amount, uint256 _newDuration) updateRewards(address(0)) external onlyOwner{
         require(rewardPerSecond > 0, "Staking: rewards rate hasn't been set yet");
         require(finishAt < block.timestamp, "Staking: staking round isn't over yet");
-        require(rewardsToken.transferFrom(_from, address(this), _amount));
-        uint256 remainingRewards = rewardsToken.balanceOf(address(this));
+        address thisContract = address(this);
+        require(rewardsToken.transferFrom(_from, thisContract, _amount));
+        uint256 remainingRewards = rewardsToken.balanceOf(thisContract);
         if(remainingRewards > 0){
             //if there are leftover rewards
             //add leftover rewards to the new amount of rewards to be distributed            
             _amount += remainingRewards;
         }
         duration = _newDuration;
-        rewardPerSecond = _amount / _newDuration;
-        require(_validateRewardsAndTime(rewardPerSecond, _newDuration));
+        uint256 newRewardPerSecond = _amount / _newDuration;
+        rewardPerSecond = newRewardPerSecond;
+        require(_validateRewardsAndTime(newRewardPerSecond, _newDuration));
         emit RewardsAdded(_from, _amount);
     }
 
@@ -87,18 +89,20 @@ contract Staking is Ownable{
 
     function stake(uint256 _amount) updateRewards(msg.sender) external {
         require(_amount> 0, "Staking: amount can't be 0");
-        require(stakingToken.transferFrom(msg.sender, address(this), _amount));
-        balanceOf[msg.sender] += _amount;
+        address _sender = msg.sender;
+        require(stakingToken.transferFrom(_sender, address(this), _amount));
+        balanceOf[_sender] += _amount;
         totalStaked += _amount;
 
     }
 
     function withdraw(uint256 _amount) updateRewards(msg.sender) external{
         require(_amount>0, "Staking: Amount can't be 0");
-        require(balanceOf[msg.sender] >= _amount, "Insufficient funds");
-        balanceOf[msg.sender] -= _amount;
+        address _sender = msg.sender;
+        require(balanceOf[_sender] >= _amount, "Insufficient funds");
+        balanceOf[_sender] -= _amount;
         totalStaked -= _amount;
-        require(stakingToken.transfer(msg.sender,_amount));
+        require(stakingToken.transfer(_sender,_amount));
 
     }
 
@@ -122,10 +126,11 @@ contract Staking is Ownable{
     }
 
     function claimRewards() updateRewards(msg.sender) external{
-        uint256 _rewards = rewardsEarned[msg.sender];
+        address _sender = msg.sender;
+        uint256 _rewards = rewardsEarned[_sender];
         require(_rewards>0);
-        rewardsEarned[msg.sender] = 0;  
-        require(rewardsToken.transfer(msg.sender, _rewards));
+        rewardsEarned[_sender] = 0;  
+        require(rewardsToken.transfer(_sender, _rewards));
 
     }
 
@@ -133,9 +138,10 @@ contract Staking is Ownable{
 
     function _validateRewardsAndTime(uint256 _rewardPerSecond, uint256 _duration) internal returns(bool){
         require(_rewardPerSecond > 0, "Staking: reward rate can't be 0");
+        uint256 _currentTime = block.timestamp;
         require(rewardsToken.balanceOf(address(this)) >= _rewardPerSecond * _duration,"Staking: Insufficient funds to pay rewards");
-        finishAt = block.timestamp + duration;
-        updatedAt = block.timestamp;
+        finishAt = _currentTime + duration;
+        updatedAt = _currentTime;
         return true;    
     }
 
