@@ -25,18 +25,13 @@ contract Staking is Ownable{
     mapping (address => uint256) private balanceOf;
 
     //~~~~~~ Constructor ~~~~~~
-    constructor(address _staking, address _rewards){
+    constructor(address _staking, address _rewards, uint256 _duration){
         stakingToken = IERC20(_staking);
         rewardsToken = IERC20(_rewards);
+        duration = _duration;
     }
 
     //~~~~~~ Public/External functions ~~~~~~
-
-    //set the duration for this staking contract
-    function setDuration(uint256 _duration) external onlyOwner {
-        require(duration == 0, "Staking: duration already set");
-        duration = _duration;
-    }
 
     //set the total amount of rewards that will be paid for the specific duration
     //add initial amount of rewards to start the contract
@@ -50,7 +45,7 @@ contract Staking is Ownable{
     }
 
     //add more rewards to the pool of rewards while the contract is running
-    function addRewardsWhileStaking(address _from, uint256 _amount) external onlyOwner{
+    function addRewardsAndNewDuration(address _from, uint256 _amount) external onlyOwner{
         require(rewardPerSecond > 0, "Staking: rewards rate hasn't been set yet");
         require(rewardsToken.transferFrom(_from, address(this), _amount));
         uint256 remainingRewards = rewardPerSecond * (finishAt - block.timestamp);
@@ -64,8 +59,8 @@ contract Staking is Ownable{
         require(rewardsToken.balanceOf(address(this)) >= _rewardPerSecond * _duration,"Staking: Insufficient funds to pay rewards");
         finishAt = block.timestamp + duration;
         updatedAt = block.timestamp;
-        //emit FinishTimeSet()
-        return true;
+        //emit FinishAtSet()
+        return true;    
     }
 
     function stake(uint256 _amount) external{
