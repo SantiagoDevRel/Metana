@@ -1,13 +1,24 @@
-# Sample Hardhat Project
+# Hardhat impersonate account
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+    1. Modify hardhat.config with:
+        networks: {
+            hardhat: {
+                forking: {
+                    url: `${API_MAINNET_URL}`,
+                },
+            },
+        },
 
-Try running some of the following tasks:
+    2. Impersonate X address:
+        const X_ADDRESS = 0x1689a089AA12d6CbBd88bC2755E4c192f8702000;
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+    3. Write the impersonate method on the test:
+        await network.provider.request({
+            method: "hardhat_impersonateAccount",
+            params: [X_ADDRESS],
+        });
+
+    4. Instance of the X signer:
+        X_SIGNER = await ethers.getSigner(X_ADDRESS);
+
+    5. Ready to go, now we can sign transactions with the X_SIGNER account
