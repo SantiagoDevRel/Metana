@@ -6,8 +6,8 @@ import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 
 contract Test{
 
-    address constant public UNISWAP_V2_ROUTER = 0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45;
-    address constant public WETH = 0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa;
+    address constant public UNISWAP_V2_ROUTER = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
+    address constant public WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
 
 /*      uint amountIn,
         uint amountOutMin,
