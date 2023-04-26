@@ -5,7 +5,7 @@ const { network, ethers } = require("hardhat");
 //address on mainnet
 const WHITEBIT_ADDRESS = "0x1689a089AA12d6CbBd88bC2755E4c192f8702000";
 const DAI_ADDRESS = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
-const WBTC_ADDRESS = "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599";
+const USDC_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
 
 describe("Swap", function () {
   let daiContract, whitebitSigner, wbtcContract;
@@ -22,39 +22,38 @@ describe("Swap", function () {
     //instace of DAI
     daiContract = await ethers.getContractAt("IERC20", DAI_ADDRESS);
 
-    //instace of WBTC
-    wbtcContract = await ethers.getContractAt("IERC20", WBTC_ADDRESS);
+    //instace of USDC
+    usdcContract = await ethers.getContractAt("IERC20", USDC_ADDRESS);
 
-    const Swap = await ethers.getContractFactory("Swap");
-    const swapContract = await Swap.deploy();
+    const AddLiquidity = await ethers.getContractFactory("AddLiquidity");
+    const addLiquidityContract = await AddLiquidity.deploy();
 
-    return { swapContract, whitebitSigner, daiContract, wbtcContract };
+    return { addLiquidityContract, whitebitSigner, daiContract, usdcContract };
   }
 
-  describe("Swap", function () {
-    it("Should swap 100 DAI for WBTC", async function () {
-      const { swapContract, whitebitSigner, daiContract, wbtcContract } = await loadFixture(testSwapUniswap);
-      const tokenIn = daiContract.address;
-      const tokenOut = WBTC_ADDRESS;
-      const amountIn = ethers.utils.parseEther("100");
-      const amountOut = "1";
-      const to = whitebitSigner.address;
+  describe("Add liquidity", function () {
+    it("Should add 100DAI & 100 USDC", async function () {
+      const { addLiquidityContract, whitebitSigner, daiContract, usdcContract } = await loadFixture(testSwapUniswap);
+      const tokenA = daiContract.address;
+      const tokenB = usdcContract.address;
+      const amountA = await daiContract.balanceOf(whitebitSigner.address);
+      const amountB = await usdcContract.balanceOf(whitebitSigner.address);
 
-      //check that WBTC balance is 0
-      const WBTC_BALANCEOF_BEFORE = await wbtcContract.balanceOf(whitebitSigner.address);
-      expect(WBTC_BALANCEOF_BEFORE).to.equal(0);
+      //1 approve tokens to add liquidity contract
+      const approve1 = await daiContract.connect(whitebitSigner).approve(addLiquidityContract.address, amountA);
+      const approve2 = await usdcContract.connect(whitebitSigner).approve(addLiquidityContract.address, amountB);
+      await approve1.wait();
+      await approve2.wait();
 
-      //approve DAI
-      const approveTx = await daiContract.connect(whitebitSigner).approve(swapContract.address, amountIn);
-      await approveTx.wait();
-
-      //swap DAI for WBTC
-      const swapTx = await swapContract.connect(whitebitSigner).swap(tokenIn, tokenOut, amountIn, amountOut, to);
-      await swapTx.wait();
-
-      //check WBTC balance > 1
-      const WBTC_BALANCEOF_AFTER = await wbtcContract.balanceOf(whitebitSigner.address);
-      expect(WBTC_BALANCEOF_AFTER).to.be.greaterThan(1);
+      //2 call add liquidity contract
+      const addLiquidityTx = await addLiquidityContract.connect(whitebitSigner).addLiquidity(tokenA, tokenB, amountA, amountB);
+      const receiptTx = await addLiquidityTx.wait();
+      const a = receiptTx.events;
+      console.log(a[9].args);
+      console.log(a[10].args);
+      console.log(a[11].args);
+      //console.log(b);
+      //console.log(l);
     });
   });
 });
