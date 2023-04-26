@@ -48,12 +48,10 @@ describe("Swap", function () {
       //2 call add liquidity contract
       const addLiquidityTx = await addLiquidityContract.connect(whitebitSigner).addLiquidity(tokenA, tokenB, amountA, amountB);
       const receiptTx = await addLiquidityTx.wait();
-      const a = receiptTx.events;
-      console.log(a[9].args);
-      console.log(a[10].args);
-      console.log(a[11].args);
-      //console.log(b);
-      //console.log(l);
+      const events = receiptTx.events;
+      console.log(events[9].args);
+      console.log(events[10].args);
+      console.log(events[11].args);
     });
   });
 });
