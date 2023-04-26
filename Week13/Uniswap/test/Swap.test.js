@@ -1,7 +1,6 @@
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { expect } = require("chai");
 const { network, ethers } = require("hardhat");
-const { BigNumber } = ethers;
 
 //address on mainnet
 const WHITEBIT_ADDRESS = "0x1689a089AA12d6CbBd88bC2755E4c192f8702000";
