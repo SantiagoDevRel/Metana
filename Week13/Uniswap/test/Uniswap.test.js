@@ -26,7 +26,7 @@ describe("Swap", function () {
     //instace of WBTC
     wbtcContract = await ethers.getContractAt("IERC20", WBTC_ADDRESS);
 
-    const Swap = await ethers.getContractFactory("Test");
+    const Swap = await ethers.getContractFactory("Swap");
     const swapContract = await Swap.deploy();
 
     return { swapContract, whitebitSigner, daiContract, wbtcContract };
