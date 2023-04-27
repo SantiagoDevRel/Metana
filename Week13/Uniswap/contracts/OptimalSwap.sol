@@ -41,11 +41,11 @@ contract OptimalSwap{
         }
 
         //5 swap tokenA for tokenB
-        swap(_tokenA, _tokenB, optimalAmount, msg.sender);
+        swap(_tokenA, _tokenB, optimalAmount, address(this));
 
         //6 add liquidity
-        uint256 a = IERC20(_tokenA).balanceOf(msg.sender);
-        uint256 b = IERC20(_tokenB).balanceOf(msg.sender);
+        uint256 a = IERC20(_tokenA).balanceOf(address(this));
+        uint256 b = IERC20(_tokenB).balanceOf(address(this));
         addLiquidity(_tokenA, _tokenB, a, b);
     }
 
@@ -67,13 +67,10 @@ contract OptimalSwap{
         uint256 _amountIn,
         address _to
     ) public {
-        //1 transfer token from msg.sender to this contract
-        IERC20(_tokenIn).transferFrom(msg.sender, address(this), _amountIn);
-        
-        //2 approve uniswap router the tokenIn
+        //1 approve uniswap router the tokenIn
         IERC20(_tokenIn).approve(UNISWAP_V2_ROUTER, _amountIn);
         
-        //3 create a path with tokenIn, WETH and tokenOut
+        //2 create a path with tokenIn, WETH and tokenOut
         address[] memory path = new address[](3);
         path[0] = _tokenIn;
         path[1] = WETH;
@@ -88,17 +85,12 @@ contract OptimalSwap{
 
     function addLiquidity(address _tokenA, address _tokenB, uint256 _amountA, uint256 _amountB) public {
         address _thisContract = address(this);
-        address _sender = msg.sender;
-        
-        //1 transfer the tokens from user to this contract
-        IERC20(_tokenA).transferFrom(_sender, _thisContract, _amountA);
-        IERC20(_tokenB).transferFrom(_sender, _thisContract, _amountB);
 
-        //2 approve tokens from this contract to uniswap router
+        //1 approve tokens from this contract to uniswap router
         IERC20(_tokenA).approve(UNISWAP_V2_ROUTER, _amountA);
         IERC20(_tokenB).approve(UNISWAP_V2_ROUTER, _amountB);
 
-        //3 call router to add liquidity and get the return values
+        //2 call router to add liquidity and get the return values
         (uint256 amountA, uint256 amountB,uint256 liquidity) = IUniswapV2Router02(UNISWAP_V2_ROUTER).addLiquidity(
             _tokenA, 
             _tokenB,
@@ -106,13 +98,17 @@ contract OptimalSwap{
             _amountB,
             1,
             1,
-            _thisContract,
+            msg.sender, //<= mint the shares to this address
             block.timestamp + 5 minutes
         );
 
         emit Log("AmountA", amountA);
         emit Log("AmountB", amountB);
         emit Log("Liquidity", liquidity);
+    }
+
+    function getBalance(address _pair) external view returns(uint256){
+        return IUniswapV2Pair(_pair).balanceOf(msg.sender);
     }
 
 }
