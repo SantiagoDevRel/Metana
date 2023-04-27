@@ -84,8 +84,6 @@ contract OptimalSwap{
     }
 
     function addLiquidity(address _tokenA, address _tokenB, uint256 _amountA, uint256 _amountB) public {
-        address _thisContract = address(this);
-
         //1 approve tokens from this contract to uniswap router
         IERC20(_tokenA).approve(UNISWAP_V2_ROUTER, _amountA);
         IERC20(_tokenB).approve(UNISWAP_V2_ROUTER, _amountB);
