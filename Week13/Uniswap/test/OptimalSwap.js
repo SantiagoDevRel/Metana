@@ -6,9 +6,10 @@ const { network, ethers } = require("hardhat");
 const WHITEBIT_ADDRESS = "0x1689a089AA12d6CbBd88bC2755E4c192f8702000";
 const DAI_ADDRESS = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 const USDC_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+const PAIR_DAI_USDC = "0xAE461cA67B15dc8dc81CE7615e0320dA1A9aB8D5";
 
 describe("Swap", function () {
-  let daiContract, whitebitSigner, wbtcContract;
+  let daiContract, whitebitSigner, usdcContract;
   async function testSwapUniswap() {
     //impersonate account parameters
     await network.provider.request({
@@ -25,33 +26,30 @@ describe("Swap", function () {
     //instace of USDC
     usdcContract = await ethers.getContractAt("IERC20", USDC_ADDRESS);
 
-    const AddLiquidity = await ethers.getContractFactory("AddLiquidity");
-    const addLiquidityContract = await AddLiquidity.deploy();
+    const OptSwap = await ethers.getContractFactory("OptimalSwap");
+    const optimalSwap = await OptSwap.deploy();
 
-    return { addLiquidityContract, whitebitSigner, daiContract, usdcContract };
+    return { optimalSwap, whitebitSigner, daiContract, usdcContract };
   }
 
-  describe("Add liquidity", function () {
-    it("Should add 100DAI & 100 USDC", async function () {
-      const { addLiquidityContract, whitebitSigner, daiContract, usdcContract } = await loadFixture(testSwapUniswap);
+  describe("Swap and add liqiduity", function () {
+    it("Should start with 0 liquidity and finish with > 0", async function () {
+      const { optimalSwap, whitebitSigner, daiContract, usdcContract } = await loadFixture(testSwapUniswap);
       const tokenA = daiContract.address;
       const tokenB = usdcContract.address;
       const amountA = await daiContract.balanceOf(whitebitSigner.address);
-      const amountB = await usdcContract.balanceOf(whitebitSigner.address);
-
+      //console.log("ABALANCE DAI", amountA);
       //1 approve tokens to add liquidity contract
-      const approve1 = await daiContract.connect(whitebitSigner).approve(addLiquidityContract.address, amountA);
-      const approve2 = await usdcContract.connect(whitebitSigner).approve(addLiquidityContract.address, amountB);
+      const approve1 = await daiContract.connect(whitebitSigner).approve(optimalSwap.address, amountA);
       await approve1.wait();
-      await approve2.wait();
+
+      expect(await optimalSwap.connect(whitebitSigner).getBalance(PAIR_DAI_USDC)).to.be.equal(0);
 
       //2 call add liquidity contract
-      const addLiquidityTx = await addLiquidityContract.connect(whitebitSigner).addLiquidity(tokenA, tokenB, amountA, amountB);
-      const receiptTx = await addLiquidityTx.wait();
-      const events = receiptTx.events;
-      console.log(events[9].args);
-      console.log(events[10].args);
-      console.log(events[11].args);
+      const swapTx = await optimalSwap.connect(whitebitSigner).swapAndAdd(tokenA, tokenB, amountA);
+      await swapTx.wait();
+
+      expect(await optimalSwap.connect(whitebitSigner).getBalance(PAIR_DAI_USDC)).to.be.greaterThan(1);
     });
   });
 });
