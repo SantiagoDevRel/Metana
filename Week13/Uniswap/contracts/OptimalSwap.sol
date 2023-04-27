@@ -13,6 +13,9 @@ contract OptimalSwap{
     using Math for uint256;
     using SafeMath for uint256;
 
+    event Log(string message, uint256 qty);
+
+
     address constant public UNISWAP_V2_ROUTER = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
     address constant public UNISWAP_V2_FACTORY = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
     address constant public WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
@@ -28,22 +31,22 @@ contract OptimalSwap{
         //3 get reserves of the pair
         (uint256 reserve0, uint256 reserve1, ) = IUniswapV2Pair(pair).getReserves();
         
+        uint256 optimalAmount;
         if(IUniswapV2Pair(pair).token0() == _tokenA){
             //4 get optimal swap amount
-            uint256 optimalAmount = _getSwapAmount(_amountA, reserve0);
-
-            //5 swap tokenA for tokenB
-            swap(_tokenA, _tokenB, optimalAmount, 1, msg.sender);
-
+            optimalAmount = _getSwapAmount(_amountA, reserve0);
         }else{
             //4 get optimal swap amount
-            uint256 optimalAmount = _getSwapAmount(_amountA, reserve1);
-            
-            //5 swap tokenA for tokenB
-
+            optimalAmount = _getSwapAmount(_amountA, reserve1);
         }
 
+        //5 swap tokenA for tokenB
+        swap(_tokenA, _tokenB, optimalAmount, msg.sender);
 
+        //6 add liquidity
+        uint256 a = IERC20(_tokenA).balanceOf(msg.sender);
+        uint256 b = IERC20(_tokenB).balanceOf(msg.sender);
+        addLiquidity(_tokenA, _tokenB, a, b);
     }
 
     function _getSwapAmount(uint256 tokenUser, uint256 reserve) internal pure returns(uint256){
@@ -62,7 +65,6 @@ contract OptimalSwap{
         address _tokenIn,
         address _tokenOut,
         uint256 _amountIn,
-        uint256 _amountOutmin,
         address _to
     ) public {
         //1 transfer token from msg.sender to this contract
@@ -78,11 +80,39 @@ contract OptimalSwap{
         path[2] = _tokenOut;
 
         IUniswapV2Router02(UNISWAP_V2_ROUTER).swapExactTokensForTokensSupportingFeeOnTransferTokens(
-            _amountIn, _amountOutmin, path, _to, block.timestamp 
+            _amountIn, 1, path, _to, block.timestamp 
         );
 
 
     }
 
+    function addLiquidity(address _tokenA, address _tokenB, uint256 _amountA, uint256 _amountB) public {
+        address _thisContract = address(this);
+        address _sender = msg.sender;
+        
+        //1 transfer the tokens from user to this contract
+        IERC20(_tokenA).transferFrom(_sender, _thisContract, _amountA);
+        IERC20(_tokenB).transferFrom(_sender, _thisContract, _amountB);
+
+        //2 approve tokens from this contract to uniswap router
+        IERC20(_tokenA).approve(UNISWAP_V2_ROUTER, _amountA);
+        IERC20(_tokenB).approve(UNISWAP_V2_ROUTER, _amountB);
+
+        //3 call router to add liquidity and get the return values
+        (uint256 amountA, uint256 amountB,uint256 liquidity) = IUniswapV2Router02(UNISWAP_V2_ROUTER).addLiquidity(
+            _tokenA, 
+            _tokenB,
+            _amountA,
+            _amountB,
+            1,
+            1,
+            _thisContract,
+            block.timestamp + 5 minutes
+        );
+
+        emit Log("AmountA", amountA);
+        emit Log("AmountB", amountB);
+        emit Log("Liquidity", liquidity);
+    }
 
 }
