@@ -15,6 +15,8 @@ contract OptimalSwap{
 
     address constant public UNISWAP_V2_ROUTER = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
     address constant public UNISWAP_V2_FACTORY = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
+    address constant public WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+
 
     function swapAndAdd(address _tokenA, address _tokenB, uint256 _amountA) external {       
         //1 transfer tokenA to this contract
@@ -28,16 +30,14 @@ contract OptimalSwap{
         
         if(IUniswapV2Pair(pair).token0() == _tokenA){
             //4 get optimal swap amount
-            uint256 balanceUser = IERC20(_tokenA).balanceOf(msg.sender);
-            uint256 optimalAmount = _getSwapAmount(balanceUser, reserve0);
+            uint256 optimalAmount = _getSwapAmount(_amountA, reserve0);
 
             //5 swap tokenA for tokenB
             swap(_tokenA, _tokenB, optimalAmount, 1, msg.sender);
 
         }else{
             //4 get optimal swap amount
-            uint256 balanceUser = IERC20(_tokenB).balanceOf(msg.sender);
-            uint256 optimalAmount = _getSwapAmount(balanceUser, reserve1);
+            uint256 optimalAmount = _getSwapAmount(_amountA, reserve1);
             
             //5 swap tokenA for tokenB
 
@@ -46,7 +46,7 @@ contract OptimalSwap{
 
     }
 
-    function _getSwapAmount(uint256 tokenUser, uint256 reserve) internal view returns(uint256){
+    function _getSwapAmount(uint256 tokenUser, uint256 reserve) internal pure returns(uint256){
         return (_sqrt(reserve.mul(reserve.mul(3988009) + tokenUser.mul(3988000))).sub(reserve.mul(1997))) / 1994;
     }
 

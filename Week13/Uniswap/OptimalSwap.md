@@ -5,7 +5,7 @@
     f = trading fee
     a = amount token A I have
     b = ? amount token B i need
-    s = ? amount token A we will swap for B
+    s = ? amount token A we will swap foA B
 
     K = A * B
 
@@ -13,9 +13,9 @@
 
     Formula:
 
-    s = (sqrt(((2-f)r)^2 + 4(1-f)a*r) - (2-f)*r ) / (2*(1-f))
+    s = (sqrt(((2-f)A)^2 + 4(1-f)a*A) - (2-f)*A ) / (2*(1-f))
 
-        sqrt((( 2 - f ) r )^2 + 4 ( 1 - f ) a * r ) - (2 - f) * r
+        sqrt((( 2 - f ) A )^2 + 4 ( 1 - f ) a * A ) - (2 - f) * A
     s = __________________________________________________________
                     2 * (1 - f)
 
@@ -34,4 +34,4 @@
 
     125.000 = (500 + (1-0.3 % 100) * s) * (250 - b)
 
-[Youtube source](https://www.youtube.com/watch?v=1ivHqueaTVo)
+[Youtube souAce](https://www.youtube.com/watch?v=1ivHqueaTVo)
