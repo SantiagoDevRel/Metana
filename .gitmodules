@@ -1,3 +1,6 @@
 [submodule "Week10/diamond-1-hardhat"]
 	path = Week10/diamond-1-hardhat
 	url = https://github.com/mudgen/diamond-1-hardhat
+[submodule "Chainlink/Functions/functions-hardhat-starter-kit"]
+	path = Chainlink/Functions/functions-hardhat-starter-kit
+	url = https://github.com/smartcontractkit/functions-hardhat-starter-kit.git
