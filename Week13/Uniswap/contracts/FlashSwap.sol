@@ -39,7 +39,41 @@ contract FlashSwap is IUniswapV2Callee {
         //5 that data will trigger a callback in address(this) in the function uniswapV2Call()
     }
 
-   
+    //6 this function will be called by the pair contract
+    function uniswapV2Call(address sender, uint amount0, uint amount1, bytes calldata data) external override{
+        //7 get the tokens from the pair address (asuming msg.sender == pair)
+        address token0 = IUniswapV2Pair(msg.sender).token0();
+        address token1 = IUniswapV2Pair(msg.sender).token1();      
+
+        //8 get the pair address from the factory with the 2 tokens
+        address pair = IUniswapV2Factory(UNISWAP_FACTORY_V2).getPair(token0, token1);
+
+        //9 make sure the msg.sender is the pair contract
+        require(msg.sender == pair, "FlashSwap: msg.sender is not the pair contract.");
+        
+        //10 make sure the sender (function parameter) is this contract 
+        //  this sender comes from the swap(address to);
+        require(sender == address(this), "FlashSwap: wrong sender");
+
+
+        //11 decode the token and amount to borrow
+        (address _tokenToBorrow, uint256 _amountToBorrow) = abi.decode(data, (address, uint256));
+
+        //12 calculate discount fee 0.3%
+        // +1 is to avoid rounding error
+        uint256 _fee = ((_amountToBorrow * 3) / 997) + 1;
+        uint256 _amountToRepay = _amountToBorrow + _fee;
+
+        //13 do something here
+        emit Log("amount to borrow", _amountToBorrow);
+        emit Log("amount0 ", amount0);
+        emit Log("amount1 ", amount1);
+        emit Log("fee", _fee);
+        emit Log("amount to repay", _amountToRepay);  
+
+        //14 repay Uniswap
+        IERC20(_tokenToBorrow).transfer(pair, _amountToRepay);
+    }
 
 
 }
