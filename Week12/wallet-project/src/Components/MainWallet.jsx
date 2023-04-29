@@ -5,7 +5,9 @@ import styles from "./MainWallet.module.css";
 import { useRef } from "react";
 import * as ethers from "ethers";
 
+const MUMBAI_ALCHEMY = "https://polygon-mumbai.g.alchemy.com/v2/ygR08deoF8DSjlIeUinnPPBU0F-HgiAU";
 let listAccounts = [];
+let provider;
 
 function CreateWallet(props) {
   const numRef = useRef();
@@ -25,6 +27,8 @@ function CreateWallet(props) {
 
   useEffect(() => {
     createPrivateKey();
+    provider = new ethers.providers.AlchemyProvider("maticmum", MUMBAI_ALCHEMY);
+    console.log("PROVIDER", provider);
   }, []);
 
   /**
@@ -53,6 +57,14 @@ function CreateWallet(props) {
    */
   async function createNewWallet(_mnemonic, _privateKeyUint8, _privateKeyHex) {
     const _wallet = new Wallet(_mnemonic, _privateKeyUint8, _privateKeyHex);
+
+    const _walletEthers = ethers.Wallet.fromMnemonic(_mnemonic);
+    const signer = _walletEthers.connect(provider);
+    console.log("1", signer);
+    console.log("2");
+    const address = await signer.getAddress();
+    const balance = await ethers.Signer.isSigner(signer);
+    console.log("3", address, balance);
     setWallet(_wallet);
     setCurrentAccount(_wallet.currentAddress);
     setCurrentNonce(_wallet.currentNonce);
