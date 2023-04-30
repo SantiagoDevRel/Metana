@@ -5,7 +5,7 @@ import styles from "./MainWallet.module.css";
 import { useRef } from "react";
 import * as ethers from "ethers";
 
-const MUMBAI_ALCHEMY = "https://polygon-mumbai.g.alchemy.com/v2/ygR08deoF8DSjlIeUinnPPBU0F-HgiAU";
+const MUMBAI_ALCHEMY = `https://polygon-mumbai.g.alchemy.com/v2/${import.meta.env.VITE_KEY}`;
 let listAccounts = [];
 let provider;
 
