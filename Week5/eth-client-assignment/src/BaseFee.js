@@ -12,16 +12,10 @@ import {
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-ChartJS.register(
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  Legend,
-  Tooltip
-);
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Legend, Tooltip);
+const KEY = process.env.REACT_APP_KEY;
 
-const ALCHEMY_KEY = `uk3L_f3i_POcVTRhWxKrYlUm__ftnzfm`;
+const ALCHEMY_KEY = KEY;
 
 const settings = {
   apiKey: `${ALCHEMY_KEY}`,
@@ -35,10 +29,7 @@ export async function fetchFeeHistory() {
   const _currentBlockHex = ethers.utils.hexlify(_currentBlock);
   return {
     currentBlock: _currentBlock,
-    arrayFeeHistory: await alchemy.core.send("eth_feeHistory", [
-      20,
-      _currentBlockHex,
-    ]),
+    arrayFeeHistory: await alchemy.core.send("eth_feeHistory", [20, _currentBlockHex]),
   };
 }
 
