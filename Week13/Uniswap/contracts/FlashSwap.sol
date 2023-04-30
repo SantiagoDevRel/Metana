@@ -33,9 +33,8 @@ contract FlashSwap is IUniswapV2Callee {
         // if last parameter (data == "") is empty, it will do a normal swap
         // we need to pass data to trigger the uniswapV2Callee call
         bytes memory data = abi.encode(_tokenToBorrow, _amountToBorrow);
-
-        IUniswapV2Pair(pair).swap(_amount0Out, _amount1Out, address(this), data);
         
+        IUniswapV2Pair(pair).swap(_amount0Out, _amount1Out, address(this), data);
         //5 that data will trigger a callback in address(this) in the function uniswapV2Call()
     }
 
@@ -65,11 +64,17 @@ contract FlashSwap is IUniswapV2Callee {
         uint256 _amountToRepay = _amountToBorrow + _fee;
 
         //13 do something here
-        emit Log("amount to borrow", _amountToBorrow);
-        emit Log("amount0 ", amount0);
-        emit Log("amount1 ", amount1);
+        emit Log("zzzz0",amount0);
+        emit Log("zzzz1", amount1);
+        emit Log("borrow", _amountToBorrow);
         emit Log("fee", _fee);
-        emit Log("amount to repay", _amountToRepay);  
+        emit Log("repay", _amountToRepay);  
+
+        //OPTIONAL - check balance of tokens to verify the loan
+        uint256 balance0 = IERC20(token0).balanceOf(address(this));
+        uint256 balance1 = IERC20(token1).balanceOf(address(this));
+        emit Log("BALANCE TOKEN 0", balance0);
+        emit Log("BALANCE TOKEN 1", balance1);
 
         //14 repay Uniswap
         IERC20(_tokenToBorrow).transfer(pair, _amountToRepay);
