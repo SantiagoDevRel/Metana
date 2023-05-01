@@ -28,5 +28,12 @@
 
 ### Oracle computing service
 
-3. VRF
-4. Automation
+3.  [VRF](https://docs.chain.link/vrf/)
+
+Get a random number
+
+Use cases:
+-Raffles & fair selections
+-NFT creation & distribution
+
+4.  [Automation](https://docs.chain.link/chainlink-automation/introduction/)

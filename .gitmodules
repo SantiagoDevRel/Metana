@@ -4,3 +4,6 @@
 [submodule "Chainlink/Functions/functions-hardhat-starter-kit"]
 	path = Chainlink/Functions/functions-hardhat-starter-kit
 	url = https://github.com/smartcontractkit/functions-hardhat-starter-kit.git
+[submodule "Chainlink/Functions/--force"]
+	path = Chainlink/Functions/--force
+	url = https://github.com/smartcontractkit/functions-hardhat-starter-kit.git
