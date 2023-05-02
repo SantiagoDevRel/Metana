@@ -37,3 +37,10 @@ Use cases:
 -NFT creation & distribution
 
 4.  [Automation](https://docs.chain.link/chainlink-automation/introduction/)
+
+When conditions are met, Chainlink automation will trigger a transaction/call the functions you want
+
+Use cases:
+-Liquidation
+-DEX limit orders
+-Dynamic NFT
