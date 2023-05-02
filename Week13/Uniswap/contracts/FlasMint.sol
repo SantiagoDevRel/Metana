@@ -19,7 +19,13 @@ contract FlashMint is IERC3156FlashBorrower {
     bytes public s_bytes;
 
     function flash() external{
+        uint256 totalSupplyToken = IERC20(IWETH10).totalSupply();
+        s_iwethTotalSupplyBeforeFlashLoan = totalSupplyToken;
 
+        uint256 amount = totalSupplyToken + 1;
+        bytes memory data = abi.encode(msg.sender);
+
+        IERC3156FlashLender(IWETH10).flashLoan(IERC3156FlashBorrower(address(this)), IWETH10, amount, data);
     }
 
     function onFlashLoan(
