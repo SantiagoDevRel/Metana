@@ -7,3 +7,6 @@
 [submodule "Chainlink/Functions/--force"]
 	path = Chainlink/Functions/--force
 	url = https://github.com/smartcontractkit/functions-hardhat-starter-kit.git
+[submodule "Chainlink/Demo_ChatGPT/functions-hardhat-starter-kit"]
+	path = Chainlink/Demo_ChatGPT/functions-hardhat-starter-kit
+	url = https://github.com/smartcontractkit/functions-hardhat-starter-kit.git
